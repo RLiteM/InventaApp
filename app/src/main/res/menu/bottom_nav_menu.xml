@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio" />
+    <item
+        android:id="@+id/nav_inventario"
+        android:icon="@drawable/ic_inventory"
+        android:title="Inventario" />
+    <item
+        android:id="@+id/nav_ventas"
+        android:icon="@drawable/ic_sales"
+        android:title="Ventas" />
+    <item
+        android:id="@+id/nav_reportes"
+        android:icon="@drawable/ic_reports"
+        android:title="Reportes" />
+    <item
+        android:id="@+id/nav_mas"
+        android:icon="@drawable/ic_more"
+        android:title="Más" />
+</menu>
