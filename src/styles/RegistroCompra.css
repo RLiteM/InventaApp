@@ -1,0 +1,80 @@
+/* RegistroCompra.css */
+
+.purchase-form-page h1 {
+  color: var(--color-texto);
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.purchase-form-container {
+  background-color: var(--color-superficie);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.details-table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+
+.details-table th, .details-table td {
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.details-table th {
+  border-bottom: 2px solid var(--color-fondo);
+}
+
+.details-table td {
+  border-bottom: 1px solid var(--color-fondo);
+}
+
+.details-table input {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.details-table .react-select-container {
+  min-width: 200px;
+}
+
+.add-row-button {
+  margin-top: 1rem;
+  background-color: #17a2b8; /* Azul info */
+  color: white;
+}
+
+.remove-row-button {
+  background-color: #dc3545; /* Rojo */
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Estilos para react-select (para que coincida con el tema) */
+.react-select__control {
+  background-color: var(--color-fondo) !important;
+  border-color: var(--color-fondo) !important;
+}
+
+.react-select__single-value {
+  color: var(--color-texto) !important;
+}
+
+.react-select__menu {
+  background-color: var(--color-superficie) !important;
+}
+
+.react-select__option:hover {
+  background-color: var(--color-fondo) !important;
+}
+
+.react-select__option--is-focused {
+  background-color: var(--color-fondo) !important;
+}

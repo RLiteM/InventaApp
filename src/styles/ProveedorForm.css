@@ -1,0 +1,23 @@
+/* ProveedorForm.css */
+
+.provider-form-page h1 {
+  color: var(--color-texto);
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  font-size: 1.25rem;
+  color: var(--color-primario);
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-fondo);
+  padding-bottom: 0.75rem;
+}
+
+/* Reutilizamos la mayoría de los estilos de UsuarioForm.css 
+   como .form-container, .form-grid, .form-group, etc. */

@@ -1,8 +1,8 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /*
+    Se han eliminado las propiedades max-width, margin, padding y text-align
+    para permitir que los componentes de página controlen su propio layout.
+  */
 }
 
 .logo {

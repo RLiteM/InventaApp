@@ -1,0 +1,80 @@
+/* AdminLayout.css */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--color-superficie);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+}
+
+.sidebar-header {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-fondo);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  color: var(--color-primario);
+  font-size: 1.5rem;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.sidebar-nav li a {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: var(--color-texto);
+  text-decoration: none;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: background-color 0.2s ease, border-left-color 0.2s ease;
+}
+
+.sidebar-nav li a:hover {
+  background-color: var(--color-fondo);
+}
+
+.sidebar-nav li a.active {
+  background-color: var(--color-fondo);
+  border-left-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid var(--color-fondo);
+}
+
+.logout-button {
+  width: 100%;
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: var(--color-primario-hover);
+  border-color: transparent;
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}

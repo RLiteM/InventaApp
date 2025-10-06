@@ -1,0 +1,30 @@
+/* GestionProveedores.css */
+
+.provider-management-page h1 {
+  color: var(--color-texto);
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.providers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-superficie);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.providers-table th, .providers-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-fondo);
+}
+
+.providers-table th {
+  background-color: var(--color-fondo);
+  font-weight: 600;
+}
+
+/* Reutilizamos los estilos de botones de GestionUsuarios.css */

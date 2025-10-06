@@ -1,0 +1,79 @@
+/* UsuarioForm.css */
+
+.user-form-page h1 {
+  color: var(--color-texto);
+  border-bottom: 2px solid var(--color-primario);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-container {
+  background-color: var(--color-superficie);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid var(--color-fondo);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primario);
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.form-actions .save-button {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.form-actions .cancel-button {
+  background-color: transparent;
+  border: 1px solid var(--color-texto);
+  color: var(--color-texto);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
