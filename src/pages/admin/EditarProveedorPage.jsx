@@ -11,6 +11,8 @@ export default function EditarProveedorPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!id) return; // No hacer nada si el id no está disponible todavía
+
     // Para la edición, necesitamos tanto los datos del proveedor como sus contactos
     const fetchProviderData = async () => {
       try {
@@ -25,16 +27,20 @@ export default function EditarProveedorPage() {
     fetchProviderData();
   }, [id]);
 
-  const handleSave = async ({ proveedor, contacto }) => {
+  const handleSave = async ({ proveedor, contactos }) => {
     setIsSaving(true);
     setError(null);
     try {
-      // La edición se centra en los datos del proveedor principal
-      // La gestión de múltiples contactos se podría añadir como una mejora futura
-      await api.put(`/proveedores/${id}`, proveedor);
-      
-      // Opcional: Lógica para actualizar o crear un contacto si ha cambiado.
-      // Por simplicidad y siguiendo el prompt, nos centramos en la actualización del proveedor.
+      const payload = {
+        ...proveedor,
+        contactos: contactos.map(({ id, ...rest }) => {
+          // Si el contacto tiene un ID, lo enviamos para que el backend lo identifique.
+          // Si no tiene ID (es nuevo), solo enviamos el resto de datos.
+          return id ? { id, ...rest } : rest;
+        }),
+      };
+
+      await api.put(`/proveedores/${id}`, payload);
 
       navigate('/admin/proveedores');
     } catch (err) {

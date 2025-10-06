@@ -61,15 +61,15 @@ export default function GestionProveedoresPage() {
         </thead>
         <tbody>
           {providers.map(provider => (
-            <tr key={provider.id}>
+            <tr key={provider.proveedorId}>
               <td>{provider.nombreEmpresa}</td>
               <td>{provider.telefono || 'N/A'}</td>
               <td>{provider.direccion || 'N/A'}</td>
               <td className="action-buttons">
-                <Link to={`/admin/proveedores/editar/${provider.id}`}>
+                <Link to={`/admin/proveedores/editar/${provider.proveedorId}`}>
                   <button className="edit-button">Editar</button>
                 </Link>
-                <button onClick={() => handleDelete(provider.id)} className="delete-button">Eliminar</button>
+                <button onClick={() => handleDelete(provider.proveedorId)} className="delete-button">Eliminar</button>
               </td>
             </tr>
           ))}

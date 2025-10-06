@@ -14,7 +14,11 @@ export default function CrearProveedorPage() {
     try {
       const payload = {
         ...proveedor,
-        contactos: contactos,
+        contactos: contactos.map(({ id, ...rest }) => {
+          // Si el contacto no tiene un ID (es nuevo), solo enviamos el resto de los datos.
+          // Si tiene un ID, lo incluimos para que el backend pueda identificarlo (aunque en creación no debería haber IDs).
+          return id ? { id, ...rest } : rest;
+        }),
       };
 
       await api.post('/proveedores', payload);

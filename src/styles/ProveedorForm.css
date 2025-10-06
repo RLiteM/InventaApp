@@ -21,3 +21,152 @@
 
 /* Reutilizamos la mayoría de los estilos de UsuarioForm.css 
    como .form-container, .form-grid, .form-group, etc. */
+
+.contact-row {
+  border: 1px solid #e0e0e0;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.remove-contact-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.remove-contact-button:hover {
+  background-color: #d32f2f;
+}
+
+.add-contact-button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.add-contact-button:hover {
+  background-color: #45a049;
+}
+
+/* --- New Styles for Contact List --- */
+
+.contact-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.contact-list-header h2 {
+  margin: 0;
+}
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.contact-table th,
+.contact-table td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.contact-table th {
+  background-color: #f2f2f2;
+  font-weight: 600;
+}
+
+.contact-actions button {
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.contact-actions button.delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.contact-actions button.delete:hover {
+  background-color: #d32f2f;
+}
+
+.no-contacts-message {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+}
+
+/* Responsive Table to Card Layout */
+@media screen and (max-width: 768px) {
+  .contact-table thead {
+    display: none; /* Ocultar encabezados en móvil */
+  }
+
+  .contact-table tr {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .contact-table td {
+    display: block;
+    text-align: right; /* Alinea el contenido a la derecha */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%; /* Espacio para la etiqueta */
+  }
+
+  .contact-table td::before {
+    content: attr(data-label); /* Usa el data-label como pseudo-elemento */
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .contact-table td:last-child {
+    border-bottom: none;
+  }
+
+  .contact-actions {
+    text-align: center !important;
+    padding-left: 0.8rem !important; /* Reset padding */
+  }
+
+  .contact-actions button {
+    width: 48%;
+    margin: 0.2rem 1%;
+  }
+}
