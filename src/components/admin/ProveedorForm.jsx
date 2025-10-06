@@ -4,26 +4,21 @@ import '../../styles/UsuarioForm.css'; // Reutilizamos estilos base
 import '../../styles/ProveedorForm.css';
 
 export default function ProveedorForm({ initialData, onSave, isSaving }) {
-  const [proveedor, setProveedor] = useState({ nombre_empresa: '', telefono: '', direccion: '' });
-  const [contacto, setContacto] = useState({ nombre_completo: '', cargo: '', telefono: '', email: '' });
+  const [proveedor, setProveedor] = useState({ nombreEmpresa: '', telefono: '', direccion: '' });
+  const [contactos, setContactos] = useState([{ nombreCompleto: '', cargo: '', telefono: '', email: '' }]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (initialData) {
       setProveedor({
-        nombre_empresa: initialData.nombreEmpresa || '',
+        nombreEmpresa: initialData.nombreEmpresa || '',
         telefono: initialData.telefono || '',
         direccion: initialData.direccion || '',
       });
-      // Si hay contactos, poblamos el primero (lógica simple)
       if (initialData.contactos && initialData.contactos.length > 0) {
-        const mainContact = initialData.contactos[0];
-        setContacto({
-          nombre_completo: mainContact.nombreCompleto || '',
-          cargo: mainContact.cargo || '',
-          telefono: mainContact.telefono || '',
-          email: mainContact.email || '',
-        });
+        setContactos(initialData.contactos);
+      } else {
+        setContactos([{ nombreCompleto: '', cargo: '', telefono: '', email: '' }]);
       }
     }
   }, [initialData]);
@@ -33,14 +28,27 @@ export default function ProveedorForm({ initialData, onSave, isSaving }) {
     setProveedor(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleContactoChange = (e) => {
+  const handleContactoChange = (index, e) => {
     const { name, value } = e.target;
-    setContacto(prev => ({ ...prev, [name]: value }));
+    const newContactos = [...contactos];
+    newContactos[index][name] = value;
+    setContactos(newContactos);
+  };
+
+  const addContactoRow = () => {
+    setContactos([...contactos, { nombreCompleto: '', cargo: '', telefono: '', email: '' }]);
+  };
+
+  const removeContactoRow = (index) => {
+    const newContactos = contactos.filter((_, i) => i !== index);
+    setContactos(newContactos);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({ proveedor, contacto });
+    // Filtrar contactos que no tienen datos para no enviar objetos vacíos
+    const contactosToSend = contactos.filter(c => c.nombreCompleto || c.email);
+    onSave({ proveedor, contactos: contactosToSend });
   };
 
   return (
@@ -50,7 +58,7 @@ export default function ProveedorForm({ initialData, onSave, isSaving }) {
         <div className="form-grid">
           <div className="form-group full-width">
             <label>Nombre de la Empresa</label>
-            <input type="text" name="nombre_empresa" value={proveedor.nombre_empresa} onChange={handleProveedorChange} required />
+            <input type="text" name="nombreEmpresa" value={proveedor.nombreEmpresa} onChange={handleProveedorChange} required />
           </div>
           <div className="form-group">
             <label>Teléfono</label>
@@ -64,25 +72,33 @@ export default function ProveedorForm({ initialData, onSave, isSaving }) {
       </div>
 
       <div className="form-section">
-        <h2>Datos del Contacto Principal (Opcional)</h2>
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Nombre Completo del Contacto</label>
-            <input type="text" name="nombre_completo" value={contacto.nombre_completo} onChange={handleContactoChange} />
+        <h2>Contactos</h2>
+        {contactos.map((contacto, index) => (
+          <div key={index} className="contact-row">
+            <div className="form-grid contact-grid">
+              <div className="form-group">
+                <label>Nombre Completo</label>
+                <input type="text" name="nombreCompleto" value={contacto.nombreCompleto} onChange={(e) => handleContactoChange(index, e)} />
+              </div>
+              <div className="form-group">
+                <label>Cargo</label>
+                <input type="text" name="cargo" value={contacto.cargo} onChange={(e) => handleContactoChange(index, e)} />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono" value={contacto.telefono} onChange={(e) => handleContactoChange(index, e)} />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value={contacto.email} onChange={(e) => handleContactoChange(index, e)} />
+              </div>
+            </div>
+            {contactos.length > 1 && (
+              <button type="button" className="remove-contact-button" onClick={() => removeContactoRow(index)}>Eliminar Contacto</button>
+            )}
           </div>
-          <div className="form-group">
-            <label>Cargo</label>
-            <input type="text" name="cargo" value={contacto.cargo} onChange={handleContactoChange} />
-          </div>
-          <div className="form-group">
-            <label>Teléfono del Contacto</label>
-            <input type="text" name="telefono" value={contacto.telefono} onChange={handleContactoChange} />
-          </div>
-          <div className="form-group">
-            <label>Email del Contacto</label>
-            <input type="email" name="email" value={contacto.email} onChange={handleContactoChange} />
-          </div>
-        </div>
+        ))}
+        <button type="button" className="add-contact-button" onClick={addContactoRow}>+ Añadir Contacto</button>
       </div>
 
       <div className="form-actions">

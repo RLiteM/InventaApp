@@ -96,7 +96,7 @@ export default function RegistroCompraPage() {
               <label>Proveedor</label>
               <select name="proveedorId" value={header.proveedorId} onChange={handleHeaderChange} required>
                 <option value="">Seleccione un proveedor</option>
-                {suppliers.map(s => <option key={s.id} value={s.id}>{s.nombreEmpresa}</option>)}
+                {suppliers.filter(s => s.id).map(s => <option key={s.id} value={s.id}>{s.nombreEmpresa}</option>)}
               </select>
             </div>
             <div className="form-group">

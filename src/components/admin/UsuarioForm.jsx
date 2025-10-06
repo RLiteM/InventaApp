@@ -5,11 +5,11 @@ import '../../styles/UsuarioForm.css';
 
 export default function UsuarioForm({ initialData, onSave, isSaving }) {
   const [formData, setFormData] = useState({
-    nombre_completo: '',
-    cui_dpi: '',
-    nombre_usuario: '',
+    nombreCompleto: '',
+    cuiDpi: '',
+    nombreUsuario: '',
     contrasena: '',
-    rol_id: '',
+    rolId: '',
     correo: '',
     telefono: '',
   });
@@ -27,11 +27,11 @@ export default function UsuarioForm({ initialData, onSave, isSaving }) {
   useEffect(() => {
     if (initialData) {
       setFormData({
-        nombre_completo: initialData.nombreCompleto || '',
-        cui_dpi: initialData.cuiDpi || '',
-        nombre_usuario: initialData.nombreUsuario || '',
+        nombreCompleto: initialData.nombreCompleto || '',
+        cuiDpi: initialData.cuiDpi || '',
+        nombreUsuario: initialData.nombreUsuario || '',
         contrasena: '', // La contraseña no se precarga por seguridad
-        rol_id: initialData.rolId || '',
+        rolId: initialData.rolId || '',
         correo: initialData.correo || '',
         telefono: initialData.telefono || '',
       });
@@ -46,16 +46,7 @@ export default function UsuarioForm({ initialData, onSave, isSaving }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Transformar de snake_case (frontend) a camelCase (backend)
-    const dataToSend = {
-      nombreCompleto: formData.nombre_completo,
-      cuiDpi: formData.cui_dpi,
-      nombreUsuario: formData.nombre_usuario,
-      contrasena: formData.contrasena,
-      rolId: formData.rol_id,
-      correo: formData.correo,
-      telefono: formData.telefono,
-    };
+    const dataToSend = { ...formData };
 
     // No enviar la contraseña si está vacía (caso de edición)
     if (!dataToSend.contrasena) {
@@ -69,18 +60,18 @@ export default function UsuarioForm({ initialData, onSave, isSaving }) {
     <form onSubmit={handleSubmit} className="form-container">
       <div className="form-grid">
         <div className="form-group full-width">
-          <label htmlFor="nombre_completo">Nombre Completo</label>
-          <input type="text" id="nombre_completo" name="nombre_completo" value={formData.nombre_completo} onChange={handleChange} required />
+          <label htmlFor="nombreCompleto">Nombre Completo</label>
+          <input type="text" id="nombreCompleto" name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="nombre_usuario">Nombre de Usuario</label>
-          <input type="text" id="nombre_usuario" name="nombre_usuario" value={formData.nombre_usuario} onChange={handleChange} required />
+          <label htmlFor="nombreUsuario">Nombre de Usuario</label>
+          <input type="text" id="nombreUsuario" name="nombreUsuario" value={formData.nombreUsuario} onChange={handleChange} required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="cui_dpi">CUI/DPI</label>
-          <input type="text" id="cui_dpi" name="cui_dpi" value={formData.cui_dpi} onChange={handleChange} />
+          <label htmlFor="cuiDpi">CUI/DPI</label>
+          <input type="text" id="cuiDpi" name="cuiDpi" value={formData.cuiDpi} onChange={handleChange} />
         </div>
 
         <div className="form-group">
@@ -91,8 +82,8 @@ export default function UsuarioForm({ initialData, onSave, isSaving }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="rol_id">Rol</label>
-          <select id="rol_id" name="rol_id" value={formData.rol_id} onChange={handleChange} required>
+          <label htmlFor="rolId">Rol</label>
+          <select id="rolId" name="rolId" value={formData.rolId} onChange={handleChange} required>
             <option value="">Seleccione un rol</option>
             {roles.map(rol => (
               <option key={rol.rolId} value={rol.rolId}>{rol.nombreRol}</option>

@@ -8,23 +8,16 @@ export default function CrearProveedorPage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSave = async ({ proveedor, contacto }) => {
+  const handleSave = async ({ proveedor, contactos }) => {
     setIsSaving(true);
     setError(null);
     try {
-      // Paso 1: Crear el proveedor
-      const proveedorResponse = await api.post('/proveedores', proveedor);
-      const nuevoProveedorId = proveedorResponse.data.id;
+      const payload = {
+        ...proveedor,
+        contactos: contactos,
+      };
 
-      // Paso 2: Si hay datos de contacto, crearlo y asociarlo
-      const contactoData = contacto;
-      if (contactoData.nombre_completo || contactoData.email) { // Crear contacto si hay al menos un nombre o email
-        await api.post('/contactoproveedor', {
-          ...contactoData,
-          proveedor_id: nuevoProveedorId,
-        });
-      }
-
+      await api.post('/proveedores', payload);
       navigate('/admin/proveedores');
 
     } catch (err) {
