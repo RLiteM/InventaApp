@@ -2,148 +2,227 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import api from '../../api/apiClient';
-import '../../styles/UsuarioForm.css'; // Reutilizamos estilos
 import '../../styles/RegistroCompra.css';
+import CrearProductoModal from '../../components/admin/CrearProductoModal'; // Asumiendo que crearemos este componente
 
 export default function RegistroCompraPage() {
   const navigate = useNavigate();
+
   // Estados del formulario
-  const [header, setHeader] = useState({ proveedorId: '', fechaCompra: new Date().toISOString().split('T')[0], numeroFactura: '' });
-  const [details, setDetails] = useState([ { productoId: '', cantidad: 1, costoUnitarioCompra: '', fechaCaducidad: '' } ]);
+  const [proveedor, setProveedor] = useState(null);
+  const [fechaCompra, setFechaCompra] = useState(new Date().toISOString().split('T')[0]);
+  const [numeroFactura, setNumeroFactura] = useState('');
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  
   // Datos de la API
-  const [suppliers, setSuppliers] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [proveedoresOptions, setProveedoresOptions] = useState([]);
+  const [productosOptions, setProductosOptions] = useState([]);
+
   // Estados de UI
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
 
   // Cargar proveedores y productos
+  const cargarDatos = async () => {
+    try {
+      const [proveedoresRes, productosRes] = await Promise.all([
+        api.get('/proveedores'),
+        api.get('/productos')
+      ]);
+      
+      setProveedoresOptions(proveedoresRes.data.map(p => ({ value: p.id, label: p.nombreEmpresa })));
+      setProductosOptions(productosRes.data.map(p => ({ value: p.id, label: p.nombre, ...p })));
+
+    } catch (err) {
+      setError('No se pudieron cargar los datos iniciales.');
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [suppliersRes, productsRes] = await Promise.all([
-          api.get('/proveedores'),
-          api.get('/productos')
-        ]);
-        setSuppliers(suppliersRes.data);
-        // Formatear productos para react-select
-        const productOptions = productsRes.data.map(p => ({ value: p.id, label: p.nombre }));
-        setProducts(productOptions);
-      } catch (err) {
-        setError('No se pudieron cargar los proveedores o productos.');
-      }
-    };
-    fetchData();
+    cargarDatos();
   }, []);
 
-  const handleHeaderChange = (e) => {
-    const { name, value } = e.target;
-    setHeader(prev => ({ ...prev, [name]: value }));
+  const handleProductoSeleccionado = (option) => {
+    const productoExistente = productosSeleccionados.find(p => p.productoId === option.value);
+
+    if (productoExistente) {
+      // Opcional: podrías incrementar la cantidad si ya existe
+      return;
+    }
+
+    const nuevoProducto = {
+      productoId: option.value,
+      nombre: option.label,
+      fechaCaducidad: '',
+      costoUnitarioCompra: '',
+      cantidad: 1,
+    };
+    setProductosSeleccionados([...productosSeleccionados, nuevoProducto]);
   };
 
-  const handleDetailChange = (index, field, value) => {
-    const newDetails = [...details];
-    newDetails[index][field] = value;
-    setDetails(newDetails);
+  const handleDetalleChange = (index, field, value) => {
+    const nuevosDetalles = [...productosSeleccionados];
+    nuevosDetalles[index][field] = value;
+    setProductosSeleccionados(nuevosDetalles);
   };
 
-  const addDetailRow = () => {
-    setDetails([...details, { productoId: '', cantidad: 1, costoUnitarioCompra: '', fechaCaducidad: '' }]);
+  const handleEliminarProducto = (index) => {
+    setProductosSeleccionados(productosSeleccionados.filter((_, i) => i !== index));
   };
 
-  const removeDetailRow = (index) => {
-    const newDetails = details.filter((_, i) => i !== index);
-    setDetails(newDetails);
+  const calcularTotal = () => {
+    return productosSeleccionados.reduce((total, p) => {
+      const costo = parseFloat(p.costoUnitarioCompra) || 0;
+      const cantidad = parseInt(p.cantidad, 10) || 0;
+      return total + (costo * cantidad);
+    }, 0).toFixed(2);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!proveedor || productosSeleccionados.length === 0) {
+      setError('Debe seleccionar un proveedor y al menos un producto.');
+      return;
+    }
     setIsSaving(true);
     setError(null);
 
     try {
       const userData = JSON.parse(localStorage.getItem('userData'));
-      if (!userData || !userData.id) {
+      if (!userData || !userData.usuarioId) {
         throw new Error('No se encontró el ID del usuario.');
       }
 
       const payload = {
-        ...header,
+        proveedorId: proveedor.value,
+        fechaCompra,
+        numeroFactura,
         usuarioId: userData.usuarioId,
-        detalles: details.map(d => ({ ...d, productoId: d.productoId.value })), // Extraer el value del select
+        detalles: productosSeleccionados.map(p => ({
+          productoId: p.productoId,
+          cantidad: parseInt(p.cantidad, 10),
+          costoUnitarioCompra: parseFloat(p.costoUnitarioCompra),
+          fechaCaducidad: p.fechaCaducidad,
+        })),
       };
 
       await api.post('/compras', payload);
-      navigate('/dashboard'); // O a una página de listado de compras
-
+      navigate('/admin/dashboard');
     } catch (err) {
       setError('Error al registrar la compra. Verifique todos los campos.');
       console.error(err);
       setIsSaving(false);
     }
   };
+  
+  const handleProductoCreado = () => {
+    setIsModalOpen(false);
+    cargarDatos(); // Recargar productos para que aparezca el nuevo
+  };
 
   return (
-    <div className="purchase-form-page">
+    <div className="registro-compra-container">
       <h1>Registrar Nueva Compra</h1>
-      {error && <div className="error-message" style={{ marginBottom: '1rem' }}>{error}</div>}
-      <form onSubmit={handleSubmit} className="purchase-form-container">
-        
-        <div className="form-section">
-          <h2>Cabecera de la Compra</h2>
-          <div className="form-grid">
-            <div className="form-group">
-              <label>Proveedor</label>
-              <select name="proveedorId" value={header.proveedorId} onChange={handleHeaderChange} required>
-                <option value="">Seleccione un proveedor</option>
-                {suppliers.filter(s => s.id).map(s => <option key={s.id} value={s.id}>{s.nombreEmpresa}</option>)}
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Fecha de Compra</label>
-              <input type="date" name="fechaCompra" value={header.fechaCompra} onChange={handleHeaderChange} required />
-            </div>
-            <div className="form-group">
-              <label>Número de Factura</label>
-              <input type="text" name="numeroFactura" value={header.numeroFactura} onChange={handleHeaderChange} />
-            </div>
+      {error && <div className="error-message">{error}</div>}
+
+      <div className="form-section header-section">
+        <div className="form-row">
+          <div className="form-group">
+            <label>Registrar Proveedor</label>
+            <Select
+              options={proveedoresOptions}
+              value={proveedor}
+              onChange={setProveedor}
+              placeholder="Seleccione un proveedor"
+              classNamePrefix="react-select"
+            />
+          </div>
+          <div className="form-group">
+            <label>Fecha Compra</label>
+            <input type="date" value={fechaCompra} onChange={e => setFechaCompra(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>Número Factura</label>
+            <input type="text" value={numeroFactura} onChange={e => setNumeroFactura(e.target.value)} placeholder="Ej: F-001" />
           </div>
         </div>
+      </div>
 
-        <div className="form-section">
-          <h2>Detalles de la Compra</h2>
-          <table className="details-table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Costo Unitario</th>
-                <th>Fecha Caducidad</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {details.map((detail, index) => (
-                <tr key={index}>
-                  <td className='react-select-container'>
-                    <Select options={products} value={detail.productoId} onChange={val => handleDetailChange(index, 'productoId', val)} required />
-                  </td>
-                  <td><input type="number" value={detail.cantidad} onChange={e => handleDetailChange(index, 'cantidad', e.target.value)} required min="1" /></td>
-                  <td><input type="number" step="0.01" value={detail.costoUnitarioCompra} onChange={e => handleDetailChange(index, 'costoUnitarioCompra', e.target.value)} required min="0" /></td>
-                  <td><input type="date" value={detail.fechaCaducidad} onChange={e => handleDetailChange(index, 'fechaCaducidad', e.target.value)} required /></td>
-                  <td><button type="button" className="remove-row-button" onClick={() => removeDetailRow(index)}>X</button></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button type="button" className="add-row-button" onClick={addDetailRow}>+ Añadir Producto</button>
+      <div className="form-section product-section">
+        <div className="form-row">
+          <div className="form-group">
+            <button type="button" className="create-product-btn" onClick={() => setIsModalOpen(true)}>
+              + Crear Producto
+            </button>
+          </div>
+          <div className="form-group product-search">
+            <label>Buscar Producto</label>
+            <Select
+              options={productosOptions}
+              onChange={handleProductoSeleccionado}
+              placeholder="Escriba para buscar un producto..."
+              value={null} // Para resetear la selección después de agregar
+              classNamePrefix="react-select"
+            />
+          </div>
         </div>
+      </div>
 
+      <div className="form-section details-section">
+        {productosSeleccionados.map((producto, index) => (
+          <div className="product-detail-row" key={index}>
+            <span className="product-name">{producto.nombre}</span>
+            <input
+              type="date"
+              placeholder="Fecha Caducidad"
+              value={producto.fechaCaducidad}
+              onChange={e => handleDetalleChange(index, 'fechaCaducidad', e.target.value)}
+              required
+            />
+            <input
+              type="number"
+              placeholder="Costo"
+              value={producto.costoUnitarioCompra}
+              onChange={e => handleDetalleChange(index, 'costoUnitarioCompra', e.target.value)}
+              required
+              min="0"
+              step="0.01"
+            />
+            <input
+              type="number"
+              placeholder="Cantidad"
+              value={producto.cantidad}
+              onChange={e => handleDetalleChange(index, 'cantidad', e.target.value)}
+              required
+              min="1"
+            />
+            <button type="button" className="remove-product-btn" onClick={() => handleEliminarProducto(index)}>
+              Eliminar
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="form-section footer-section">
+        <div className="total-display">
+          Total: <span>${calcularTotal()}</span>
+        </div>
         <div className="form-actions">
-          <button type="button" className="cancel-button" onClick={() => navigate('/dashboard')} disabled={isSaving}>Cancelar</button>
-          <button type="submit" className="save-button" disabled={isSaving}>{isSaving ? 'Guardando...' : 'Registrar Compra'}</button>
+          <button type="button" className="cancel-btn" onClick={() => navigate('/admin/dashboard')} disabled={isSaving}>
+            Cancelar
+          </button>
+          <button type="submit" className="save-btn" onClick={handleSubmit} disabled={isSaving}>
+            {isSaving ? 'Guardando...' : 'Guardar Compra'}
+          </button>
         </div>
-      </form>
+      </div>
+
+      <CrearProductoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onProductoCreado={handleProductoCreado}
+      />
     </div>
   );
 }
