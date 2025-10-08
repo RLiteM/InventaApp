@@ -79,8 +79,8 @@ export default function GestionClientesPage() {
           </tr>
         </thead>
         <tbody>
-          {clientes.map(cliente => (
-            <tr key={cliente.id}>
+          {clientes.filter(cliente => cliente && cliente.clienteId).map(cliente => (
+            <tr key={cliente.clienteId}>
               <td>{cliente.nombreCompleto || cliente.nombre}</td>
               <td>{cliente.identificacionFiscal}</td>
               <td>{cliente.tipoCliente}</td>
@@ -89,12 +89,12 @@ export default function GestionClientesPage() {
               {(isAdmin || canEdit) && (
                 <td className="action-buttons">
                   {canEdit && (
-                    <Link to={`/admin/clientes/editar/${cliente.id}`} state={{ cliente: cliente }}>
+                    <Link to={`/admin/clientes/editar/${cliente.clienteId}`} state={{ cliente: cliente }}>
                       <button className="edit-button">Editar</button>
                     </Link>
                   )}
                   {isAdmin && (
-                    <button onClick={() => handleDelete(cliente.id)} className="delete-button">Eliminar</button>
+                    <button onClick={() => handleDelete(cliente.clienteId)} className="delete-button">Eliminar</button>
                   )}
                 </td>
               )}

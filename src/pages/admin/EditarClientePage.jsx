@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/apiClient';
 import ClienteForm from '../../components/admin/ClienteForm';
 
@@ -9,17 +9,23 @@ export default function EditarClientePage() {
   const [initialData, setInitialData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation(); // Hook para acceder al state de la ruta
-
   useEffect(() => {
-    // Ya no se hace fetch a la API. Se usan los datos pasados en el state de la ruta.
-    if (location.state?.cliente) {
-      setInitialData(location.state.cliente);
-    } else {
-      // Si por alguna razón no se reciben los datos, mostrar un error.
-      setError('No se pudieron cargar los datos del cliente para la edición.');
-    }
-  }, [id, location.state]);
+    if (!id) return; // No hacer nada si el id no está disponible
+
+    const fetchClienteData = async () => {
+      try {
+        const response = await api.get(`/clientes/${id}`);
+        // La API puede devolver el objeto directamente o envuelto en { data: {...} }
+        const clienteData = response.data.data || response.data;
+        setInitialData(clienteData);
+      } catch (err) {
+        setError('No se pudo cargar la información del cliente.');
+        console.error(err);
+      }
+    };
+
+    fetchClienteData();
+  }, [id]);
 
   const handleSave = async (clienteData) => {
     setIsSaving(true);

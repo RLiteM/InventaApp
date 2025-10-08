@@ -1,29 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/UsuarioForm.css'; // Reutilizando estilos existentes
 
 export default function ClienteForm({ initialData, onSave, isSaving }) {
   const [cliente, setCliente] = useState({
-    nombreCompleto: '', // Corregido: de nombre a nombreCompleto
-    identificacionFiscal: '',
-    direccion: '',
-    telefono: '',
-    tipoCliente: 'Minorista' // Valor por defecto
+    nombreCompleto: initialData?.nombre || initialData?.nombreCompleto || '',
+    identificacionFiscal: initialData?.identificacionFiscal || '',
+    direccion: initialData?.direccion || '',
+    telefono: initialData?.telefono || '',
+    tipoCliente: initialData?.tipoCliente || 'Minorista',
   });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (initialData) {
-      setCliente({
-        // El GET puede devolver 'nombre', pero el estado interno usa 'nombreCompleto'
-        nombreCompleto: initialData.nombre || initialData.nombreCompleto || '',
-        identificacionFiscal: initialData.identificacionFiscal || '',
-        direccion: initialData.direccion || '',
-        telefono: initialData.telefono || '',
-        tipoCliente: initialData.tipoCliente || 'Minorista'
-      });
-    }
-  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
