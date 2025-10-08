@@ -206,7 +206,7 @@ export default function RegistroCompraPage() {
 
       <div className="form-section footer-section">
         <div className="total-display">
-          Total: <span>${calcularTotal()}</span>
+          Total: <span>Q{calcularTotal()}</span>
         </div>
         <div className="form-actions">
           <button type="button" className="cancel-btn" onClick={() => navigate('/admin/dashboard')} disabled={isSaving}>

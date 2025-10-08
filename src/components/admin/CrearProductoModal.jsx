@@ -18,7 +18,7 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
       // Cargar categorías cuando el modal se abre
       const fetchCategorias = async () => {
         try {
-          const res = await api.get('/categorias');
+          const res = await api.get('/categoria');
           setCategorias(res.data);
         } catch (err) {
           setError('No se pudieron cargar las categorías.');
@@ -87,7 +87,7 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
           >
             <option value="">Seleccione una categoría</option>
             {categorias.map(cat => (
-              <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+              <option key={cat.categoriaId} value={cat.categoriaId}>{cat.nombre}</option>
             ))}
           </select>
         </div>

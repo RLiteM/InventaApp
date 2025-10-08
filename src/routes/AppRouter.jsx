@@ -17,6 +17,7 @@ import RegistroCompraPage from "../pages/admin/RegistroCompraPage";
 import GestionClientesPage from "../pages/admin/GestionClientesPage";
 import CrearClientePage from "../pages/admin/CrearClientePage";
 import EditarClientePage from "../pages/admin/EditarClientePage";
+import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
 
 // Componente para proteger las rutas de Admin
 function AdminRoutes({ user, onLogout }) {
@@ -85,6 +86,9 @@ export default function AppRouter() {
             <Route path="admin/clientes" element={<GestionClientesPage />} />
             <Route path="admin/clientes/nuevo" element={<CrearClientePage />} />
             <Route path="admin/clientes/editar/:id" element={<EditarClientePage />} />
+
+            {/* Ruta de Categorías */}
+            <Route path="admin/categorias" element={<GestionCategoriasPage />} />
 
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -23,6 +23,7 @@ export default function AdminLayout({ user, onLogout }) { // Añadir user a los 
             {isAdmin && <li><NavLink to="/admin/usuarios">Usuarios</NavLink></li>}
             <li><NavLink to="/admin/proveedores">Proveedores</NavLink></li>
             <li><NavLink to="/admin/clientes">Clientes</NavLink></li>
+            <li><NavLink to="/admin/categorias">Categorías</NavLink></li>
             <li><NavLink to="/admin/compras/nueva">Nueva Compra</NavLink></li>
             {/* Agrega aquí más enlaces a medida que construyas las páginas */}
           </ul>
