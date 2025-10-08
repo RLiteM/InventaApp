@@ -14,11 +14,15 @@ import GestionProveedoresPage from "../pages/admin/GestionProveedoresPage";
 import CrearProveedorPage from "../pages/admin/CrearProveedorPage";
 import EditarProveedorPage from "../pages/admin/EditarProveedorPage";
 import RegistroCompraPage from "../pages/admin/RegistroCompraPage";
+import GestionClientesPage from "../pages/admin/GestionClientesPage";
+import CrearClientePage from "../pages/admin/CrearClientePage";
+import EditarClientePage from "../pages/admin/EditarClientePage";
 
 // Componente para proteger las rutas de Admin
 function AdminRoutes({ user, onLogout }) {
-  if (user?.rol === 'Administrador') {
-    return <AdminLayout onLogout={onLogout} />;
+  // Permitir acceso a Administradores y Vendedores
+  if (user?.rol === 'Administrador' || user?.rol === 'Vendedor') {
+    return <AdminLayout onLogout={onLogout} user={user} />;
   }
   // Para otros roles o si no hay rol, se muestra la página de placeholder
   return <PlaceholderPage user={user} />;
@@ -76,6 +80,12 @@ export default function AppRouter() {
             <Route path="admin/proveedores/nuevo" element={<CrearProveedorPage />} />
             <Route path="admin/proveedores/editar/:id" element={<EditarProveedorPage />} />
             <Route path="admin/compras/nueva" element={<RegistroCompraPage />} />
+
+            {/* Rutas de Clientes */}
+            <Route path="admin/clientes" element={<GestionClientesPage />} />
+            <Route path="admin/clientes/nuevo" element={<CrearClientePage />} />
+            <Route path="admin/clientes/editar/:id" element={<EditarClientePage />} />
+
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>

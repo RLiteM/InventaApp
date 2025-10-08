@@ -1,13 +1,15 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import "../../styles/AdminLayout.css";
 
-export default function AdminLayout({ onLogout }) {
+export default function AdminLayout({ user, onLogout }) { // Añadir user a los props
   const navigate = useNavigate();
 
   const handleLogout = () => {
     onLogout();
     navigate("/login");
   };
+
+  const isAdmin = user?.rol === 'Administrador';
 
   return (
     <div className="admin-layout">
@@ -18,8 +20,9 @@ export default function AdminLayout({ onLogout }) {
         <nav>
           <ul className="sidebar-nav">
             <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-            <li><NavLink to="/admin/usuarios">Usuarios</NavLink></li>
+            {isAdmin && <li><NavLink to="/admin/usuarios">Usuarios</NavLink></li>}
             <li><NavLink to="/admin/proveedores">Proveedores</NavLink></li>
+            <li><NavLink to="/admin/clientes">Clientes</NavLink></li>
             <li><NavLink to="/admin/compras/nueva">Nueva Compra</NavLink></li>
             {/* Agrega aquí más enlaces a medida que construyas las páginas */}
           </ul>
