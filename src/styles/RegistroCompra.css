@@ -90,6 +90,13 @@
   border-radius: 4px;
 }
 
+.product-detail-header {
+  background-color: #e9ecef; /* Un fondo ligeramente más oscuro para el encabezado */
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
 .product-detail-row .product-name {
   font-weight: 600;
 }

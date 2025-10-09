@@ -178,6 +178,15 @@ export default function RegistroCompraPage() {
       </div>
 
       <div className="form-section details-section">
+        {productosSeleccionados.length > 0 && (
+          <div className="product-detail-row product-detail-header">
+            <span>Producto</span>
+            <span>Fecha Caducidad</span>
+            <span>Costo</span>
+            <span>Cantidad</span>
+            <span></span> {/* Placeholder for the action button column */}
+          </div>
+        )}
         {productosSeleccionados.map((producto, index) => (
           <div className="product-detail-row" key={index}>
             <span className="product-name">{producto.nombre}</span>

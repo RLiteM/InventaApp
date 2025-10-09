@@ -38,7 +38,7 @@ export default function RegistroVentaPage() {
           ...c
         })));
       } catch (err) {
-        setError('No se pudieron cargar los clientes.');
+        console.error('No se pudieron cargar los clientes.', err);
       }
     };
     cargarClientes();
@@ -47,8 +47,7 @@ export default function RegistroVentaPage() {
   // TODO: Implementar la búsqueda de lotes cuando la API esté disponible
   const buscarLotes = async (inputValue) => {
     console.log("Buscando lotes con:", inputValue);
-    // Placeholder: Reemplazar con la llamada real a la API
-    // La API debería devolver algo como: [{ loteId, productoNombre, stockDisponible, precioSugerido }]
+    // Placeholder
     return Promise.resolve([
       { value: 1, label: 'Lote de Coca-Cola (Stock: 50)', loteId: 1, precioUnitarioVenta: 15.00, cantidad: 1 },
       { value: 2, label: 'Lote de Pepsi (Stock: 30)', loteId: 2, precioUnitarioVenta: 14.50, cantidad: 1 },
@@ -58,12 +57,7 @@ export default function RegistroVentaPage() {
   const handleLoteSeleccionado = (option) => {
     if (!option) return;
     const loteExistente = detallesVenta.find(d => d.loteId === option.loteId);
-
-    if (loteExistente) {
-      // Opcional: podrías mostrar una notificación o simplemente no hacer nada
-      return;
-    }
-
+    if (loteExistente) return;
     setDetallesVenta([...detallesVenta, { ...option }]);
   };
 
@@ -114,9 +108,8 @@ export default function RegistroVentaPage() {
         })),
       };
 
-      // TODO: Usar el endpoint correcto, por ejemplo /ventas
       await api.post('/ventas', payload);
-      navigate('/admin/dashboard'); // O a una página de confirmación/listado de ventas
+      navigate('/admin/dashboard');
     } catch (err) {
       setError('Error al registrar la venta. Verifique todos los campos.');
       console.error(err);
@@ -127,30 +120,36 @@ export default function RegistroVentaPage() {
   return (
     <div className="registro-venta-container">
       <h1>Registrar Nueva Venta</h1>
+
+      <div className="cliente-header-section">
+        <div className="cliente-header-title">Cliente</div>
+        <div className="cliente-header-content">
+          {cliente ? (
+            <div className="cliente-info-display">
+              <div className="info-item"><strong>Nombre:</strong><span>{cliente.nombreCompleto}</span></div>
+              <div className="info-item"><strong>ID Fiscal:</strong><span>{cliente.identificacionFiscal}</span></div>
+              <div className="info-item"><strong>Teléfono:</strong><span>{cliente.telefono}</span></div>
+              <button type="button" onClick={() => setCliente(null)} className="change-client-btn">Cambiar</button>
+            </div>
+          ) : (
+            <Select
+              options={clientesOptions}
+              onChange={setCliente}
+              placeholder="Busque y seleccione un cliente..."
+              classNamePrefix="react-select"
+              className="cliente-select"
+              isClearable
+            />
+          )}
+        </div>
+      </div>
+
+      <h2>Detalles de la Venta</h2>
       {error && <div className="error-message">{error}</div>}
 
       {/* Sección de cabecera */}
       <div className="form-section">
         <div className="form-row">
-          <div className="form-group">
-            <label>Cliente</label>
-            {cliente ? (
-              <div className="cliente-seleccionado-info">
-                <p><strong>Nombre:</strong> {cliente.nombreCompleto}</p>
-                <p><strong>ID Fiscal:</strong> {cliente.identificacionFiscal}</p>
-                <p><strong>Teléfono:</strong> {cliente.telefono}</p>
-                <p><strong>Dirección:</strong> {cliente.direccion}</p>
-                <button type="button" onClick={() => setCliente(null)} className="change-client-btn">Cambiar Cliente</button>
-              </div>
-            ) : (
-              <Select
-                options={clientesOptions}
-                onChange={setCliente}
-                placeholder="Seleccione un cliente"
-                classNamePrefix="react-select"
-              />
-            )}
-          </div>
           <div className="form-group">
             <label>Fecha Venta</label>
             <input type="datetime-local" value={fechaVenta} onChange={e => setFechaVenta(e.target.value)} required />
