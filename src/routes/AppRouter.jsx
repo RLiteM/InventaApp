@@ -14,6 +14,7 @@ import GestionProveedoresPage from "../pages/admin/GestionProveedoresPage";
 import CrearProveedorPage from "../pages/admin/CrearProveedorPage";
 import EditarProveedorPage from "../pages/admin/EditarProveedorPage";
 import RegistroCompraPage from "../pages/admin/RegistroCompraPage";
+import RegistroVentaPage from "../pages/admin/RegistroVentaPage";
 import GestionClientesPage from "../pages/admin/GestionClientesPage";
 import CrearClientePage from "../pages/admin/CrearClientePage";
 import EditarClientePage from "../pages/admin/EditarClientePage";
@@ -81,6 +82,7 @@ export default function AppRouter() {
             <Route path="admin/proveedores/nuevo" element={<CrearProveedorPage />} />
             <Route path="admin/proveedores/editar/:id" element={<EditarProveedorPage />} />
             <Route path="admin/compras/nueva" element={<RegistroCompraPage />} />
+            <Route path="admin/ventas/nueva" element={<RegistroVentaPage />} />
 
             {/* Rutas de Clientes */}
             <Route path="admin/clientes" element={<GestionClientesPage />} />

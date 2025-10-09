@@ -25,6 +25,7 @@ export default function AdminLayout({ user, onLogout }) { // Añadir user a los 
             <li><NavLink to="/admin/clientes">Clientes</NavLink></li>
             <li><NavLink to="/admin/categorias">Categorías</NavLink></li>
             <li><NavLink to="/admin/compras/nueva">Nueva Compra</NavLink></li>
+            <li><NavLink to="/admin/ventas/nueva">Nueva Venta</NavLink></li>
             {/* Agrega aquí más enlaces a medida que construyas las páginas */}
           </ul>
         </nav>
