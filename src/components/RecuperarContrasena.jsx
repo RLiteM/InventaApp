@@ -19,7 +19,13 @@ const RecuperarContrasena = ({ isOpen, onRequestClose }) => {
       const response = await solicitarRecuperacion(email);
       setMessage(response.data.message);
     } catch (err) {
-      setError('Error al enviar el enlace. Por favor, inténtelo de nuevo.');
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else if (err.request) {
+        setError('No se pudo conectar con el servidor. Verifique su conexión a internet.');
+      } else {
+        setError('Ocurrió un error inesperado. Por favor, inténtelo de nuevo.');
+      }
     }
   };
 
