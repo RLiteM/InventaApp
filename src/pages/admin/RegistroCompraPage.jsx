@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import api from '../../api/apiClient';
 import '../../styles/RegistroCompra.css';
-import CrearProductoModal from '../../components/admin/CrearProductoModal'; // Asumiendo que crearemos este componente
+import CrearProductoModal from '../../components/admin/CrearProductoModal';
 
 export default function RegistroCompraPage() {
   const navigate = useNavigate();
@@ -23,16 +23,22 @@ export default function RegistroCompraPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  // Cargar proveedores y productos
+  // Cargar datos iniciales
   const cargarDatos = async () => {
     try {
       const [proveedoresRes, productosRes] = await Promise.all([
         api.get('/proveedores'),
-        api.get('/productos')
+        api.get('/productos/nombre-sku') // Usar el endpoint que devuelve el DTO
       ]);
       
       setProveedoresOptions(proveedoresRes.data.map(p => ({ value: p.id, label: p.nombreEmpresa })));
-      setProductosOptions(productosRes.data.map(p => ({ value: p.id, label: p.nombre, ...p })));
+      
+      // Mapear la respuesta del DTO para el Select
+      setProductosOptions(productosRes.data.map(p => ({
+        value: p.productoId,
+        label: `${p.nombre} (${p.sku})`,
+        nombre: p.nombre // Guardar el nombre original para usarlo al seleccionar
+      })));
 
     } catch (err) {
       setError('No se pudieron cargar los datos iniciales.');
@@ -44,16 +50,16 @@ export default function RegistroCompraPage() {
   }, []);
 
   const handleProductoSeleccionado = (option) => {
+    if (!option) return;
     const productoExistente = productosSeleccionados.find(p => p.productoId === option.value);
 
     if (productoExistente) {
-      // Opcional: podrías incrementar la cantidad si ya existe
       return;
     }
 
     const nuevoProducto = {
       productoId: option.value,
-      nombre: option.label,
+      nombre: option.nombre, // Usar el nombre guardado en el mapeo
       fechaCaducidad: '',
       costoUnitarioCompra: '',
       cantidad: 1,
@@ -164,6 +170,8 @@ export default function RegistroCompraPage() {
               placeholder="Escriba para buscar un producto..."
               value={null} // Para resetear la selección después de agregar
               classNamePrefix="react-select"
+              isClearable
+              isSearchable
             />
           </div>
         </div>

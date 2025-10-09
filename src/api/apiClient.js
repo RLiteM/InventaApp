@@ -18,4 +18,9 @@ api.interceptors.request.use(
   }
 );
 
+export const buscarProductosPorNombreSku = (searchTerm) => {
+  return api.get('/productos/nombre-sku', { params: { q: searchTerm } });
+};
+
+
 export default api;
