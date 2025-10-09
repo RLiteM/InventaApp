@@ -178,47 +178,66 @@ export default function RegistroCompraPage() {
       </div>
 
       <div className="form-section details-section">
-        {productosSeleccionados.length > 0 && (
-          <div className="product-detail-row product-detail-header">
-            <span>Producto</span>
-            <span>Fecha Caducidad</span>
-            <span>Costo</span>
-            <span>Cantidad</span>
-            <span></span> {/* Placeholder for the action button column */}
-          </div>
-        )}
-        {productosSeleccionados.map((producto, index) => (
-          <div className="product-detail-row" key={index}>
-            <span className="product-name">{producto.nombre}</span>
-            <input
-              type="date"
-              placeholder="Fecha Caducidad"
-              value={producto.fechaCaducidad}
-              onChange={e => handleDetalleChange(index, 'fechaCaducidad', e.target.value)}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Costo"
-              value={producto.costoUnitarioCompra}
-              onChange={e => handleDetalleChange(index, 'costoUnitarioCompra', e.target.value)}
-              required
-              min="0"
-              step="0.01"
-            />
-            <input
-              type="number"
-              placeholder="Cantidad"
-              value={producto.cantidad}
-              onChange={e => handleDetalleChange(index, 'cantidad', e.target.value)}
-              required
-              min="1"
-            />
-            <button type="button" className="remove-product-btn" onClick={() => handleEliminarProducto(index)}>
-              Eliminar
-            </button>
-          </div>
-        ))}
+        <table className="product-table">
+          <thead>
+            <tr>
+              <th className="product-col">Producto</th>
+              <th className="date-col">Fecha Caducidad</th>
+              <th className="number-col">Costo</th>
+              <th className="number-col">Cantidad</th>
+              <th className="action-col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {productosSeleccionados.length > 0 ? (
+              productosSeleccionados.map((producto, index) => (
+                <tr key={index}>
+                  <td data-label="Producto">{producto.nombre}</td>
+                  <td data-label="Fecha Caducidad">
+                    <input
+                      type="date"
+                      value={producto.fechaCaducidad}
+                      onChange={e => handleDetalleChange(index, 'fechaCaducidad', e.target.value)}
+                      required
+                    />
+                  </td>
+                  <td data-label="Costo">
+                    <input
+                      type="number"
+                      placeholder="Costo"
+                      value={producto.costoUnitarioCompra}
+                      onChange={e => handleDetalleChange(index, 'costoUnitarioCompra', e.target.value)}
+                      required
+                      min="0"
+                      step="0.01"
+                    />
+                  </td>
+                  <td data-label="Cantidad">
+                    <input
+                      type="number"
+                      placeholder="Cantidad"
+                      value={producto.cantidad}
+                      onChange={e => handleDetalleChange(index, 'cantidad', e.target.value)}
+                      required
+                      min="1"
+                    />
+                  </td>
+                  <td data-label="Acción">
+                    <button type="button" className="remove-product-btn" onClick={() => handleEliminarProducto(index)}>
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="no-products-message">
+                  No hay productos agregados a la compra.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       <div className="form-section footer-section">

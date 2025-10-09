@@ -73,38 +73,59 @@
   flex: 2; /* Más ancho que los otros campos */
 }
 
-/* Fila de Detalle de Producto */
+/* Fila de Detalle de Producto - AHORA ES UNA TABLA */
 .details-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  overflow-x: auto; /* Permite scroll horizontal en pantallas muy pequeñas */
 }
 
-.product-detail-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 1rem;
-  align-items: center;
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.product-table th, .product-table td {
   padding: 1rem;
-  background-color: #f1f1f1;
-  border-radius: 4px;
+  border-bottom: 1px solid #ddd; /* Solo borde inferior para un look más limpio */
+  text-align: left;
+  vertical-align: middle;
 }
 
-.product-detail-header {
-  background-color: #e9ecef; /* Un fondo ligeramente más oscuro para el encabezado */
-  font-weight: 700;
-  padding: 0.75rem 1rem;
-  border-bottom: 2px solid #dee2e6;
-}
-
-.product-detail-row .product-name {
+.product-table th {
+  background-color: #f8f9fa;
   font-weight: 600;
+  border-bottom-width: 2px;
 }
 
-.product-detail-row input {
+.product-table tbody tr:hover {
+  background-color: #f5f5f5; /* Efecto hover sutil */
+}
+
+/* Asignar anchos a las columnas */
+.product-table .product-col { width: 35%; }
+.product-table .date-col { width: 20%; }
+.product-table .number-col { width: 15%; }
+.product-table .action-col { width: 15%; text-align: center; }
+
+.product-table input {
+  width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box; /* CORRECCIÓN para el desbordamiento */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.product-table input:focus {
+  outline: none;
+  border-color: #28a745; /* Verde principal */
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+}
+
+.no-products-message {
+  text-align: center;
+  padding: 2rem;
+  color: #555;
 }
 
 .remove-product-btn {
