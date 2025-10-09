@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import api from "../api/apiClient"; // Importar el cliente de API
 import "../styles/login.css"; // Reutilizamos los estilos del login para consistencia
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje(""); // Limpiar mensajes previos
+    setMensaje("");
+    setError("");
+    setLoading(true);
 
-    // --- ZONA DE LA API ---
-    // Aquí es donde harías la llamada a tu backend para iniciar el proceso de recuperación.
-    // Deberías enviar el `email` y manejar la respuesta.
     try {
-      // Ejemplo de llamada (descomentar y adaptar cuando tengas el endpoint):
-      // await api.post("/auth/forgot-password", { email });
-
-      console.log("Solicitud de recuperación para:", email);
+      await api.post("/auth/solicitar-recuperacion", { email });
       setMensaje("Si el correo está registrado, recibirás un enlace para recuperar tu contraseña.");
-    } catch (error) {
-      setMensaje("Ocurrió un error al procesar tu solicitud. Inténtalo de nuevo.");
+    } catch (err) {
+      setError("Ocurrió un error al procesar tu solicitud. Inténtalo de nuevo.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    // --- FIN DE ZONA DE LA API ---
   };
 
   return (
@@ -40,14 +41,16 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
-        <button type="submit" className="login-button">
-          Enviar Enlace
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading ? 'Enviando...' : 'Enviar Enlace'}
         </button>
 
         {mensaje && <p className="mensaje exito">{mensaje}</p>}
+        {error && <p className="mensaje error">{error}</p>}
 
         <div className="form-options" style={{ textAlign: "center", marginTop: "1rem" }}>
           <Link to="/login" className="forgot-password">
