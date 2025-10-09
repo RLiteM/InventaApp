@@ -23,4 +23,13 @@ export const buscarProductosPorNombreSku = (searchTerm) => {
 };
 
 
+
+export const solicitarRecuperacion = (email) => {
+  return api.post('/auth/solicitar-recuperacion', { email });
+};
+
+export const resetearPassword = (token, nuevaContrasena) => {
+  return api.post('/auth/resetear-password', { token, nuevaContrasena });
+};
+
 export default api;

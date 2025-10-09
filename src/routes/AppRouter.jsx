@@ -18,6 +18,7 @@ import RegistroVentaPage from "../pages/admin/RegistroVentaPage";
 import GestionClientesPage from "../pages/admin/GestionClientesPage";
 import CrearClientePage from "../pages/admin/CrearClientePage";
 import EditarClientePage from "../pages/admin/EditarClientePage";
+import ResetearPassword from "../pages/ResetearPassword";
 import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
 
 // Componente para proteger las rutas de Admin
@@ -67,6 +68,7 @@ export default function AppRouter() {
         {/* Rutas públicas */}
         <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/resetear-password" element={<ResetearPassword />} />
 
         {/* Rutas Protegidas */}
         <Route 
