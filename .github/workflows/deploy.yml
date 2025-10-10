@@ -40,7 +40,7 @@ jobs:
             rm -rf /home/u862549488/domains/wissegt.com/public_html/inventa/*
             mkdir -p /home/u862549488/domains/wissegt.com/public_html/inventa
 
-      # 6️⃣ Subir solo el contenido interno de dist/ (no la carpeta)
+      # 6️⃣ Subir solo el contenido interno de dist/ (no la carpeta) cores
       - name: Upload build files to Hostinger
         uses: appleboy/scp-action@v0.1.5
         with:
@@ -51,3 +51,4 @@ jobs:
           source: "dist/**"
           strip_components: 1
           target: "/home/u862549488/domains/wissegt.com/public_html/inventa/"
+
