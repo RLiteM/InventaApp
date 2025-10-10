@@ -1,3 +1,4 @@
+
 /* Overlay del Modal */
 .modal-overlay {
   position: fixed;
@@ -16,7 +17,8 @@
 .modal-content {
   width: 90%;
   max-width: 500px;
-  background: #fff;
+  background: var(--color-superficie);
+  color: var(--color-texto);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -28,7 +30,7 @@
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--color-texto);
   text-align: center;
 }
 
@@ -40,14 +42,16 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-texto);
 }
 
 .modal-content .form-group input,
 .modal-content .form-group select {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-input-fondo);
+  color: var(--color-input-texto);
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -70,36 +74,37 @@
 }
 
 .modal-content .cancel-btn {
-  background-color: #6c757d;
-  color: white;
-  border: 1px solid #6c757d;
+  background-color: var(--color-secundario);
+  color: var(--color-secundario-texto);
+  border: 1px solid var(--color-secundario);
 }
 
 .modal-content .cancel-btn:hover {
-  background-color: #5a6268;
+  background-color: var(--color-secundario-hover);
 }
 
 .modal-content .save-btn {
-  background-color: #28a745; /* Verde para crear */
-  color: white;
-  border: 1px solid #28a745;
+  background-color: var(--color-primario);
+  color: var(--color-primario-texto);
+  border: 1px solid var(--color-primario);
 }
 
 .modal-content .save-btn:hover {
-  background-color: #218838;
+  background-color: var(--color-primario-hover);
 }
 
 .modal-content .save-btn:disabled {
-  background-color: #a3d9b1;
+  background-color: #a3d9b1; /* Consider creating a disabled variable */
   cursor: not-allowed;
 }
 
 .modal-content .error-message {
-    color: #dc3545;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-    text-align: center;
+  color: var(--color-peligro-texto);
+  background-color: var(--color-peligro-fondo);
+  border: 1px solid var(--color-peligro-borde);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
+

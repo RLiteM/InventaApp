@@ -14,7 +14,8 @@
 }
 
 .modal-content {
-  background: #fff;
+  background: var(--color-superficie);
+  color: var(--color-texto);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -39,7 +40,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-borde);
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -47,7 +48,7 @@
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #333;
+  color: var(--color-texto);
 }
 
 .close-button {
@@ -55,13 +56,14 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #aaa;
+  color: var(--color-texto);
+  opacity: 0.7;
   padding: 0;
   line-height: 1;
 }
 
 .close-button:hover {
-  color: #333;
+  opacity: 1;
 }
 
 .contact-form .form-group {
@@ -72,13 +74,15 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-texto);
 }
 
 .contact-form input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-input-fondo);
+  color: var(--color-input-texto);
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -89,7 +93,7 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-borde);
 }
 
 /* Responsive Design */
@@ -112,4 +116,3 @@
     width: 100%;
   }
 }
-

@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { FiPlus, FiTrash2, FiXCircle, FiSave } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/RegistroCompra.css';
 import CrearProductoModal from '../../components/admin/CrearProductoModal';
+import { ThemeContext } from '../../context/ThemeProvider'; // Importar el contexto del tema
 
 export default function RegistroCompraPage() {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext); // Obtener el tema actual
 
   // Estados del formulario
   const [proveedor, setProveedor] = useState(null);
@@ -29,16 +32,15 @@ export default function RegistroCompraPage() {
     try {
       const [proveedoresRes, productosRes] = await Promise.all([
         api.get('/proveedores'),
-        api.get('/productos/nombre-sku') // Usar el endpoint que devuelve el DTO
+        api.get('/productos/nombre-sku')
       ]);
       
       setProveedoresOptions(proveedoresRes.data.map(p => ({ value: p.id, label: p.nombreEmpresa })));
       
-      // Mapear la respuesta del DTO para el Select
       setProductosOptions(productosRes.data.map(p => ({
         value: p.productoId,
         label: `${p.nombre} (${p.sku})`,
-        nombre: p.nombre // Guardar el nombre original para usarlo al seleccionar
+        nombre: p.nombre
       })));
 
     } catch (err) {
@@ -54,13 +56,11 @@ export default function RegistroCompraPage() {
     if (!option) return;
     const productoExistente = productosSeleccionados.find(p => p.productoId === option.value);
 
-    if (productoExistente) {
-      return;
-    }
+    if (productoExistente) return;
 
     const nuevoProducto = {
       productoId: option.value,
-      nombre: option.nombre, // Usar el nombre guardado en el mapeo
+      nombre: option.nombre,
       fechaCaducidad: '',
       costoUnitarioCompra: '',
       cantidad: 1,
@@ -125,7 +125,48 @@ export default function RegistroCompraPage() {
   
   const handleProductoCreado = () => {
     setIsModalOpen(false);
-    cargarDatos(); // Recargar productos para que aparezca el nuevo
+    cargarDatos();
+  };
+
+  // Estilos para react-select adaptables al tema
+  const getSelectStyles = (theme) => {
+    const isDark = theme === 'dark';
+    return {
+      control: (provided, state) => ({
+        ...provided,
+        backgroundColor: isDark ? '#1a2e2b' : '#ffffff',
+        borderColor: state.isFocused ? (isDark ? '#00796b' : '#00695c') : (isDark ? '#004d40' : '#ccece6'),
+        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
+        boxShadow: state.isFocused ? `0 0 0 1px ${isDark ? '#00796b' : '#00695c'}` : 'none',
+        '&:hover': {
+          borderColor: isDark ? '#00796b' : '#00695c',
+        },
+      }),
+      menu: (provided) => ({
+        ...provided,
+        backgroundColor: isDark ? '#1a2e2b' : '#ffffff',
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? (isDark ? '#00796b' : '#00695c') : state.isFocused ? (isDark ? '#2a3f3c' : '#e6f6f3') : (isDark ? '#1a2e2b' : '#ffffff'),
+        color: state.isSelected ? '#ffffff' : (isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a'),
+        '&:active': {
+          backgroundColor: isDark ? '#00796b' : '#00695c',
+        },
+      }),
+      singleValue: (provided) => ({
+        ...provided,
+        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
+      }),
+      input: (provided) => ({
+        ...provided,
+        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
+      }),
+      placeholder: (provided) => ({
+        ...provided,
+        color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
+      }),
+    };
   };
 
   return (
@@ -138,6 +179,7 @@ export default function RegistroCompraPage() {
           <div className="form-group">
             <label>Registrar Proveedor</label>
             <Select
+              styles={getSelectStyles(theme)}
               options={proveedoresOptions}
               value={proveedor}
               onChange={setProveedor}
@@ -167,10 +209,11 @@ export default function RegistroCompraPage() {
           <div className="form-group product-search">
             <label>Buscar Producto</label>
             <Select
+              styles={getSelectStyles(theme)}
               options={productosOptions}
               onChange={handleProductoSeleccionado}
               placeholder="Escriba para buscar un producto..."
-              value={null} // Para resetear la selección después de agregar
+              value={null}
               classNamePrefix="react-select"
               isClearable
               isSearchable
@@ -179,6 +222,7 @@ export default function RegistroCompraPage() {
         </div>
       </div>
 
+      {/* ... resto del JSX sin cambios ... */}
       <div className="form-section details-section">
         <table className="product-table">
           <thead>
@@ -264,3 +308,4 @@ export default function RegistroCompraPage() {
     </div>
   );
 }
+

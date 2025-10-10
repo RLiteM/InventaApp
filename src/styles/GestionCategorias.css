@@ -1,7 +1,8 @@
+
 /* Estilos para la página de gestión de categorías */
 .category-management-page {
   padding: 2rem;
-  background-color: #f9f9f9;
+  background-color: var(--color-superficie);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
@@ -15,12 +16,12 @@
 
 .page-header h1 {
   font-size: 2rem;
-  color: #333;
+  color: var(--color-texto);
 }
 
 .create-button {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--color-primario);
+  color: var(--color-primario-texto);
   border: none;
   padding: 0.8rem 1.5rem;
   border-radius: 5px;
@@ -30,13 +31,13 @@
 }
 
 .create-button:hover {
-  background-color: #0056b3;
+  background-color: var(--color-primario-hover);
 }
 
 .categories-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: var(--color-superficie);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -44,13 +45,13 @@
 .categories-table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-borde);
+  color: var(--color-texto);
 }
 
 .categories-table th {
-  background-color: #f2f2f2;
+  background-color: var(--color-superficie-hover);
   font-weight: 600;
-  color: #555;
 }
 
 .action-buttons {
@@ -74,37 +75,38 @@
 }
 
 .edit-button {
-  background-color: #ffc107;
-  color: #333;
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
 }
 
 .edit-button:hover {
-  background-color: #e0a800;
+  background-color: var(--color-aviso-fondo-hover);
 }
 
 .delete-button {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--color-peligro-fondo);
+  color: var(--color-peligro-texto);
 }
 
 .delete-button:hover {
-  background-color: #c82333;
+  background-color: var(--color-peligro-fondo-hover);
 }
 
 .list-button {
-  background-color: #17a2b8;
-  color: white;
+  background-color: var(--color-secundario);
+  color: var(--color-secundario-texto);
 }
 
 .list-button:hover {
-  background-color: #138496;
+  background-color: var(--color-secundario-hover);
 }
 
 .error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: var(--color-peligro-texto);
+  background-color: var(--color-peligro-fondo);
+  border: 1px solid var(--color-peligro-borde);
   padding: 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
 }
+

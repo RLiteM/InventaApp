@@ -1,21 +1,23 @@
+        
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-
+        
         /* --- Estilo general de la página --- */
-        /* Esta clase debe envolver tu formulario para centrarlo y aplicar el fondo */
         .login-page {
           display: flex;
           justify-content: center;
           align-items: center;
           min-height: 100vh;
           padding: 1rem;
-          background: linear-gradient(135deg, #e0f2f1, #b2dfdb); /* Gradiente de verde suave */
+          background-color: var(--color-fondo); /* Usar variable de tema para el fondo */
           font-family: 'Inter', sans-serif;
           box-sizing: border-box;
+          transition: background-color 0.3s ease;
         }
-
-        /* --- Contenedor del Formulario --- */
+        
+        /* --- Contenedor del Formulario (Siempre Claro) --- */
         .login-form {
-          background: white;
+          background: #ffffff !important; /* Fondo siempre blanco */
+          color: #0d1c1a !important; /* Texto siempre oscuro */
           padding: 2.5rem 2rem;
           border-radius: 16px;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -24,31 +26,31 @@
           text-align: center;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
+        
         .login-form:hover {
           transform: translateY(-5px);
           box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-
+        
         /* --- Encabezado --- */
         .login-header h2 {
           margin: 0 0 0.5rem 0;
           font-size: 2rem;
           font-weight: 700;
-          color: #004d40; /* Verde oscuro */
+          color: #004d40; /* Verde oscuro (estático) */
         }
-
+        
         .login-header p {
           margin-bottom: 2rem;
-          color: #4db6ac; /* Verde más claro */
+          color: #4db6ac; /* Verde más claro (estático) */
         }
-
-        /* --- Campos de Entrada --- */
+        
+        /* --- Campos de Entrada (Siempre Claros) --- */
         .input-group {
           margin-bottom: 1.25rem;
           text-align: left;
         }
-
+        
         .input-group input {
           width: 100%;
           padding: 12px 15px;
@@ -57,38 +59,39 @@
           font-size: 1rem;
           box-sizing: border-box;
           transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          background-color: #ffffff !important; /* Fondo siempre blanco */
+          color: #0d1c1a !important; /* Texto siempre oscuro */
         }
-
+        
         .input-group input:focus {
           outline: none;
-          border-color: #00796b; /* Color verde principal */
+          border-color: #00796b; /* Color verde principal (estático) */
           box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
         }
-
-        /* --- Opciones del Formulario (Contraseña Olvidada) --- */
+        
+        /* --- Opciones del Formulario (Contraseña Olvidada) - CENTRADO --- */
         .form-options {
-            text-align: right;
-            margin-bottom: 1.5rem;
+          text-align: center; /* Requisito: Centrar el enlace */
+          margin-bottom: 1.5rem;
         }
-
+        
         .forgot-password {
-            color: #00796b;
-            font-size: 0.875rem;
-            text-decoration: none;
-            transition: color 0.3s ease;
+          color: #00796b; /* Color estático */
+          font-size: 0.875rem;
+          text-decoration: none;
+          transition: color 0.3s ease;
         }
-
+        
         .forgot-password:hover {
-            text-decoration: underline;
-            color: #004d40;
+          text-decoration: underline;
+          color: #004d40;
         }
-
-
+        
         /* --- Botón de Envío --- */
         .login-button {
           width: 100%;
           padding: 12px;
-          background-color: #00796b; /* Color verde principal */
+          background-color: #00796b; /* Color verde principal (estático) */
           color: white;
           border: none;
           border-radius: 8px;
@@ -97,39 +100,38 @@
           font-weight: 500;
           transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
+        
         .login-button:hover {
-          background-color: #00695c; /* Verde más oscuro al pasar el cursor */
+          background-color: #00695c;
           transform: translateY(-2px);
         }
-
+        
         .login-button:active {
-            transform: translateY(0);
+          transform: translateY(0);
         }
-
+        
         /* --- Área de Mensajes --- */
-        /* Estilo para mensajes de error o éxito que puedas añadir con tu lógica */
         .mensaje {
           margin-top: 1rem;
-          color: #d32f2f; /* Color rojo para errores por defecto */
           font-size: 0.9rem;
         }
-
+        
         .mensaje.exito {
-            color: #004d40; /* Verde oscuro para mensajes de éxito */
+          color: #004d40; /* Verde oscuro para éxito (estático) */
         }
-
+        
         .mensaje.error {
-            color: #d32f2f; /* Color rojo para errores */
+          color: #d32f2f; /* Rojo para errores (estático) */
         }
-
+        
         /* --- Diseño Responsivo --- */
         @media (max-width: 480px) {
           .login-form {
             padding: 2rem 1.5rem;
           }
-
+        
           .login-header h2 {
             font-size: 1.75rem;
           }
         }
+        

@@ -1,23 +1,73 @@
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  /* Paleta de colores base (Modo Oscuro) */
-  --color-primario: #00796b; /* Verde principal */
-  --color-primario-hover: #009688; /* Verde más claro para hover */
-  --color-fondo: #121a19;
-  --color-texto: rgba(255, 255, 255, 0.87);
-  --color-superficie: #1a2e2b; /* Fondo para tarjetas, botones */
+  /* Tema Claro (Default) */
+  --color-fondo: #f0fdfa;
+  --color-texto: #0d1c1a;
+  --color-superficie: #ffffff;
+  --color-superficie-texto: #0d1c1a;
+  --color-superficie-hover: #e6f6f3;
+  --color-borde: #ccece6;
+  --color-primario: #00695c;
+  --color-primario-texto: #ffffff;
+  --color-primario-hover: #00796b;
+  --color-secundario: #17a2b8;
+  --color-secundario-texto: #ffffff;
+  --color-secundario-hover: #138496;
+  --color-aviso-fondo: #ffc107;
+  --color-aviso-texto: #212529;
+  --color-aviso-fondo-hover: #e0a800;
+  --color-input-fondo: #ffffff;
+  --color-input-texto: #0d1c1a;
+  --color-input-borde: #ccece6;
+  --color-peligro-fondo: #f8d7da;
+  --color-peligro-texto: #721c24;
+  --color-peligro-borde: #f5c6cb;
+  --color-peligro-fondo-hover: #f5c6cb;
 
-  color-scheme: light dark;
-  color: var(--color-texto);
-  background-color: var(--color-fondo);
-
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  /* Tema Oscuro */
+  --color-fondo: #121a19;
+  --color-texto: rgba(255, 255, 255, 0.87);
+  --color-superficie: #1a2e2b;
+  --color-superficie-texto: rgba(255, 255, 255, 0.87);
+  --color-superficie-hover: #2a3f3c;
+  --color-borde: #004d40;
+  --color-primario: #00796b;
+  --color-primario-texto: #ffffff;
+  --color-primario-hover: #009688;
+  --color-secundario: #2692a1;
+  --color-secundario-texto: #ffffff;
+  --color-secundario-hover: #2fabbd;
+  --color-aviso-fondo: #8c6c0c;
+  --color-aviso-texto: #ffffff;
+  --color-aviso-fondo-hover: #ab8510;
+  --color-input-fondo: #1a2e2b;
+  --color-input-texto: rgba(255, 255, 255, 0.87);
+  --color-input-borde: #004d40;
+  --color-peligro-fondo: #582a2e;
+  --color-peligro-texto: #f8d7da;
+  --color-peligro-borde: #a13c45;
+  --color-peligro-fondo-hover: #6b3239;
+
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -26,12 +76,9 @@ a {
   text-decoration: inherit;
   transition: color 0.25s;
 }
+
 a:hover {
   color: var(--color-primario-hover);
-}
-
-body {
-  margin: 0;
 }
 
 h1 {
@@ -47,33 +94,17 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: var(--color-superficie);
+  color: var(--color-superficie-texto);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, background-color 0.25s, color 0.25s;
 }
+
 button:hover {
   border-color: var(--color-primario);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Modo Claro */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-primario: #00695c;
-    --color-primario-hover: #00796b;
-    --color-fondo: #f0fdfa; /* Fondo muy claro con tinte verde */
-    --color-texto: #0d1c1a; /* Texto muy oscuro con tinte verde */
-    --color-superficie: #ffffff;
-  }
-
-  a:hover {
-    color: var(--color-primario-hover);
-  }
-
-  button {
-    background-color: var(--color-superficie);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-}

@@ -1,9 +1,10 @@
+
 /* Estilos para el nuevo encabezado de cliente */
 .cliente-header-section {
   display: flex;
   align-items: center;
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
   border-radius: 8px;
   padding: 1rem 1.5rem;
   margin-bottom: 2rem;
@@ -13,7 +14,7 @@
 .cliente-header-title {
   font-weight: 600;
   font-size: 1rem;
-  color: #333;
+  color: var(--color-texto);
   margin-right: 1.5rem;
 }
 
@@ -39,18 +40,18 @@
 
 .cliente-info-display .info-item strong {
   font-weight: 600;
-  color: #333;
+  color: var(--color-texto);
   margin-right: 0.5rem;
 }
 
 .cliente-info-display .info-item span {
-  color: #555;
+  color: var(--color-texto);
 }
 
 .cliente-info-display .change-client-btn {
   background: none;
   border: none;
-  color: #007bff;
+  color: var(--color-primario);
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
@@ -59,24 +60,25 @@
 }
 
 /* Estilos generales del formulario */
-.registro-venta-container h1 {
+.registro-venta-container h1,
+.registro-venta-container h2 {
+  color: var(--color-texto);
   margin-bottom: 1.5rem;
 }
 
 .registro-venta-container h2 {
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--color-borde);
   padding-bottom: 0.5rem;
 }
 
 .registro-venta-container {
   padding: 2rem;
-  background-color: #f9f9f9;
+  background-color: var(--color-fondo);
   border-radius: 8px;
 }
 
 .form-section {
-  background-color: #fff;
+  background-color: var(--color-superficie);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -98,7 +100,7 @@
 .form-group label {
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: var(--color-texto);
 }
 
 .product-search {
@@ -110,7 +112,8 @@
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-borde);
+  color: var(--color-texto);
 }
 
 .product-detail-row .product-name {
@@ -119,9 +122,9 @@
 }
 
 .remove-product-btn {
-  background-color: #e53e3e;
-  color: white;
-  border: none;
+  background-color: var(--color-peligro-fondo);
+  color: var(--color-peligro-texto);
+  border: 1px solid var(--color-peligro-borde);
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
   cursor: pointer;
@@ -136,9 +139,11 @@
 .total-display {
   font-size: 1.5rem;
   font-weight: bold;
+  color: var(--color-texto);
 }
 
 .form-actions {
   display: flex;
   gap: 1rem;
 }
+

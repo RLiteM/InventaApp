@@ -1,3 +1,4 @@
+
 /* Estilos para el Modal de Creación de Categoría */
 .modal-overlay {
   position: fixed;
@@ -13,7 +14,8 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--color-superficie);
+  color: var(--color-texto);
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -25,7 +27,7 @@
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--color-texto);
   font-size: 1.8rem;
   text-align: center;
 }
@@ -38,14 +40,16 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-texto);
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-input-fondo);
+  color: var(--color-input-texto);
   border-radius: 4px;
   font-size: 1rem;
   box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
@@ -74,34 +78,35 @@
 }
 
 .cancel-btn {
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--color-secundario);
+  color: var(--color-secundario-texto);
 }
 
 .cancel-btn:hover {
-  background-color: #5a6268;
+  background-color: var(--color-secundario-hover);
 }
 
 .save-btn {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--color-primario);
+  color: var(--color-primario-texto);
 }
 
 .save-btn:hover {
-  background-color: #0056b3;
+  background-color: var(--color-primario-hover);
 }
 
 .save-btn:disabled {
-  background-color: #a0c8f0;
+  background-color: #a0c8f0; /* Consider creating a disabled variable */
   cursor: not-allowed;
 }
 
 .error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: var(--color-peligro-texto);
+  background-color: var(--color-peligro-fondo);
+  border: 1px solid var(--color-peligro-borde);
   padding: 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
   text-align: center;
 }
+

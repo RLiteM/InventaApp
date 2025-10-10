@@ -1,3 +1,4 @@
+
 /* UsuarioForm.css */
 
 .user-form-page h1 {
@@ -34,13 +35,14 @@
 .form-group label {
   margin-bottom: 0.5rem;
   font-weight: 500;
+  color: var(--color-texto);
 }
 
 .form-group input,
 .form-group select {
   padding: 0.75rem;
-  border: 1px solid var(--color-fondo);
-  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-input-fondo);
   color: var(--color-texto);
   border-radius: 4px;
   font-size: 1rem;
@@ -62,13 +64,14 @@
 
 .form-actions .save-button {
   background-color: var(--color-primario);
-  color: white;
+  color: var(--color-primario-texto);
+  border: none;
 }
 
 .form-actions .cancel-button {
   background-color: transparent;
-  border: 1px solid var(--color-texto);
-  color: var(--color-texto);
+  border: 1px solid var(--color-secundario);
+  color: var(--color-secundario);
 }
 
 /* Responsive */
@@ -77,3 +80,4 @@
     grid-template-columns: 1fr;
   }
 }
+

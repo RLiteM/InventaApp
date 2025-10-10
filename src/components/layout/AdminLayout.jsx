@@ -1,6 +1,8 @@
+
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FiMenu, FiX } from 'react-icons/fi'; // Iconos para el menú
+import ThemeToggle from '../ThemeToggle'; // Importar el interruptor de tema
 import "../../styles/AdminLayout.css";
 
 // Componente para el encabezado que mostrará el botón de menú en móvil
@@ -45,6 +47,7 @@ export default function AdminLayout({ user, onLogout }) {
 
   return (
     <div className={`admin-layout ${isSidebarOpen ? 'sidebar-is-open' : ''}`}>
+      <ThemeToggle /> {/* Añadir el interruptor de tema */}
       <aside className={`sidebar ${isSidebarOpen ? 'is-open' : ''}`}>
         <div className="sidebar-header">
           <h2>Inventa</h2>
