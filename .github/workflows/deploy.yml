@@ -3,7 +3,7 @@ name: Deploy React App to Hostinger via SSH
 on:
   push:
     branches:
-      - master
+      - master  # El flujo se ejecuta en cada push a la rama master
 
 jobs:
   build-and-deploy:
@@ -28,8 +28,8 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 5️⃣ Limpiar archivos viejos del hosting (opcional pero recomendado)
-      - name: Clean old files
+      # 5️⃣ Limpiar archivos antiguos del servidor
+      - name: Clean old files on Hostinger
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -40,7 +40,7 @@ jobs:
             rm -rf /home/u862549488/domains/wissegt.com/public_html/inventa/*
             mkdir -p /home/u862549488/domains/wissegt.com/public_html/inventa
 
-      # 6️⃣ Subir solo el contenido interno de dist/ (no la carpeta) cores
+      # 6️⃣ Subir solo el contenido interno de dist/ (no la carpeta)
       - name: Upload build files to Hostinger
         uses: appleboy/scp-action@v0.1.5
         with:
@@ -52,3 +52,21 @@ jobs:
           strip_components: 1
           target: "/home/u862549488/domains/wissegt.com/public_html/inventa/"
 
+      # 7️⃣ Crear/actualizar archivo .htaccess (subdominio)
+      - name: Configure .htaccess for SPA routing
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo '<IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . /index.html [L]
+            </IfModule>' > /home/u862549488/domains/wissegt.com/public_html/inventa/.htaccess
+            chmod 644 /home/u862549488/domains/wissegt.com/public_html/inventa/.htaccess
