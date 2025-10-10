@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProveedores.css';
 
@@ -48,7 +49,7 @@ export default function GestionProveedoresPage() {
     <div className="provider-management-page">
       <div className="page-header">
         <h1>Gestión de Proveedores</h1>
-        <Link to="/admin/proveedores/nuevo" className="create-button">Crear Proveedor</Link>
+        <Link to="/admin/proveedores/nuevo" className="create-button"><FiPlus /> Crear Proveedor</Link>
       </div>
       <table className="providers-table">
         <thead>
@@ -67,9 +68,9 @@ export default function GestionProveedoresPage() {
               <td>{provider.direccion || 'N/A'}</td>
               <td className="action-buttons">
                 <Link to={`/admin/proveedores/editar/${provider.proveedorId}`}>
-                  <button className="edit-button">Editar</button>
+                  <button className="edit-button"><FiEdit /> Editar</button>
                 </Link>
-                <button onClick={() => handleDelete(provider.proveedorId)} className="delete-button">Eliminar</button>
+                <button onClick={() => handleDelete(provider.proveedorId)} className="delete-button"><FiTrash2 /> Eliminar</button>
               </td>
             </tr>
           ))}

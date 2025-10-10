@@ -28,3 +28,54 @@
 }
 
 /* Reutilizamos los estilos de botones de GestionUsuarios.css */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.create-button {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.create-button:hover {
+  background-color: var(--color-primario-hover);
+}
+
+.action-buttons button {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 6px;
+}
+
+.edit-button {
+  background-color: #ffc107; /* Amarillo */
+  color: #212529;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Rojo */
+  color: white;
+}
+
+/* Estilos para alinear íconos en botones */
+.create-button,
+.edit-button,
+.delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}

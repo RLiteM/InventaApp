@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProveedores.css'; // Reutilizando estilos
 
@@ -65,7 +66,7 @@ export default function GestionClientesPage() {
     <div className="provider-management-page"> {/* Reutilizando clase de estilo */}
       <div className="page-header">
         <h1>Gestión de Clientes</h1>
-        <Link to="/admin/clientes/nuevo" className="create-button">Crear Cliente</Link>
+        <Link to="/admin/clientes/nuevo" className="create-button"><FiPlus /> Crear Cliente</Link>
       </div>
       <table className="providers-table"> {/* Reutilizando clase de estilo */}
         <thead>
@@ -90,11 +91,11 @@ export default function GestionClientesPage() {
                 <td className="action-buttons">
                   {canEdit && (
                     <Link to={`/admin/clientes/editar/${cliente.clienteId}`} state={{ cliente: cliente }}>
-                      <button className="edit-button">Editar</button>
+                      <button className="edit-button"><FiEdit /> Editar</button>
                     </Link>
                   )}
                   {isAdmin && (
-                    <button onClick={() => handleDelete(cliente.clienteId)} className="delete-button">Eliminar</button>
+                    <button onClick={() => handleDelete(cliente.clienteId)} className="delete-button"><FiTrash2 /> Eliminar</button>
                   )}
                 </td>
               )}

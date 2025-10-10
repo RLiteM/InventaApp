@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FiPlus, FiEdit, FiTrash2, FiEye } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import CrearCategoriaModal from '../../components/admin/CrearCategoriaModal';
 import EditarCategoriaModal from '../../components/admin/EditarCategoriaModal'; // Nuevo
@@ -93,7 +94,7 @@ export default function GestionCategoriasPage() {
     <div className="category-management-page">
       <div className="page-header">
         <h1>Gestión de Categorías</h1>
-        <button onClick={handleOpenCreateModal} className="create-button">Crear Categoría</button>
+        <button onClick={handleOpenCreateModal} className="create-button"><FiPlus /> Crear Categoría</button>
       </div>
       <table className="categories-table">
         <thead>
@@ -111,9 +112,9 @@ export default function GestionCategoriasPage() {
               <td>{cat.descripcion || 'N/A'}</td>
               <td>{cat.cantidadProductos ?? 'N/A'}</td>
               <td className="action-buttons">
-                <button onClick={() => handleOpenEditModal(cat)} className="edit-button">Editar</button>
-                <button onClick={() => handleDelete(cat.categoriaId)} className="delete-button">Eliminar</button>
-                <button onClick={() => handleOpenListModal(cat)} className="list-button">Ver Productos</button>
+                <button onClick={() => handleOpenEditModal(cat)} className="edit-button"><FiEdit /> Editar</button>
+                <button onClick={() => handleDelete(cat.categoriaId)} className="delete-button"><FiTrash2 /> Eliminar</button>
+                <button onClick={() => handleOpenListModal(cat)} className="list-button"><FiEye /> Ver Productos</button>
               </td>
             </tr>
           ))}

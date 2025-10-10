@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import { FiPlus, FiTrash2, FiXCircle, FiSave } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/RegistroCompra.css';
 import CrearProductoModal from '../../components/admin/CrearProductoModal';
@@ -140,8 +141,9 @@ export default function RegistroCompraPage() {
               options={proveedoresOptions}
               value={proveedor}
               onChange={setProveedor}
-              placeholder="Seleccione un proveedor"
+              placeholder="Buscar o seleccionar un proveedor..."
               classNamePrefix="react-select"
+              isSearchable
             />
           </div>
           <div className="form-group">
@@ -159,7 +161,7 @@ export default function RegistroCompraPage() {
         <div className="form-row">
           <div className="form-group">
             <button type="button" className="create-product-btn" onClick={() => setIsModalOpen(true)}>
-              + Crear Producto
+              <FiPlus /> Crear Producto
             </button>
           </div>
           <div className="form-group product-search">
@@ -224,7 +226,7 @@ export default function RegistroCompraPage() {
                   </td>
                   <td data-label="Acción">
                     <button type="button" className="remove-product-btn" onClick={() => handleEliminarProducto(index)}>
-                      Eliminar
+                      <FiTrash2 /> Eliminar
                     </button>
                   </td>
                 </tr>
@@ -246,10 +248,10 @@ export default function RegistroCompraPage() {
         </div>
         <div className="form-actions">
           <button type="button" className="cancel-btn" onClick={() => navigate('/admin/dashboard')} disabled={isSaving}>
-            Cancelar
+            <FiXCircle /> Cancelar
           </button>
           <button type="submit" className="save-btn" onClick={handleSubmit} disabled={isSaving}>
-            {isSaving ? 'Guardando...' : 'Guardar Compra'}
+            <FiSave /> {isSaving ? 'Guardando...' : 'Guardar Compra'}
           </button>
         </div>
       </div>

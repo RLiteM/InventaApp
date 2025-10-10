@@ -59,7 +59,12 @@
 }
 
 .edit-button,
-.delete-button {
+.delete-button,
+.list-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;

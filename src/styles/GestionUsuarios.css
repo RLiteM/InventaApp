@@ -30,6 +30,16 @@
   background-color: var(--color-primario-hover);
 }
 
+/* Estilos para alinear íconos en botones */
+.create-button,
+.edit-button,
+.delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
 .users-table {
   width: 100%;
   border-collapse: collapse;
