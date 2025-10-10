@@ -68,5 +68,5 @@ jobs:
             RewriteCond %{REQUEST_FILENAME} !-f
             RewriteCond %{REQUEST_FILENAME} !-d
             RewriteRule . /index.html [L]
-            </IfModule>' > /home/u862549488/domains/wissegt.com/public_html/inventa/.htaccess
-            chmod 644 /home/u862549488/domains/wissegt.com/public_html/inventa/.htaccess
+            </IfModule>' > /home/u862549488/domains/wissegt.com/public_html/.htaccess
+            chmod 644 /home/u862549488/domains/wissegt.com/public_html/.htaccess
