@@ -67,17 +67,18 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         {/* Rutas públicas */}
-        <Route path="/inventa/login" element={user ? <Navigate to="/inventa/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
-        <Route path="/inventa/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/inventa/resetear-password" element={<ResetearPassword />} />
-        <Route path="/inventa/cambiar-contrasena" element={<CambiarContrasenaPage />} />
+        <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/resetear-password" element={<ResetearPassword />} />
+        <Route path="/cambiar-contrasena" element={<CambiarContrasenaPage />} />
 
         {/* Rutas Protegidas */}
         <Route 
-          path="/inventa/*" 
-          element={user ? <Outlet /> : <Navigate to="/inventa/login" replace />}
+          path="/*" 
+          element={user ? <Outlet /> : <Navigate to="/login" replace />}
         >
           <Route element={<AdminRoutes user={user} onLogout={handleLogout} />}>
+            <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="admin/usuarios" element={<GestionUsuariosPage />} />
             <Route path="admin/usuarios/nuevo" element={<CrearUsuarioPage />} />
@@ -97,7 +98,7 @@ export default function AppRouter() {
             <Route path="admin/categorias" element={<GestionCategoriasPage />} />
 
             {/* Redirección por defecto si está logueado */}
-            <Route path="*" element={<Navigate to="/inventa/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>
       </Routes>
