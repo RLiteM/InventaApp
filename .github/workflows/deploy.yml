@@ -10,21 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Clonar el repositorio
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # 2️⃣ Configurar Node.js
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3️⃣ Instalar dependencias
       - name: Install dependencies
         run: npm ci
 
+      # 4️⃣ Compilar el proyecto con Vite
       - name: Build project
         run: npm run build
 
-      - name: Clean old files and deploy new build
+      # 5️⃣ Limpiar archivos viejos del hosting (opcional pero recomendado)
+      - name: Clean old files
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -35,12 +40,14 @@ jobs:
             rm -rf /home/u862549488/domains/wissegt.com/public_html/inventa/*
             mkdir -p /home/u862549488/domains/wissegt.com/public_html/inventa
 
-      - name: Upload build files
+      # 6️⃣ Subir solo el contenido interno de dist/ (no la carpeta)
+      - name: Upload build files to Hostinger
         uses: appleboy/scp-action@v0.1.5
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/*"
-          target: /home/u862549488/domains/wissegt.com/public_html/inventa
+          source: "dist/**"
+          strip_components: 1
+          target: "/home/u862549488/domains/wissegt.com/public_html/inventa/"
