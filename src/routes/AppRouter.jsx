@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HashRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 // Layouts y Páginas
 import AdminLayout from "../components/layout/AdminLayout";
@@ -64,7 +64,7 @@ export default function AppRouter() {
   }
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
@@ -102,6 +102,6 @@ export default function AppRouter() {
           </Route>
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
