@@ -10,14 +10,9 @@ export default function LoginPage({ onLoginSuccess }) {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <div className="login-page">
-      <LoginForm onLoginSuccess={onLoginSuccess} />
-      <div className="forgot-password-link">
-        <a href="#" onClick={(e) => { e.preventDefault(); openModal(); }}>
-          Olvidé mi contraseña
-        </a>
-      </div>
-      <RecuperarContrasena isOpen={isModalOpen} onRequestClose={closeModal} />
-    </div>
+  <div className="login-page">
+    <LoginForm onLoginSuccess={onLoginSuccess} />
+  </div>
+
   );
 }
