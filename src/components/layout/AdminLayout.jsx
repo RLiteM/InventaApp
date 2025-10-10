@@ -34,7 +34,7 @@ export default function AdminLayout({ user, onLogout }) {
 
   const handleLogout = () => {
     onLogout();
-    navigate("/inventa/login");
+    navigate("/login");
   };
 
   const toggleSidebar = () => {
@@ -52,14 +52,14 @@ export default function AdminLayout({ user, onLogout }) {
         </div>
         <nav>
           <ul className="sidebar-nav">
-            <li><NavLink to="/inventa/dashboard" onClick={() => setIsSidebarOpen(false)}>Dashboard</NavLink></li>
-            {isAdmin && <li><NavLink to="/inventa/admin/usuarios" onClick={() => setIsSidebarOpen(false)}>Usuarios</NavLink></li>}
-            <li><NavLink to="/inventa/admin/proveedores" onClick={() => setIsSidebarOpen(false)}>Proveedores</NavLink></li>
-            <li><NavLink to="/inventa/admin/clientes" onClick={() => setIsSidebarOpen(false)}>Clientes</NavLink></li>
-            <li><NavLink to="/inventa/admin/categorias" onClick={() => setIsSidebarOpen(false)}>Categorías</NavLink></li>
-            <li><NavLink to="/inventa/admin/compras/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Compra</NavLink></li>
-            <li><NavLink to="/inventa/admin/ventas/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Venta</NavLink></li>
-            <li><NavLink to="/inventa/cambiar-contrasena" onClick={() => setIsSidebarOpen(false)}>Cambiar Contraseña</NavLink></li>
+            <li><NavLink to="/dashboard" onClick={() => setIsSidebarOpen(false)}>Dashboard</NavLink></li>
+            {isAdmin && <li><NavLink to="/admin/usuarios" onClick={() => setIsSidebarOpen(false)}>Usuarios</NavLink></li>}
+            <li><NavLink to="/admin/proveedores" onClick={() => setIsSidebarOpen(false)}>Proveedores</NavLink></li>
+            <li><NavLink to="/admin/clientes" onClick={() => setIsSidebarOpen(false)}>Clientes</NavLink></li>
+            <li><NavLink to="/admin/categorias" onClick={() => setIsSidebarOpen(false)}>Categorías</NavLink></li>
+            <li><NavLink to="/admin/compras/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Compra</NavLink></li>
+            <li><NavLink to="/admin/ventas/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Venta</NavLink></li>
+            <li><NavLink to="/cambiar-contrasena" onClick={() => setIsSidebarOpen(false)}>Cambiar Contraseña</NavLink></li>
           </ul>
         </nav>
         <div className="sidebar-footer">
