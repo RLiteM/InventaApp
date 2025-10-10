@@ -66,6 +66,10 @@ export default function LoginForm({ onLoginSuccess }) {
         />
       </div>
 
+      <div className="form-options">
+        <Link to="/forgot-password" className="forgot-password">¿Olvidaste tu contraseña?</Link>
+      </div>
+
       <button type="submit" className="login-button" disabled={isLoading}>
         {isLoading ? "Ingresando..." : "Ingresar"}
       </button>
