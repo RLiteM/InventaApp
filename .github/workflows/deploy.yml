@@ -3,27 +3,43 @@ name: Deploy React App to Hostinger via SSH
 on:
   push:
     branches:
-      - master
+      - master  # Se ejecutará cada vez que hagas git push en master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Clonar el repo
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # 2️⃣ Usar Node.js
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3️⃣ Instalar dependencias
       - name: Install dependencies
         run: npm ci
 
+      # 4️⃣ Compilar el proyecto (Vite)
       - name: Build project
         run: npm run build
 
+      # 5️⃣ Limpiar archivos antiguos (opcional pero recomendado)
+      - name: Remove default Hostinger file
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -f /home/u862549488/domains/wissegt.com/public_html/inventa/default.php
+
+      # 6️⃣ Subir los archivos compilados directamente a la carpeta pública
       - name: Deploy to Hostinger via SSH
         uses: appleboy/scp-action@v0.1.5
         with:
@@ -33,3 +49,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/*"
           target: ${{ secrets.REMOTE_PATH }}
+
