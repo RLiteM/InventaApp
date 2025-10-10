@@ -19,6 +19,7 @@ import GestionClientesPage from "../pages/admin/GestionClientesPage";
 import CrearClientePage from "../pages/admin/CrearClientePage";
 import EditarClientePage from "../pages/admin/EditarClientePage";
 import ResetearPassword from "../pages/ResetearPassword";
+import CambiarContrasenaPage from "../pages/CambiarContrasenaPage";
 import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
 
 // Componente para proteger las rutas de Admin
@@ -66,14 +67,15 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         {/* Rutas públicas */}
-        <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/resetear-password" element={<ResetearPassword />} />
+        <Route path="/inventa/login" element={user ? <Navigate to="/inventa/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
+        <Route path="/inventa/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/inventa/resetear-password" element={<ResetearPassword />} />
+        <Route path="/inventa/cambiar-contrasena" element={<CambiarContrasenaPage />} />
 
         {/* Rutas Protegidas */}
         <Route 
-          path="/*" 
-          element={user ? <Outlet /> : <Navigate to="/login" replace />}
+          path="/inventa/*" 
+          element={user ? <Outlet /> : <Navigate to="/inventa/login" replace />}
         >
           <Route element={<AdminRoutes user={user} onLogout={handleLogout} />}>
             <Route path="dashboard" element={<DashboardPage />} />
@@ -95,7 +97,7 @@ export default function AppRouter() {
             <Route path="admin/categorias" element={<GestionCategoriasPage />} />
 
             {/* Redirección por defecto si está logueado */}
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/inventa/dashboard" replace />} />
           </Route>
         </Route>
       </Routes>
