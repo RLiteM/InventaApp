@@ -64,7 +64,7 @@ export default function AppRouter() {
   }
 
   return (
-    <BrowserRouter basename="/inventa">
+    <BrowserRouter>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage onLoginSuccess={handleLogin} />} />
@@ -74,7 +74,7 @@ export default function AppRouter() {
 
         {/* Rutas Protegidas */}
         <Route 
-          path="/*" 
+          path="/" 
           element={user ? <Outlet /> : <Navigate to="/login" replace />}
         >
           <Route element={<AdminRoutes user={user} onLogout={handleLogout} />}>
