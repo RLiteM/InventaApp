@@ -21,6 +21,7 @@ import EditarClientePage from "../pages/admin/EditarClientePage";
 import ResetearPassword from "../pages/ResetearPassword";
 import CambiarContrasenaPage from "../pages/CambiarContrasenaPage";
 import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
+import GestionProductosPage from "../pages/admin/GestionProductosPage";
 
 // Componente para proteger las rutas de Admin
 function AdminRoutes({ user, onLogout }) {
@@ -96,6 +97,9 @@ export default function AppRouter() {
 
             {/* Ruta de Categorías */}
             <Route path="admin/categorias" element={<GestionCategoriasPage />} />
+
+            {/* Ruta de Productos */}
+            <Route path="admin/productos" element={<GestionProductosPage />} />
 
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

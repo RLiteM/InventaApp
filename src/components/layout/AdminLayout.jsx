@@ -60,6 +60,7 @@ export default function AdminLayout({ user, onLogout }) {
             <li><NavLink to="/admin/proveedores" onClick={() => setIsSidebarOpen(false)}>Proveedores</NavLink></li>
             <li><NavLink to="/admin/clientes" onClick={() => setIsSidebarOpen(false)}>Clientes</NavLink></li>
             <li><NavLink to="/admin/categorias" onClick={() => setIsSidebarOpen(false)}>Categorías</NavLink></li>
+            <li><NavLink to="/admin/productos" onClick={() => setIsSidebarOpen(false)}>Productos</NavLink></li>
             <li><NavLink to="/admin/compras/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Compra</NavLink></li>
             <li><NavLink to="/admin/ventas/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Venta</NavLink></li>
             <li><NavLink to="/cambiar-contrasena" onClick={() => setIsSidebarOpen(false)}>Cambiar Contraseña</NavLink></li>

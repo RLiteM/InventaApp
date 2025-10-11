@@ -1,0 +1,100 @@
+/* Estilos para la página de gestión de productos */
+.product-management-page {
+  padding: 2rem;
+  background-color: var(--color-superficie);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  color: var(--color-texto);
+}
+
+.create-button {
+  background-color: var(--color-primario);
+  color: var(--color-primario-texto);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+  background-color: var(--color-primario-hover);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-superficie);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.products-table th,
+.products-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-borde);
+  color: var(--color-texto);
+}
+
+.products-table th {
+  background-color: var(--color-superficie-hover);
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-button,
+.delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button {
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso-texto);
+}
+
+.edit-button:hover {
+  background-color: var(--color-aviso-fondo-hover);
+}
+
+.delete-button {
+  background-color: var(--color-peligro-fondo);
+  color: var(--color-peligro-texto);
+}
+
+.delete-button:hover {
+  background-color: var(--color-peligro-fondo-hover);
+}
+
+.error-message {
+  color: var(--color-peligro-texto);
+  background-color: var(--color-peligro-fondo);
+  border: 1px solid var(--color-peligro-borde);
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
