@@ -5,39 +5,63 @@ import '../../styles/GestionProductos.css';
 
 export default function GestionProductosPage() {
   const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filtro, setFiltro] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('');
 
-  const fetchProductos = async () => {
+  const fetchInitialData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.get('/productos');
-      console.log('Respuesta de la API (response.data):', response.data);
-      const responseData = response.data;
-      if (Array.isArray(responseData)) {
-        setProductos(responseData);
-      } else if (responseData && Array.isArray(responseData.productos)) {
-        setProductos(responseData.productos);
-      } else if (responseData && Array.isArray(responseData.data)) {
-        setProductos(responseData.data);
+      // Fetch products and categories in parallel
+      const [productosRes, categoriasRes] = await Promise.all([
+        api.get('/productos'),
+        api.get('/categoria')
+      ]);
+
+      // Process products response
+      const productosData = productosRes.data;
+      if (Array.isArray(productosData)) {
+        setProductos(productosData);
+      } else if (productosData && Array.isArray(productosData.productos)) {
+        setProductos(productosData.productos);
+      } else if (productosData && Array.isArray(productosData.data)) {
+        setProductos(productosData.data);
       } else {
         setProductos([]);
-        console.error("La respuesta de la API no es un array como se esperaba: ", responseData);
-        setError('El formato de los datos recibidos no es el esperado.');
+        console.error("La respuesta de la API de productos no es un array como se esperaba: ", productosData);
       }
+
+      // Process categories response
+      if (Array.isArray(categoriasRes.data)) {
+        setCategorias(categoriasRes.data);
+      } else {
+        console.error("La respuesta de la API de categorías no es un array como se esperaba: ", categoriasRes.data);
+      }
+
     } catch (err) {
-      console.error('Error detallado al obtener productos:', err);
-      setError('No se pudo cargar la lista de productos.');
-      console.error(err);
+      console.error('Error detallado al obtener datos iniciales:', err);
+      setError('No se pudo cargar la lista de productos o categorías.');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProductos();
+    fetchInitialData();
   }, []);
+
+  const productosFiltrados = productos.filter(prod => {
+    const terminoBusqueda = filtro.toLowerCase();
+    const categoriaMatch = !filtroCategoria || prod.categoriaId.toString() === filtroCategoria;
+    const busquedaMatch = !terminoBusqueda ||
+      prod.sku.toLowerCase().includes(terminoBusqueda) ||
+      prod.nombre.toLowerCase().includes(terminoBusqueda);
+    
+    return categoriaMatch && busquedaMatch;
+  });
 
   if (isLoading && !productos.length) {
     return <div>Cargando productos...</div>;
@@ -53,35 +77,66 @@ export default function GestionProductosPage() {
         <h1>Gestión de Productos</h1>
         <button onClick={() => alert('Funcionalidad no implementada')} className="create-button"><FiPlus /> Crear Producto</button>
       </div>
-      <table className="products-table">
-        <thead>
-          <tr>
-            <th>SKU</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio Minorista</th>
-            <th>Stock</th>
-            <th>Categoría</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productos.map(prod => (
-            <tr key={prod.productoId}>
-              <td>{prod.sku}</td>
-              <td>{prod.nombre}</td>
-              <td>{prod.descripcion}</td>
-              <td>{prod.precioMinorista}</td>
-              <td>{prod.stockActual}</td>
-              <td>{prod.categoriaNombre}</td>
-              <td className="action-buttons">
-                <button onClick={() => alert('Funcionalidad no implementada')} className="edit-button"><FiEdit /> Editar</button>
-                <button onClick={() => alert('Funcionalidad no implementada')} className="delete-button"><FiTrash2 /> Eliminar</button>
-              </td>
-            </tr>
+
+      <div className="filters-container">
+        <input
+          type="text"
+          placeholder="Buscar por SKU o Nombre..."
+          value={filtro}
+          onChange={e => setFiltro(e.target.value)}
+          className="filter-input"
+        />
+        <select 
+          className="filter-select"
+          value={filtroCategoria}
+          onChange={e => setFiltroCategoria(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {categorias.map(cat => (
+            <option key={cat.categoriaId} value={cat.categoriaId}>
+              {cat.nombre}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+      </div>
+
+      <div className="table-responsive-container">
+        <table className="products-table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Nombre</th>
+              <th className="col-descripcion">Descripción</th>
+              <th>Costo</th>
+              <th>Minorista</th>
+              <th>Mayorista</th>
+              <th>Stock</th>
+              <th>Stock Mín.</th>
+              <th>Medida</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {productosFiltrados.map(prod => (
+              <tr key={prod.productoId}>
+                <td>{prod.sku}</td>
+                <td>{prod.nombre}</td>
+                <td className="col-descripcion">{prod.descripcion}</td>
+                <td>{prod.ultimoCosto}</td>
+                <td>{prod.precioMinorista}</td>
+                <td>{prod.precioMayorista}</td>
+                <td className={prod.stockActual <= prod.stockMinimo ? 'stock-bajo' : ''}>{prod.stockActual}</td>
+                <td>{prod.stockMinimo}</td>
+                <td>{prod.unidadMedida}</td>
+                <td className="action-buttons">
+                  <button title="Editar" onClick={() => alert('Funcionalidad no implementada')} className="edit-button action-btn-icon"><FiEdit /></button>
+                  <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -33,11 +33,53 @@
   background-color: var(--color-primario-hover);
 }
 
+.filters-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow filters to wrap on smaller screens */
+  gap: 1rem; /* Add space between filter elements */
+  margin-bottom: 1.5rem;
+}
+
+.filter-input {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 5px;
+  background-color: var(--color-input-fondo);
+  color: var(--color-texto);
+  font-size: 1rem;
+  width: 400px;
+  max-width: 100%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-select {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 5px;
+  background-color: var(--color-input-fondo);
+  color: var(--color-texto);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 200px; /* Give it a minimum width */
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 2px var(--color-primario-transparente);
+}
+
+.table-responsive-container {
+  overflow-x: auto; /* Fallback for very narrow screens */
+}
+
 .products-table {
   width: 100%;
   border-collapse: collapse;
   background-color: var(--color-superficie);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  table-layout: fixed; /* Control column widths */
 }
 
 .products-table th,
@@ -46,49 +88,76 @@
   text-align: left;
   border-bottom: 1px solid var(--color-borde);
   color: var(--color-texto);
+  word-wrap: break-word;
+}
+
+.products-table td.stock-bajo {
+  color: var(--color-peligro-texto);
+  background-color: var(--color-peligro-fondo);
+  font-weight: 700;
 }
 
 .products-table th {
   background-color: var(--color-superficie-hover);
   font-weight: 600;
+  white-space: nowrap; /* Keep headers on one line */
 }
+
+/* Set specific widths for columns */
+.products-table th:nth-child(1), .products-table td:nth-child(1) { width: 10%; } /* SKU */
+.products-table th:nth-child(2), .products-table td:nth-child(2) { width: 15%; } /* Nombre */
+.products-table th:nth-child(3), .products-table td:nth-child(3) { width: 25%; white-space: normal; } /* Descripcion - FLEXIBLE */
+.products-table th:nth-child(4), .products-table td:nth-child(4) { width: 10%; } /* Último Costo */
+.products-table th:nth-child(5), .products-table td:nth-child(5) { width: 10%; } /* Precio Minorista */
+.products-table th:nth-child(6), .products-table td:nth-child(6) { width: 10%; } /* Precio Mayorista */
+.products-table th:nth-child(7), .products-table td:nth-child(7) { width: 5%; }  /* Stock */
+.products-table th:nth-child(8), .products-table td:nth-child(8) { width: 5%; }  /* Stock Mín. */
+.products-table th:nth-child(9), .products-table td:nth-child(9) { width: 5%; }  /* U. Medida */
+.products-table th:nth-child(10), .products-table td:nth-child(10){ width: 15%; } /* Acciones */
+
 
 .action-buttons {
   display: flex;
   gap: 0.5rem;
 }
 
-.edit-button,
-.delete-button {
+/* Base style for icon-only action buttons */
+.action-btn-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   border: none;
-  padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
   transition: background-color 0.3s ease;
+  width: 36px;
+  height: 36px;
+  padding: 0; /* Remove padding */
 }
 
-.edit-button {
+.action-btn-icon svg {
+  font-size: 1.1rem; /* Adjust icon size */
+}
+
+/* Color specifics for each button */
+.edit-button.action-btn-icon {
   background-color: var(--color-aviso-fondo);
   color: var(--color-aviso-texto);
 }
 
-.edit-button:hover {
+.edit-button.action-btn-icon:hover {
   background-color: var(--color-aviso-fondo-hover);
 }
 
-.delete-button {
+.delete-button.action-btn-icon {
   background-color: var(--color-peligro-fondo);
   color: var(--color-peligro-texto);
 }
 
-.delete-button:hover {
+.delete-button.action-btn-icon:hover {
   background-color: var(--color-peligro-fondo-hover);
 }
+
 
 .error-message {
   color: var(--color-peligro-texto);
