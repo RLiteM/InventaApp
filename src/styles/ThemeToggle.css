@@ -18,14 +18,14 @@
 /* El fondo que se ilumina y se mueve */
 .highlight {
   position: absolute;
-  width: 38px; /* Un poco menos de la mitad */
-  height: 38px;
+  width: 50px; /* Exactamente la mitad del ancho del contenedor */
+  height: 100%; /* Ocupa toda la altura */
   background-color: var(--color-primario);
-  border-radius: 50%;
+  border-radius: 20px; /* Coincide con el radio del contenedor para un ajuste perfecto */
   top: 0;
   left: 0;
-  margin: 1px;
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición con rebote */
+  margin: 0;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 /* Mover el highlight en modo oscuro */

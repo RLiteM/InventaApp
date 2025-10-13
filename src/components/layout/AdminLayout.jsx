@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { 
-  FiMenu, FiGrid, FiUsers, FiTruck, FiBriefcase, 
+  FiGrid, FiUsers, FiTruck, FiBriefcase, 
   FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut 
 } from 'react-icons/fi';
+import { BsLayoutSidebarInset } from 'react-icons/bs'; // Nuevo ícono
 import ThemeToggle from '../ThemeToggle';
 import "../../styles/AdminLayout.css";
 
@@ -27,7 +28,7 @@ export default function AdminLayout({ user, onLogout }) {
       <aside className="sidebar">
         <div className="sidebar-header">
           <button className="sidebar-toggle" onClick={toggleCollapse}>
-            <FiMenu />
+            <BsLayoutSidebarInset />
           </button>
           <h2 className="sidebar-brand">Inventa</h2>
         </div>
