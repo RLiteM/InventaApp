@@ -1,23 +1,57 @@
-
-.theme-toggle-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
-  background-color: var(--color-superficie);
-  color: var(--color-texto);
-  border: 1px solid var(--color-borde);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Contenedor principal del interruptor */
+.theme-toggle-switch {
+  position: relative;
+  width: 80px; /* Ancho aumentado para mejor visibilidad */
+  height: 40px;
+  background-color: var(--color-superficie-hover);
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 24px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px;
+  transition: background-color 0.3s ease;
+  border: 1px solid var(--color-borde);
+  overflow: hidden; /* Para contener el highlight */
 }
 
-.theme-toggle-button:hover {
-  background-color: var(--color-fondo);
+/* El fondo que se ilumina y se mueve */
+.highlight {
+  position: absolute;
+  width: 38px; /* Un poco menos de la mitad */
+  height: 38px;
+  background-color: var(--color-primario);
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  margin: 1px;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Transición con rebote */
+}
+
+/* Mover el highlight en modo oscuro */
+.theme-toggle-switch.dark-mode .highlight {
+  transform: translateX(40px);
+}
+
+/* Íconos */
+.sun-icon,
+.moon-icon {
+  font-size: 18px;
+  z-index: 1; /* Asegura que los íconos estén sobre el highlight */
+  transition: color 0.3s ease;
+}
+
+/* Color del ícono activo (blanco) e inactivo (color de texto) */
+.theme-toggle-switch .sun-icon {
+  color: white;
+}
+.theme-toggle-switch .moon-icon {
+  color: var(--color-texto);
+}
+
+.theme-toggle-switch.dark-mode .sun-icon {
+  color: var(--color-texto);
+}
+.theme-toggle-switch.dark-mode .moon-icon {
+  color: white;
 }

@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import { ThemeContext } from '../context/ThemeProvider';
 import { FaSun, FaMoon } from 'react-icons/fa';
@@ -8,9 +7,14 @@ const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <button onClick={toggleTheme} className="theme-toggle-button">
-      {theme === 'light' ? <FaMoon /> : <FaSun />}
-    </button>
+    <div 
+      className={`theme-toggle-switch ${theme === 'dark' ? 'dark-mode' : ''}`}
+      onClick={toggleTheme}
+    >
+      <div className="highlight"></div>
+      <FaSun className="sun-icon" />
+      <FaMoon className="moon-icon" />
+    </div>
   );
 };
 

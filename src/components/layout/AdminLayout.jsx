@@ -1,82 +1,61 @@
-
 import { useState } from 'react';
-import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { FiMenu, FiX } from 'react-icons/fi'; // Iconos para el menú
-import ThemeToggle from '../ThemeToggle'; // Importar el interruptor de tema
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { 
+  FiMenu, FiGrid, FiUsers, FiTruck, FiBriefcase, 
+  FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut 
+} from 'react-icons/fi';
+import ThemeToggle from '../ThemeToggle';
 import "../../styles/AdminLayout.css";
-
-// Componente para el encabezado que mostrará el botón de menú en móvil
-function AdminHeader({ onToggleSidebar, isSidebarOpen }) {
-  const location = useLocation();
-  
-  // Genera un título legible a partir de la ruta
-  const getPageTitle = () => {
-    const path = location.pathname.split('/').pop();
-    if (path === 'dashboard') return 'Dashboard';
-    if (path === 'nueva') {
-        if(location.pathname.includes('compras')) return 'Nueva Compra';
-        if(location.pathname.includes('ventas')) return 'Nueva Venta';
-    }
-    return path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, ' ');
-  };
-
-  return (
-    <header className="admin-header">
-      <button className="sidebar-toggle" onClick={onToggleSidebar}>
-        {isSidebarOpen ? <FiX /> : <FiMenu />}
-      </button>
-      <h1 className="page-title">{getPageTitle()}</h1>
-    </header>
-  );
-}
 
 export default function AdminLayout({ user, onLogout }) {
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleLogout = () => {
     onLogout();
     navigate("/login");
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
   };
 
   const isAdmin = user?.rol === 'Administrador';
 
   return (
-    <div className={`admin-layout ${isSidebarOpen ? 'sidebar-is-open' : ''}`}>
-      <ThemeToggle /> {/* Añadir el interruptor de tema */}
-      <aside className={`sidebar ${isSidebarOpen ? 'is-open' : ''}`}>
+    <div className={`admin-layout ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <aside className="sidebar">
         <div className="sidebar-header">
-          <h2>Inventa</h2>
-          <button className="sidebar-close-btn" onClick={toggleSidebar}><FiX /></button>
+          <button className="sidebar-toggle" onClick={toggleCollapse}>
+            <FiMenu />
+          </button>
+          <h2 className="sidebar-brand">Inventa</h2>
         </div>
-        <nav>
-          <ul className="sidebar-nav">
-            <li><NavLink to="/dashboard" onClick={() => setIsSidebarOpen(false)}>Dashboard</NavLink></li>
-            {isAdmin && <li><NavLink to="/admin/usuarios" onClick={() => setIsSidebarOpen(false)}>Usuarios</NavLink></li>}
-            <li><NavLink to="/admin/proveedores" onClick={() => setIsSidebarOpen(false)}>Proveedores</NavLink></li>
-            <li><NavLink to="/admin/clientes" onClick={() => setIsSidebarOpen(false)}>Clientes</NavLink></li>
-            <li><NavLink to="/admin/categorias" onClick={() => setIsSidebarOpen(false)}>Categorías</NavLink></li>
-            <li><NavLink to="/admin/productos" onClick={() => setIsSidebarOpen(false)}>Productos</NavLink></li>
-            <li><NavLink to="/admin/compras/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Compra</NavLink></li>
-            <li><NavLink to="/admin/ventas/nueva" onClick={() => setIsSidebarOpen(false)}>Nueva Venta</NavLink></li>
-            <li><NavLink to="/cambiar-contrasena" onClick={() => setIsSidebarOpen(false)}>Cambiar Contraseña</NavLink></li>
-          </ul>
+
+        <nav className="sidebar-nav">
+          <NavLink to="/dashboard"><FiGrid /><span className="link-text">Dashboard</span></NavLink>
+          {isAdmin && <NavLink to="/admin/usuarios"><FiUsers /><span className="link-text">Usuarios</span></NavLink>}
+          <NavLink to="/admin/proveedores"><FiTruck /><span className="link-text">Proveedores</span></NavLink>
+          <NavLink to="/admin/clientes"><FiBriefcase /><span className="link-text">Clientes</span></NavLink>
+          <NavLink to="/admin/categorias"><FiTag /><span className="link-text">Categorías</span></NavLink>
+          <NavLink to="/admin/productos"><FiPackage /><span className="link-text">Productos</span></NavLink>
+          <NavLink to="/admin/compras/nueva"><FiShoppingCart /><span className="link-text">Nueva Compra</span></NavLink>
+          <NavLink to="/admin/ventas/nueva"><FiDollarSign /><span className="link-text">Nueva Venta</span></NavLink>
+          <NavLink to="/cambiar-contrasena"><FiLock /><span className="link-text">Cambiar Contraseña</span></NavLink>
         </nav>
+
         <div className="sidebar-footer">
-          <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+          <button onClick={handleLogout} className="logout-button">
+            <FiLogOut />
+            <span className="link-text">Cerrar Sesión</span>
+          </button>
+          <ThemeToggle />
         </div>
       </aside>
-      
-      {isSidebarOpen && <div className="backdrop" onClick={toggleSidebar}></div>}
 
       <main className="admin-content">
-        <AdminHeader onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         <div className="content-wrapper">
-            <Outlet />
+          <Outlet />
         </div>
       </main>
     </div>

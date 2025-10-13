@@ -135,3 +135,10 @@
           }
         }
         
+        /* Posicionamiento del botón de tema en la página de login */
+        .login-page .theme-toggle-switch {
+          position: fixed;
+          bottom: 20px;
+          left: 20px;
+          z-index: 1000;
+        }        
