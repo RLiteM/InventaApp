@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getResumen } from '../../api/dashboardApi';
 
 const KpiCard = ({ title, value, icon }) => (
@@ -13,7 +13,7 @@ const KpiCard = ({ title, value, icon }) => (
 );
 
 const ResumenKPIs = () => {
-  const { data, error, isLoading } = useQuery('resumen', getResumen);
+  const { data, error, isLoading } = useQuery({ queryKey: ['resumen'], queryFn: getResumen });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando resumen...</div>;
   

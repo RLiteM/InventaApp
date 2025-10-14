@@ -1,10 +1,10 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getTendencias } from '../../api/dashboardApi';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const TendenciasVentasChart = () => {
-  const { data: tendencias = [], error, isLoading } = useQuery('tendencias', getTendencias);
+  const { data: tendencias = [], error, isLoading } = useQuery({ queryKey: ['tendencias'], queryFn: getTendencias });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando tendencias...</div>;
   if (error) return <div className="dashboard-card error-placeholder">Error al cargar tendencias</div>;

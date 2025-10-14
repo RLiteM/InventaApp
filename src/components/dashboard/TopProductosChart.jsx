@@ -1,10 +1,10 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getTopProductos } from '../../api/dashboardApi';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const TopProductosChart = () => {
-  const { data: topProductos = [], error, isLoading } = useQuery('topProductos', getTopProductos);
+  const { data: topProductos = [], error, isLoading } = useQuery({ queryKey: ['topProductos'], queryFn: getTopProductos });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando gráfico...</div>;
   if (error) return <div className="dashboard-card error-placeholder">Error al cargar gráfico</div>;

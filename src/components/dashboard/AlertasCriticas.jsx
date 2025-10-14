@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getAlertas } from '../../api/dashboardApi';
 
 const AlertasCriticas = () => {
-  const { data, error, isLoading } = useQuery('alertas', getAlertas);
+  const { data, error, isLoading } = useQuery({ queryKey: ['alertas'], queryFn: getAlertas });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando alertas...</div>;
   if (error) return <div className="dashboard-card error-placeholder">Error al cargar alertas</div>;

@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getMovimientos } from '../../api/dashboardApi';
 
 const MovimientosRecientes = () => {
-  const { data, error, isLoading } = useQuery('movimientos', getMovimientos);
+  const { data, error, isLoading } = useQuery({ queryKey: ['movimientos'], queryFn: getMovimientos });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando movimientos...</div>;
   // El error 500 de la API será atrapado aquí

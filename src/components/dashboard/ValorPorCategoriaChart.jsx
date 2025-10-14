@@ -1,12 +1,12 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getCategorias } from '../../api/dashboardApi';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF1919'];
 
 const ValorPorCategoriaChart = () => {
-  const { data: categorias = [], error, isLoading } = useQuery('categorias', getCategorias);
+  const { data: categorias = [], error, isLoading } = useQuery({ queryKey: ['categorias'], queryFn: getCategorias });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando gráfico...</div>;
   if (error) return <div className="dashboard-card error-placeholder">Error al cargar gráfico</div>;

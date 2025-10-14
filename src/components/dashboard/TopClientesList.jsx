@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getTopClientes } from '../../api/dashboardApi';
 
 const TopClientesList = () => {
-  const { data: topClientes = [], error, isLoading } = useQuery('topClientes', getTopClientes);
+  const { data: topClientes = [], error, isLoading } = useQuery({ queryKey: ['topClientes'], queryFn: getTopClientes });
 
   if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando clientes...</div>;
   if (error) return <div className="dashboard-card error-placeholder">Error al cargar clientes</div>;
