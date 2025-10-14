@@ -6,7 +6,7 @@ import AdminLayout from "../components/layout/AdminLayout";
 import LoginPage from "../pages/LoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
-import DashboardPage from "../pages/admin/DashboardPage";
+import Dashboard from "../pages/Dashboard";
 import GestionUsuariosPage from "../pages/admin/GestionUsuariosPage";
 import CrearUsuarioPage from "../pages/admin/CrearUsuarioPage";
 import EditarUsuarioPage from "../pages/admin/EditarUsuarioPage";
@@ -80,7 +80,7 @@ export default function AppRouter() {
         >
           <Route element={<AdminRoutes user={user} onLogout={handleLogout} />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="dashboard" element={<Dashboard user={user} />} />
             <Route path="admin/usuarios" element={<GestionUsuariosPage />} />
             <Route path="admin/usuarios/nuevo" element={<CrearUsuarioPage />} />
             <Route path="admin/usuarios/editar/:id" element={<EditarUsuarioPage />} />
