@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProductos.css';
+import CrearProductoModal from '../../components/admin/CrearProductoModal';
 
 export default function GestionProductosPage() {
   const [productos, setProductos] = useState([]);
@@ -10,6 +11,7 @@ export default function GestionProductosPage() {
   const [error, setError] = useState(null);
   const [filtro, setFiltro] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -53,6 +55,11 @@ export default function GestionProductosPage() {
     fetchInitialData();
   }, []);
 
+  const handleProductoCreado = () => {
+    setIsModalOpen(false);
+    fetchInitialData();
+  };
+
   const productosFiltrados = productos.filter(prod => {
     const terminoBusqueda = filtro.toLowerCase();
     const categoriaMatch = !filtroCategoria || prod.categoriaId.toString() === filtroCategoria;
@@ -75,7 +82,7 @@ export default function GestionProductosPage() {
     <div className="product-management-page">
       <div className="page-header">
         <h1>Gestión de Productos</h1>
-        <button onClick={() => alert('Funcionalidad no implementada')} className="create-button"><FiPlus /> Crear Producto</button>
+        <button onClick={() => setIsModalOpen(true)} className="create-button"><FiPlus /> Crear Producto</button>
       </div>
 
       <div className="filters-container">
@@ -137,6 +144,11 @@ export default function GestionProductosPage() {
           </tbody>
         </table>
       </div>
+      <CrearProductoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onProductoCreado={handleProductoCreado}
+      />
     </div>
   );
 }
