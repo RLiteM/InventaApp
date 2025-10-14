@@ -1,0 +1,83 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.dashboard-card {
+  background-color: var(--background-color, #fff);
+  color: var(--text-color, #000);
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--border-color, #ddd);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Estilos para estados de carga y error */
+.loading-placeholder, .error-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  font-style: italic;
+  color: #888;
+}
+
+/* --- NUEVOS ESTILOS PARA KPI --- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.kpi {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+.kpi-icon {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--text-color, #000);
+}
+
+.kpi-title {
+  font-size: 0.8rem;
+  color: #666;
+}
