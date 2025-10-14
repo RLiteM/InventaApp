@@ -38,7 +38,15 @@
   color: var(--color-texto);
 }
 
-.form-group input,
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
 .form-group select {
   padding: 0.75rem;
   border: 1px solid var(--color-borde);

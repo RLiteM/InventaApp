@@ -33,7 +33,7 @@
   text-align: left;
 }
 
-.form-group label {
+.cambiar-contrasena-form .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   color: #0d1c1a !important; /* Forzar color de texto principal oscuro */
