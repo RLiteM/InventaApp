@@ -3,6 +3,7 @@ import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProductos.css';
 import CrearProductoModal from '../../components/admin/CrearProductoModal';
+import EditarProductoModal from '../../components/admin/EditarProductoModal';
 
 export default function GestionProductosPage() {
   const [productos, setProductos] = useState([]);
@@ -12,6 +13,8 @@ export default function GestionProductosPage() {
   const [filtro, setFiltro] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [productoAEditar, setProductoAEditar] = useState(null);
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -58,6 +61,16 @@ export default function GestionProductosPage() {
   const handleProductoCreado = () => {
     setIsModalOpen(false);
     fetchInitialData();
+  };
+
+  const handleProductoActualizado = () => {
+    setIsEditModalOpen(false);
+    fetchInitialData();
+  };
+
+  const handleEditClick = (producto) => {
+    setProductoAEditar(producto);
+    setIsEditModalOpen(true);
   };
 
   const productosFiltrados = productos.filter(prod => {
@@ -136,7 +149,7 @@ export default function GestionProductosPage() {
                 <td>{prod.stockMinimo}</td>
                 <td>{prod.unidadMedida}</td>
                 <td className="action-buttons">
-                  <button title="Editar" onClick={() => alert('Funcionalidad no implementada')} className="edit-button action-btn-icon"><FiEdit /></button>
+                  <button title="Editar" onClick={() => handleEditClick(prod)} className="edit-button action-btn-icon"><FiEdit /></button>
                   <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>
                 </td>
               </tr>
@@ -149,6 +162,14 @@ export default function GestionProductosPage() {
         onClose={() => setIsModalOpen(false)}
         onProductoCreado={handleProductoCreado}
       />
+      {productoAEditar && (
+        <EditarProductoModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          onProductoActualizado={handleProductoActualizado}
+          producto={productoAEditar}
+        />
+      )}
     </div>
   );
 }
