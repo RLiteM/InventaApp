@@ -27,14 +27,15 @@
   flex: 1;
   animation: fadeIn 0.6s ease forwards;
   opacity: 0;
-  /* overflow removido */
+  overflow: visible; /* Quita scroll */
 }
 
-/* Hover y animación escalonada */
 .dashboard-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
+
+/* Animación escalonada */
 .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
 .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
 .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
@@ -74,14 +75,14 @@
 .kpi:nth-child(4) { --color-acento: #f6ad55; }
 
 .kpi-icon {
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* ligeramente más pequeño para ajuste general */
   background-color: rgba(0, 0, 0, 0.06);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   color: #4a5568;
 }
 
@@ -91,13 +92,13 @@
 }
 
 .kpi-value {
-  font-size: 1.45rem;
+  font-size: 1.2rem; /* antes 1.45rem */
   font-weight: bold;
   color: #1a202c;
 }
 
 .kpi-title {
-  font-size: 0.85rem;
+  font-size: 0.75rem; /* antes 0.85rem */
   color: #6b7280;
 }
 
@@ -111,6 +112,7 @@
 .alertas-movimientos .movimientos,
 .alertas-movimientos .inventario {
   overflow: visible; /* Quita scroll */
+  min-height: auto;
 }
 
 /* === FILA 3: GRÁFICAS PRINCIPALES === */
