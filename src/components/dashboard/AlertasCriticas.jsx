@@ -1,40 +1,49 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAlertas } from '../../api/dashboardApi';
+import './AlertasCriticas.css'; // Archivo CSS específico para este componente
 
 const AlertasCriticas = () => {
   const { data, error, isLoading } = useQuery({ queryKey: ['alertas'], queryFn: getAlertas });
 
-  if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando alertas...</div>;
-  if (error) return <div className="dashboard-card error-placeholder">Error al cargar alertas</div>;
+  if (isLoading) return <div className="alertas-loading">Cargando alertas...</div>;
+  if (error) return <div className="alertas-error">Error al cargar alertas</div>;
 
   const { productosStockCritico = [], lotesProximosACaducar = [] } = data || {};
 
   return (
-    <div className="dashboard-card alertas-criticas">
-      <h2>Alertas Críticas</h2>
-      <div className="alertas-section">
-        <h4>Stock Crítico</h4>
+    <div className="alertas-container">
+      <h2 className="alertas-title">Alertas Críticas</h2>
+
+      {/* Tarjeta Stock Crítico */}
+      <div className="alerta-card stock-card">
+        <h3><span className="alert-icon">⚠️</span> Stock Crítico</h3>
         {productosStockCritico.length > 0 ? (
-          <ul>
+          <div className="chips-container">
             {productosStockCritico.map(p => (
-              <li key={p.productoId}>{p.productoNombre} ({p.stockActual}/{p.stockMinimo})</li>
+              <span key={p.productoId} className="alert-chip stock-critico">
+                {p.productoNombre} ({p.stockActual}/{p.stockMinimo})
+              </span>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p>No hay productos con stock crítico.</p>
+          <p className="alertas-empty">No hay productos con stock crítico.</p>
         )}
       </div>
-      <div className="alertas-section">
-        <h4>Lotes Próximos a Caducar</h4>
+
+      {/* Tarjeta Lotes Próximos a Caducar */}
+      <div className="alerta-card lote-card">
+        <h3><span className="alert-icon">⏰</span> Lotes Próximos a Caducar</h3>
         {lotesProximosACaducar.length > 0 ? (
-          <ul>
+          <div className="chips-container">
             {lotesProximosACaducar.map(l => (
-              <li key={l.loteId}>{l.productoNombre} (Vence: {l.fechaCaducidad})</li>
+              <span key={l.loteId} className="alert-chip lote-proximo">
+                {l.productoNombre} (Vence: {new Date(l.fechaCaducidad).toLocaleDateString()})
+              </span>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p>No hay lotes próximos a caducar.</p>
+          <p className="alertas-empty">No hay lotes próximos a caducar.</p>
         )}
       </div>
     </div>
