@@ -33,15 +33,17 @@
   background: transparent;
   border: 1px solid var(--color-borde);
   color: var(--color-texto);
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
+  width: 44px; /* Forzar cuadrado perfecto */
+  height: 44px; /* Forzar cuadrado perfecto */
+  padding: 0; /* Eliminar padding para control total */
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 1.8rem;
+  font-size: 1.6rem; /* Tamaño de icono ajustado */
   transition: all 0.3s ease;
+  flex-shrink: 0; /* Evitar que se encoja */
 }
 
 .sidebar-toggle:hover {
@@ -88,6 +90,7 @@
   border-top: 1px solid var(--color-borde);
   display: flex;
   flex-direction: column;
+  align-items: center; /* Centrar items en el footer */
   gap: 1rem;
 }
 
@@ -95,6 +98,7 @@
 .logout-button {
   display: flex;
   align-items: center;
+  justify-content: center; /* Centrar contenido del botón */
   gap: 1rem;
   background: var(--color-peligro-fondo);
   border: 1px solid var(--color-peligro-borde);
@@ -102,6 +106,7 @@
   padding: 0.9rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
+  width: 100%; /* Ocupar todo el ancho disponible */
 }
 
 .logout-button:hover {
@@ -113,11 +118,34 @@
   width: 88px;
 }
 
+/* Ocultar texto y elementos no deseados en modo colapsado */
 .sidebar-collapsed .link-text,
 .sidebar-collapsed .sidebar-brand {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+  display: none; /* Usar display: none para asegurar que no ocupe espacio */
+}
+
+/* Ocultar específicamente el texto del botón de logout */
+.sidebar-collapsed .logout-button .link-text {
+    display: none;
+}
+
+/* Ajustar el padding y centrar el icono en los enlaces cuando está colapsado */
+.sidebar-collapsed .sidebar-nav a {
+  justify-content: center;
+  padding: 0.9rem 0;
+}
+
+/* Ajustar el botón de logout en modo colapsado */
+.sidebar-collapsed .logout-button {
+  justify-content: center;
+  padding: 0.9rem 0; /* Ajustar padding para que sea consistente */
+  width: 44px; /* Hacerlo un cuadrado */
+  height: 44px;
+}
+
+/* Ajustar el ThemeToggle en modo colapsado */
+.sidebar-collapsed .sidebar-footer {
+    padding: 1.25rem 0;
 }
 
 /* --- Contenido Principal --- */

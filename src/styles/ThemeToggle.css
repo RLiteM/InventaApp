@@ -41,17 +41,24 @@
   transition: color 0.3s ease;
 }
 
-/* Color del ícono activo (blanco) e inactivo (color de texto) */
-.theme-toggle-switch .sun-icon {
-  color: white;
-}
-.theme-toggle-switch .moon-icon {
+/* Estilos para el modo colapsado (icono único) */
+.theme-toggle-collapsed {
+  width: 40px; /* Ancho del botón cuadrado */
+  height: 40px; /* Altura del botón cuadrado */
+  background-color: var(--color-superficie-hover);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px; /* Mismo radio que otros botones */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem; /* Tamaño del icono */
   color: var(--color-texto);
+  transition: all 0.3s ease;
 }
 
-.theme-toggle-switch.dark-mode .sun-icon {
-  color: var(--color-texto);
-}
-.theme-toggle-switch.dark-mode .moon-icon {
-  color: white;
+.theme-toggle-collapsed:hover {
+  background-color: var(--color-primario);
+  color: var(--color-primario-texto);
+  border-color: var(--color-primario);
 }

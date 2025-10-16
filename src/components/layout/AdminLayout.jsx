@@ -4,7 +4,7 @@ import {
   FiGrid, FiUsers, FiTruck, FiBriefcase, 
   FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut 
 } from 'react-icons/fi';
-import { BsLayoutSidebarInset } from 'react-icons/bs';
+import { TfiLayoutSidebarLeft } from 'react-icons/tfi';
 import ThemeToggle from '../ThemeToggle';
 import "../../styles/AdminLayout.css";
 
@@ -29,7 +29,7 @@ export default function AdminLayout({ user, onLogout }) {
       <aside className="sidebar">
         <div className="sidebar-header">
           <button className="sidebar-toggle" onClick={toggleCollapse}>
-            <BsLayoutSidebarInset />
+            <TfiLayoutSidebarLeft />
           </button>
           <h2 className="sidebar-brand">Inventa</h2>
         </div>
@@ -41,8 +41,8 @@ export default function AdminLayout({ user, onLogout }) {
           <NavLink to="/admin/clientes"><FiBriefcase /><span className="link-text">Clientes</span></NavLink>
           <NavLink to="/admin/categorias"><FiTag /><span className="link-text">Categorías</span></NavLink>
           <NavLink to="/admin/productos"><FiPackage /><span className="link-text">Productos</span></NavLink>
-          <NavLink to="/admin/compras/nueva"><FiShoppingCart /><span className="link-text">Nueva Compra</span></NavLink>
-          <NavLink to="/admin/ventas/nueva"><FiDollarSign /><span className="link-text">Nueva Venta</span></NavLink>
+          <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>
+          <NavLink to="/admin/ventas/nueva"><FiShoppingCart /><span className="link-text">Nueva Venta</span></NavLink>
           <NavLink to="/cambiar-contrasena"><FiLock /><span className="link-text">Cambiar Contraseña</span></NavLink>
         </nav>
 
@@ -51,7 +51,7 @@ export default function AdminLayout({ user, onLogout }) {
             <FiLogOut />
             <span className="link-text">Cerrar Sesión</span>
           </button>
-          <ThemeToggle />
+          <ThemeToggle isCollapsed={isCollapsed} />
         </div>
       </aside>
 
