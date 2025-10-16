@@ -13,12 +13,12 @@ import ValorPorCategoriaChart from '../../components/dashboard/ValorPorCategoria
 export default function DashboardPage() {
   return (
     <div className="dashboard-container">
-      {/* Fila 1 - KPIs principales */}
+      {/* === FILA 1: KPIs PRINCIPALES === */}
       <section className="dashboard-row resumen">
         <ResumenKPIs />
       </section>
 
-      {/* Fila 2 - Alertas y Movimientos */}
+      {/* === FILA 2: ALERTAS Y MOVIMIENTOS === */}
       <section className="dashboard-row alertas-movimientos">
         <div className="dashboard-card alertas">
           <AlertasCriticas />
@@ -28,7 +28,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* Fila 3 - Gráficas principales */}
+      {/* === FILA 3: GRÁFICAS PRINCIPALES === */}
       <section className="dashboard-row graficas-principales">
         <div className="dashboard-card tendencias">
           <TendenciasVentasChart />
@@ -39,10 +39,6 @@ export default function DashboardPage() {
         <div className="dashboard-card categorias">
           <ValorPorCategoriaChart />
         </div>
-      </section>
-
-      {/* Fila 4 - Top Clientes */}
-      <section className="dashboard-row clientes">
         <div className="dashboard-card clientes-card">
           <TopClientesList />
         </div>
