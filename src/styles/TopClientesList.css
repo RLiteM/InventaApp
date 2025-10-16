@@ -28,14 +28,14 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.8rem;
 }
 
 .cliente-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
   border-radius: 8px;
   background-color: #f9fafb;
   font-weight: 500;
@@ -47,25 +47,54 @@
   transform: translateX(3px);
 }
 
-.cliente-item span {
-  display: inline-block;
+.cliente-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cliente-rank {
+  font-size: 1.2rem;
 }
 
 .cliente-nombre {
   color: #1a202c;
+  font-weight: 600;
+}
+
+.cliente-monto-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .cliente-monto {
   color: #38a169;
   font-weight: 700;
+  font-size: 0.95rem;
 }
 
-/* Opcional: colorear cada posición diferente */
-.cliente-1 { border-left: 4px solid #ff6b6b; }
-.cliente-2 { border-left: 4px solid #ffa500; }
-.cliente-3 { border-left: 4px solid #2b6cb0; }
-.cliente-4 { border-left: 4px solid #38a169; }
-.cliente-5 { border-left: 4px solid #9b59b6; }
+.bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38a169, #2f855a);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Colores opcionales por posición */
+.cliente-1 .bar-fill { background: linear-gradient(90deg, #ff6b6b, #f56565); }
+.cliente-2 .bar-fill { background: linear-gradient(90deg, #ffa500, #ff8c00); }
+.cliente-3 .bar-fill { background: linear-gradient(90deg, #2b6cb0, #2c5282); }
+.cliente-4 .bar-fill { background: linear-gradient(90deg, #38a169, #2f855a); }
+.cliente-5 .bar-fill { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
 
 /* Placeholder y error */
 .loading-placeholder, .error-placeholder {
