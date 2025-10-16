@@ -27,14 +27,14 @@
   flex: 1;
   animation: fadeIn 0.6s ease forwards;
   opacity: 0;
+  /* overflow removido */
 }
 
+/* Hover y animación escalonada */
 .dashboard-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
-
-/* Animación escalonada */
 .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
 .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
 .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
@@ -107,25 +107,10 @@
   gap: 1.5rem;
 }
 
-.alertas-movimientos .alertas {
-  flex: 1;
-  min-width: 250px;
-  max-height: 340px;
-  overflow-y: auto;
-}
-
-.alertas-movimientos .movimientos {
-  flex: 2;
-  min-width: 350px;
-  max-height: 340px;
-  overflow-y: auto;
-}
-
+.alertas-movimientos .alertas,
+.alertas-movimientos .movimientos,
 .alertas-movimientos .inventario {
-  flex: 1;
-  min-width: 200px;
-  max-height: 340px;
-  overflow-y: auto;
+  overflow: visible; /* Quita scroll */
 }
 
 /* === FILA 3: GRÁFICAS PRINCIPALES === */
@@ -160,13 +145,4 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* === Scroll personalizado === */
-.dashboard-card::-webkit-scrollbar {
-  width: 6px;
-}
-.dashboard-card::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
 }
