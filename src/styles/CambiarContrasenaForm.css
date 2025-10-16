@@ -93,4 +93,22 @@
   background-color: var(--color-primario-hover);
 }
 
-  
+  /*nuevo*/
+.back-button {
+  margin-top: 0.75rem;
+  background-color: transparent;
+  color: var(--color-primario);
+  border: 2px solid var(--color-primario);
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: var(--color-primario-hover);
+  color: var(--color-primario-texto);
+}
