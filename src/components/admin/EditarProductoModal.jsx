@@ -33,6 +33,7 @@ export default function EditarProductoModal({ isOpen, onClose, onProductoActuali
           precioMinorista: producto.precioMinorista || 0,
           precioMayorista: producto.precioMayorista || 0,
           stockMinimo: producto.stockMinimo || 0,
+          stockActual: producto.stockActual || 0,
           unidadMedida: producto.unidadMedida || '',
           categoriaId: producto.categoriaId || '',
         };
@@ -108,7 +109,7 @@ export default function EditarProductoModal({ isOpen, onClose, onProductoActuali
             </div>
             <div className="form-group">
                 <label>Último Costo</label>
-                <input type="number" name="ultimoCosto" value={formData.ultimoCosto || 0} onChange={handleChange} />
+                <p>{formData.ultimoCosto || 0}</p>
             </div>
             <div className="form-group">
                 <label>Precio Minorista</label>
@@ -121,6 +122,10 @@ export default function EditarProductoModal({ isOpen, onClose, onProductoActuali
             <div className="form-group">
                 <label>Stock Mínimo</label>
                 <input type="number" name="stockMinimo" value={formData.stockMinimo || 0} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+                <label>Stock Actual</label>
+                <p>{formData.stockActual || 0}</p>
             </div>
             <div className="form-group">
                 <label>Unidad de Medida</label>

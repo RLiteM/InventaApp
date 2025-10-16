@@ -12,10 +12,11 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [sku, setSku] = useState('');
+  const [stockMinimo, setStockMinimo] = useState('');
 
   useEffect(() => {
     if (isOpen) {
-      // Cargar categorías cuando el modal se abre
       const fetchCategorias = async () => {
         try {
           const res = await api.get('/categoria');
@@ -30,19 +31,26 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!nombre || !categoriaId) {
-      setError('El nombre y la categoría son obligatorios.');
+    if (!nombre || !categoriaId || !sku || !stockMinimo) {
+      setError('Todos los campos son obligatorios.');
       return;
     }
     setIsSaving(true);
     setError(null);
 
     try {
-      await api.post('/productos', { nombre, categoriaId });
+      await api.post('/productos/rapido', {
+        nombre,
+        categoriaId,
+        sku,
+        stockMinimo: parseInt(stockMinimo, 10),
+      });
       setIsSaving(false);
       setNombre('');
       setCategoriaId('');
-      onProductoCreado(); // Llama a la función para cerrar y recargar
+      setSku('');
+      setStockMinimo('');
+      onProductoCreado();
     } catch (err) {
       setError('Error al crear el producto.');
       setIsSaving(false);
@@ -50,9 +58,10 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
   };
 
   const handleClose = () => {
-    // Resetear estado al cerrar
     setNombre('');
     setCategoriaId('');
+    setSku('');
+    setStockMinimo('');
     setError(null);
     onClose();
   };
@@ -68,6 +77,16 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
       <h2>Crear Nuevo Producto</h2>
       {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>SKU</label>
+          <input
+            type="text"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
+            placeholder="Ej: PROD-001"
+            required
+          />
+        </div>
         <div className="form-group">
           <label>Nombre del Producto</label>
           <input
@@ -86,10 +105,22 @@ export default function CrearProductoModal({ isOpen, onClose, onProductoCreado }
             required
           >
             <option value="">Seleccione una categoría</option>
-            {categorias.map(cat => (
-              <option key={cat.categoriaId} value={cat.categoriaId}>{cat.nombre}</option>
+            {categorias.map((cat) => (
+              <option key={cat.categoriaId} value={cat.categoriaId}>
+                {cat.nombre}
+              </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
+          <label>Stock Mínimo</label>
+          <input
+            type="number"
+            value={stockMinimo}
+            onChange={(e) => setStockMinimo(e.target.value)}
+            placeholder="Ej: 10"
+            required
+          />
         </div>
         <div className="form-actions">
           <button type="button" className="cancel-btn" onClick={handleClose} disabled={isSaving}>
