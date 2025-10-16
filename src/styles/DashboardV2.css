@@ -27,7 +27,7 @@
   flex: 1;
   animation: fadeIn 0.6s ease forwards;
   opacity: 0;
-  overflow: visible; /* Quita scroll */
+  overflow: visible;
 }
 
 .dashboard-card:hover {
@@ -62,6 +62,7 @@
   background-color: #f9fafb;
   border-left: 4px solid var(--color-acento, #2b6cb0);
   transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
 }
 
 .kpi:hover {
@@ -69,13 +70,26 @@
   transform: translateY(-2px);
 }
 
+/* KPI Clickeable (Total Clientes) */
+.kpi-clickable {
+  cursor: pointer;
+  border-left-color: #38a169;
+}
+
+.kpi-clickable:hover {
+  background-color: #e6fffa;
+  transform: scale(1.02);
+}
+
+/* Colores personalizados */
 .kpi:nth-child(1) { --color-acento: #ff6b6b; }
 .kpi:nth-child(2) { --color-acento: #2b6cb0; }
 .kpi:nth-child(3) { --color-acento: #38a169; }
 .kpi:nth-child(4) { --color-acento: #f6ad55; }
 
+/* === ÍCONOS === */
 .kpi-icon {
-  font-size: 1.6rem; /* ligeramente más pequeño para ajuste general */
+  font-size: 1.6rem;
   background-color: rgba(0, 0, 0, 0.06);
   border-radius: 50%;
   display: flex;
@@ -86,19 +100,20 @@
   color: #4a5568;
 }
 
+/* === TEXTOS === */
 .kpi-info {
   display: flex;
   flex-direction: column;
 }
 
 .kpi-value {
-  font-size: 1.2rem; /* antes 1.45rem */
+  font-size: 1.2rem;
   font-weight: bold;
   color: #1a202c;
 }
 
 .kpi-title {
-  font-size: 0.75rem; /* antes 0.85rem */
+  font-size: 0.75rem;
   color: #6b7280;
 }
 
@@ -111,7 +126,7 @@
 .alertas-movimientos .alertas,
 .alertas-movimientos .movimientos,
 .alertas-movimientos .inventario {
-  overflow: visible; /* Quita scroll */
+  overflow: visible;
   min-height: auto;
 }
 
@@ -126,22 +141,10 @@
   align-items: start;
 }
 
-.tendencias { 
-  grid-area: tendencias; 
-  min-height: 380px;
-}
-.productos { 
-  grid-area: productos; 
-  min-height: 280px; 
-}
-.categorias { 
-  grid-area: categorias; 
-  min-height: 260px; 
-}
-.clientes-card { 
-  grid-area: clientes; 
-  min-height: 350px; 
-}
+.tendencias { grid-area: tendencias; min-height: 380px; }
+.productos { grid-area: productos; min-height: 280px; }
+.categorias { grid-area: categorias; min-height: 260px; }
+.clientes-card { grid-area: clientes; min-height: 350px; }
 
 /* === Animación sutil === */
 @keyframes fadeIn {
