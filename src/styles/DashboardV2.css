@@ -337,3 +337,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* === TENDENCIAS VENTAS === */
+.tendencias-ventas-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: var(--color-tarjeta, #f9fafb);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tendencias-ventas-chart:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.chart-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a202c;
+  text-align: center;
+  margin-bottom: 0.6rem;
+}
+
+/* === MODO OSCURO === */
+@media (prefers-color-scheme: dark) {
+  .tendencias-ventas-chart {
+    background-color: #1f2937;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  }
+
+  .chart-title {
+    color: #f9fafb;
+  }
+}
