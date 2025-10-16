@@ -116,26 +116,29 @@
   overflow-y: auto;
 }
 
-/* === Fila 3: Gráficas === */
+/* === Fila 3: Gráficas principales === */
+/* Nueva distribución tipo dashboard moderno */
 .graficas-principales {
   display: grid;
   grid-template-areas:
-    "productos tendencias"
-    "categorias tendencias";
-  grid-template-columns: 1fr 2fr;
+    "productos tendencias clientes"
+    "categorias tendencias clientes";
+  grid-template-columns: 1fr 2fr 1.2fr;
   gap: 1.5rem;
+  align-items: start;
 }
 
-.productos { grid-area: productos; }
-.tendencias { grid-area: tendencias; }
-.categorias { grid-area: categorias; }
+.productos { grid-area: productos; min-height: 280px; }
+.tendencias { 
+  grid-area: tendencias; 
+  min-height: 380px; /* Más corto que antes */
+}
+.categorias { grid-area: categorias; min-height: 260px; }
+.clientes-card { grid-area: clientes; min-height: 350px; }
 
-/* === Fila 4: Clientes === */
-.clientes-card {
-  max-width: 450px;
-  margin: 0 auto;
-  max-height: 340px;
-  overflow-y: auto;
+/* === Fila 4 eliminada, clientes suben === */
+.clientes {
+  display: none;
 }
 
 /* === Animación sutil === */
