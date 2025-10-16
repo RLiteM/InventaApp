@@ -227,3 +227,113 @@
   text-align: center;
   font-weight: 500;
 }
+
+/* === MOVIMIENTOS RECIENTES === */
+.movimientos-recientes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.titulo-movimientos {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1a202c;
+}
+
+.movimientos-grupos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.movimientos-grupo {
+  border-radius: 12px;
+  padding: 0.9rem;
+  background-color: #f9fafb;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subtitulo {
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.entradas { color: #16a34a; }
+.salidas { color: #dc2626; }
+
+.lista-movimientos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mov-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+.mov-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.mov-card.entrada .icono { color: #16a34a; }
+.mov-card.salida .icono { color: #dc2626; }
+
+.nombre {
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.detalle {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.sin-mov {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* === MODO OSCURO === */
+@media (prefers-color-scheme: dark) {
+  .movimientos-grupo {
+    background-color: #1f2937;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  .mov-card {
+    background-color: #111827;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .titulo-movimientos,
+  .nombre {
+    color: #f9fafb;
+  }
+
+  .detalle,
+  .sin-mov {
+    color: #d1d5db;
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .movimientos-grupos {
+    grid-template-columns: 1fr;
+  }
+}
