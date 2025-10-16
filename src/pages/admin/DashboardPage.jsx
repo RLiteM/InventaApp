@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../styles/DashboardV2.css';
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
+import '../../styles/DashboardV2.css';
 
 // Componentes del dashboard
 import ResumenKPIs from '../../components/dashboard/ResumenKPIs';
@@ -13,7 +13,6 @@ import TendenciasVentasChart from '../../components/dashboard/TendenciasVentasCh
 import ValorPorCategoriaChart from '../../components/dashboard/ValorPorCategoriaChart';
 
 export default function DashboardPage() {
-
   return (
     <div className="dashboard-container">
 
@@ -49,11 +48,13 @@ export default function DashboardPage() {
       </section>
 
       {/* === BOTÓN FLOTANTE NUEVA VENTA === */}
-      <Link to="/nueva-venta" title="Nueva Venta" className="fab-nueva-venta">
-        <ShoppingCart size={24} />
+      <Link 
+        to="/admin/ventas/nueva" 
+        title="Nueva Venta" 
+        className="fab-nueva-venta"
+      >
+        <ShoppingCart size={28} />
       </Link>
-
     </div>
   );
 }
-
