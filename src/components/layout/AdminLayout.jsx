@@ -4,7 +4,7 @@ import {
   FiGrid, FiUsers, FiTruck, FiBriefcase, 
   FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut 
 } from 'react-icons/fi';
-import { BsLayoutSidebarInset } from 'react-icons/bs'; // Nuevo ícono
+import { BsLayoutSidebarInset } from 'react-icons/bs';
 import ThemeToggle from '../ThemeToggle';
 import "../../styles/AdminLayout.css";
 
@@ -25,6 +25,7 @@ export default function AdminLayout({ user, onLogout }) {
 
   return (
     <div className={`admin-layout ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
+      {/* Sidebar fijo */}
       <aside className="sidebar">
         <div className="sidebar-header">
           <button className="sidebar-toggle" onClick={toggleCollapse}>
@@ -54,6 +55,7 @@ export default function AdminLayout({ user, onLogout }) {
         </div>
       </aside>
 
+      {/* Contenido desplazable */}
       <main className="admin-content">
         <div className="content-wrapper">
           <Outlet />
