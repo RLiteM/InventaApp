@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/DashboardV2.css';
+import { Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 // Componentes del dashboard
 import ResumenKPIs from '../../components/dashboard/ResumenKPIs';
@@ -13,7 +13,6 @@ import TendenciasVentasChart from '../../components/dashboard/TendenciasVentasCh
 import ValorPorCategoriaChart from '../../components/dashboard/ValorPorCategoriaChart';
 
 export default function DashboardPage() {
-  const navigate = useNavigate();
 
   return (
     <div className="dashboard-container">
@@ -50,13 +49,9 @@ export default function DashboardPage() {
       </section>
 
       {/* === BOTÓN FLOTANTE NUEVA VENTA === */}
-      <button
-        className="fab-nueva-venta"
-        onClick={() => navigate('/nueva-venta')}
-        title="Nueva Venta"
-      >
+      <Link to="/nueva-venta" title="Nueva Venta" className="fab-nueva-venta">
         <ShoppingCart size={24} />
-      </button>
+      </Link>
 
     </div>
   );
