@@ -169,8 +169,8 @@
 }
 
 /* GestionProductos.css */
+/* Highlight temporal para la columna de stock */
 .highlight-stock {
   background-color: rgba(255, 255, 0, 0.4);
   transition: background-color 1.5s ease;
 }
- 
