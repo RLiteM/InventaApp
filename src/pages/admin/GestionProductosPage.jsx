@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProductos.css';
@@ -6,6 +7,9 @@ import CrearProductoModal from '../../components/admin/CrearProductoModal';
 import EditarProductoModal from '../../components/admin/EditarProductoModal';
 
 export default function GestionProductosPage() {
+  const location = useLocation();
+  const highlightStock = location.state?.highlightStock || false;
+
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,39 +19,25 @@ export default function GestionProductosPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [productoAEditar, setProductoAEditar] = useState(null);
+  const [highlightClass, setHighlightClass] = useState('');
 
   const fetchInitialData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Fetch products and categories in parallel
       const [productosRes, categoriasRes] = await Promise.all([
         api.get('/productos'),
         api.get('/categoria')
       ]);
 
-      // Process products response
-      const productosData = productosRes.data;
-      if (Array.isArray(productosData)) {
-        setProductos(productosData);
-      } else if (productosData && Array.isArray(productosData.productos)) {
-        setProductos(productosData.productos);
-      } else if (productosData && Array.isArray(productosData.data)) {
-        setProductos(productosData.data);
-      } else {
-        setProductos([]);
-        console.error("La respuesta de la API de productos no es un array como se esperaba: ", productosData);
-      }
+      const productosData = Array.isArray(productosRes.data)
+        ? productosRes.data
+        : productosRes.data?.productos || productosRes.data?.data || [];
 
-      // Process categories response
-      if (Array.isArray(categoriasRes.data)) {
-        setCategorias(categoriasRes.data);
-      } else {
-        console.error("La respuesta de la API de categorías no es un array como se esperaba: ", categoriasRes.data);
-      }
+      setProductos(productosData);
 
+      setCategorias(Array.isArray(categoriasRes.data) ? categoriasRes.data : []);
     } catch (err) {
-      console.error('Error detallado al obtener datos iniciales:', err);
       setError('No se pudo cargar la lista de productos o categorías.');
     } finally {
       setIsLoading(false);
@@ -57,6 +47,14 @@ export default function GestionProductosPage() {
   useEffect(() => {
     fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    if (highlightStock) {
+      setHighlightClass('highlight-stock');
+      const timeout = setTimeout(() => setHighlightClass(''), 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [highlightStock]);
 
   const handleProductoCreado = () => {
     setIsModalOpen(false);
@@ -83,13 +81,8 @@ export default function GestionProductosPage() {
     return categoriaMatch && busquedaMatch;
   });
 
-  if (isLoading && !productos.length) {
-    return <div>Cargando productos...</div>;
-  }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
+  if (isLoading && !productos.length) return <div>Cargando productos...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="product-management-page">
@@ -130,7 +123,7 @@ export default function GestionProductosPage() {
               <th>Costo</th>
               <th>Minorista</th>
               <th>Mayorista</th>
-              <th>Stock</th>
+              <th className={highlightClass}>Stock</th>
               <th>Stock Mín.</th>
               <th>Medida</th>
               <th>Acciones</th>
@@ -157,6 +150,7 @@ export default function GestionProductosPage() {
           </tbody>
         </table>
       </div>
+
       <CrearProductoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
