@@ -1,76 +1,36 @@
-/* === Fila 3: Gráficas principales (nueva versión equilibrada) === */
+/* === Fila 3: Gráficas principales === */
+/* Distribución más estética, sin aumentar el tamaño total */
 .graficas-principales {
   display: grid;
   grid-template-areas:
     "productos tendencias clientes"
     "categorias tendencias clientes";
-  grid-template-columns: 1.1fr 1.8fr 1.2fr;
+  grid-template-columns: 1.1fr 1.7fr 1.2fr; /* proporciones más balanceadas */
   gap: 1.5rem;
   align-items: stretch;
 }
 
-/* === Alturas más equilibradas === */
+/* Variación de alturas para dar dinamismo sin agrandar */
 .productos {
   grid-area: productos;
-  min-height: 260px;
-}
-
-.categorias {
-  grid-area: categorias;
-  min-height: 220px;
+  min-height: 260px;  /* un poco más bajo */
+  max-height: 280px;
 }
 
 .tendencias {
   grid-area: tendencias;
-  min-height: 300px; /* reducida */
+  min-height: 320px;  /* más compacto, no tan largo */
+  max-height: 340px;
+}
+
+.categorias {
+  grid-area: categorias;
+  min-height: 240px;  /* más pequeño */
+  max-height: 260px;
 }
 
 .clientes-card {
   grid-area: clientes;
-  min-height: 400px;
-}
-
-/* === Tarjetas refinadas === */
-.dashboard-card {
-  background-color: #fff;
-  border-top: 4px solid #2b6cb0;
-  border-radius: 14px;
-  padding: 1.2rem 1.4rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.25s ease;
-  flex: 1;
-  animation: fadeIn 0.6s ease forwards;
-  opacity: 0;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* === Colores por tipo de card === */
-.tendencias { border-top-color: #2b6cb0; } /* Azul */
-.productos { border-top-color: #38a169; }  /* Verde */
-.categorias { border-top-color: #f6ad55; } /* Naranja */
-.clientes-card { border-top-color: #805ad5; } /* Púrpura */
-
-/* === Animación y entrada escalonada === */
-.dashboard-card:nth-child(1) { animation-delay: 0.1s; }
-.dashboard-card:nth-child(2) { animation-delay: 0.2s; }
-.dashboard-card:nth-child(3) { animation-delay: 0.3s; }
-.dashboard-card:nth-child(4) { animation-delay: 0.4s; }
-
-/* === Scroll personalizado === */
-.dashboard-card::-webkit-scrollbar {
-  width: 6px;
-}
-.dashboard-card::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 6px;
-}
-
-/* === Animación sutil === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  min-height: 370px;  /* un poco más alto para compensar */
+  max-height: 390px;
 }
