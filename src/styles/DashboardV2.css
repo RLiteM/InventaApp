@@ -101,17 +101,29 @@
   color: #6b7280;
 }
 
-/* === FILA 2: ALERTAS Y MOVIMIENTOS === */
+/* === FILA 2: ALERTAS, MOVIMIENTOS E INVENTARIO === */
+.alertas-movimientos {
+  display: flex;
+  gap: 1.5rem;
+}
+
 .alertas-movimientos .alertas {
   flex: 1;
-  min-width: 280px;
+  min-width: 250px;
   max-height: 340px;
   overflow-y: auto;
 }
 
 .alertas-movimientos .movimientos {
   flex: 2;
-  min-width: 500px;
+  min-width: 350px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.alertas-movimientos .inventario {
+  flex: 1;
+  min-width: 200px;
   max-height: 340px;
   overflow-y: auto;
 }
