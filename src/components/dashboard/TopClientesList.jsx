@@ -1,25 +1,29 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getTopClientes } from '../../api/dashboardApi';
+import './TopClientesList.css';
 
 const TopClientesList = () => {
-  const { data: topClientes = [], error, isLoading } = useQuery({ queryKey: ['topClientes'], queryFn: getTopClientes });
+  const { data: topClientes = [], error, isLoading } = useQuery({
+    queryKey: ['topClientes'],
+    queryFn: getTopClientes,
+  });
 
-  if (isLoading) return <div className="dashboard-card loading-placeholder">Cargando clientes...</div>;
-  if (error) return <div className="dashboard-card error-placeholder">Error al cargar clientes</div>;
+  if (isLoading) return <div className="top-clientes-card loading-placeholder">Cargando clientes...</div>;
+  if (error) return <div className="top-clientes-card error-placeholder">Error al cargar clientes</div>;
 
-  const formatCurrency = (value) => 
+  const formatCurrency = (value) =>
     `Q ${(value ?? 0).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   return (
-    <div className="dashboard-card top-clientes-list">
+    <div className="top-clientes-card">
       <h2>Top 5 Clientes</h2>
       {topClientes.length > 0 ? (
-        <ol>
-          {topClientes.map(cliente => (
-            <li key={cliente.clienteId}>
-              <span>{cliente.nombreCliente}</span>
-              <span>{formatCurrency(cliente.montoTotalGastado)}</span>
+        <ol className="top-clientes-list">
+          {topClientes.map((cliente, index) => (
+            <li key={cliente.clienteId} className={`cliente-item cliente-${index + 1}`}>
+              <span className="cliente-nombre">{cliente.nombreCliente}</span>
+              <span className="cliente-monto">{formatCurrency(cliente.montoTotalGastado)}</span>
             </li>
           ))}
         </ol>
