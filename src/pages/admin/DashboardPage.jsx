@@ -21,28 +21,32 @@ export default function DashboardPage() {
         <ResumenKPIs />
       </section>
 
-      {/* === FILA 2: ALERTAS, MOVIMIENTOS E INVENTARIO === */}
+      {/* === FILA 2: ALERTAS Y MOVIMIENTOS === */}
       <section className="dashboard-row alertas-movimientos">
-        <div className="dashboard-card alertas">
+        <div className="dashboard-card alertas" style={{ flex: '1 1 300px' }}>
           <AlertasCriticas />
         </div>
-        <div className="dashboard-card movimientos">
+        <div className="dashboard-card movimientos" style={{ flex: '2 1 400px' }}>
           <MovimientosRecientes />
-        </div>
-        <div className="dashboard-card inventario">
-          <ValorPorCategoriaChart />
         </div>
       </section>
 
-      {/* === FILA 3: GRÁFICAS PRINCIPALES === */}
+      {/* === FILA 3: TENDENCIAS Y TOP PRODUCTOS === */}
       <section className="dashboard-row graficas-principales">
-        <div className="dashboard-card tendencias">
+        <div className="dashboard-card tendencias" style={{ flex: '1.8 1 0' }}>
           <TendenciasVentasChart />
         </div>
-        <div className="dashboard-card productos">
+        <div className="dashboard-card productos" style={{ flex: '1.2 1 0' }}>
           <TopProductosChart />
         </div>
-        <div className="dashboard-card clientes-card">
+      </section>
+
+      {/* === FILA 4: VALOR INVENTARIO Y TOP CLIENTES === */}
+      <section className="dashboard-row fila-cuarta">
+        <div className="dashboard-card inventario" style={{ flex: '1 1 300px' }}>
+          <ValorPorCategoriaChart />
+        </div>
+        <div className="dashboard-card clientes-card" style={{ flex: '2 1 400px' }}>
           <TopClientesList />
         </div>
       </section>
