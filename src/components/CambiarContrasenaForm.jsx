@@ -65,7 +65,7 @@ const CambiarContrasenaForm = () => {
           className="back-button"
           onClick={() => navigate(-1)}
         >
-          Regresar
+          Cancelar
         </button>
       </form>
     </div>
