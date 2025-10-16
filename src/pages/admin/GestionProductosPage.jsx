@@ -1,26 +1,111 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-// ...otros imports
+import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
+import api from '../../api/apiClient';
+import '../../styles/GestionProductos.css';
+import CrearProductoModal from '../../components/admin/CrearProductoModal';
+import EditarProductoModal from '../../components/admin/EditarProductoModal';
 
 export default function GestionProductosPage() {
   const location = useLocation();
+  const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filtro, setFiltro] = useState('');
+  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [productoAEditar, setProductoAEditar] = useState(null);
   const [highlightStock, setHighlightStock] = useState(false);
 
-  // ...estado, fetch, modals, etc.
+  const fetchInitialData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const [productosRes, categoriasRes] = await Promise.all([
+        api.get('/productos'),
+        api.get('/categoria')
+      ]);
+
+      setProductos(Array.isArray(productosRes.data) ? productosRes.data : []);
+      setCategorias(Array.isArray(categoriasRes.data) ? categoriasRes.data : []);
+
+    } catch (err) {
+      console.error('Error al cargar datos:', err);
+      setError('No se pudo cargar la lista de productos o categorías.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('highlight') === 'stock') {
-      setHighlightStock(true);
-      setTimeout(() => setHighlightStock(false), 1500); // resalta por 1.5s
-    }
-  }, [location]);
+    fetchInitialData();
+  }, []);
 
-  // ...fetch y filtros
+  // Detectar si venimos del KPI de Stock Total
+  useEffect(() => {
+    if (location.state?.highlightStock) {
+      setHighlightStock(true);
+      const timer = setTimeout(() => setHighlightStock(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]);
+
+  const handleProductoCreado = () => {
+    setIsModalOpen(false);
+    fetchInitialData();
+  };
+
+  const handleProductoActualizado = () => {
+    setIsEditModalOpen(false);
+    fetchInitialData();
+  };
+
+  const handleEditClick = (producto) => {
+    setProductoAEditar(producto);
+    setIsEditModalOpen(true);
+  };
+
+  const productosFiltrados = productos.filter(prod => {
+    const terminoBusqueda = filtro.toLowerCase();
+    const categoriaMatch = !filtroCategoria || prod.categoriaId.toString() === filtroCategoria;
+    const busquedaMatch = !terminoBusqueda ||
+      prod.sku.toLowerCase().includes(terminoBusqueda) ||
+      prod.nombre.toLowerCase().includes(terminoBusqueda);
+    return categoriaMatch && busquedaMatch;
+  });
+
+  if (isLoading && !productos.length) return <div>Cargando productos...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="product-management-page">
-      {/* Header y filtros */}
+      <div className="page-header">
+        <h1>Gestión de Productos</h1>
+        <button onClick={() => setIsModalOpen(true)} className="create-button"><FiPlus /> Crear Producto</button>
+      </div>
+
+      <div className="filters-container">
+        <input
+          type="text"
+          placeholder="Buscar por SKU o Nombre..."
+          value={filtro}
+          onChange={e => setFiltro(e.target.value)}
+          className="filter-input"
+        />
+        <select
+          className="filter-select"
+          value={filtroCategoria}
+          onChange={e => setFiltroCategoria(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {categorias.map(cat => (
+            <option key={cat.categoriaId} value={cat.categoriaId}>{cat.nombre}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="table-responsive-container">
         <table className="products-table">
           <thead>
@@ -60,7 +145,9 @@ export default function GestionProductosPage() {
           </tbody>
         </table>
       </div>
-      {/* Modals */}
+
+      <CrearProductoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onProductoCreado={handleProductoCreado} />
+      {productoAEditar && <EditarProductoModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} onProductoActualizado={handleProductoActualizado} producto={productoAEditar} />}
     </div>
   );
 }

@@ -25,7 +25,7 @@ const ResumenKPIs = () => {
 
   const handleClickClientes = () => navigate('/admin/clientes');
   const handleClickProductos = () => navigate('/admin/productos');
-  const handleClickStock = () => navigate('/admin/productos?highlight=stock');
+  const handleClickStock = () => navigate('/admin/productos', { state: { highlightStock: true } });
 
   return (
     <div className="dashboard-card resumen-kpis">
