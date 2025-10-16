@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getAlertas } from '../../api/dashboardApi';
-import './AlertasCriticas.css'; // Archivo CSS específico para este componente
+import { getAlertas } from '../../api/dashboardApi';}
 
 const AlertasCriticas = () => {
   const { data, error, isLoading } = useQuery({ queryKey: ['alertas'], queryFn: getAlertas });
