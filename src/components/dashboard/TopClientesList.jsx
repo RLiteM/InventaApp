@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getTopClientes } from '../../api/dashboardApi';
-import './TopClientesList.css';
+import '../../styles/TopClientesList.css'; // <-- Import corregido para la carpeta styles
 
 const TopClientesList = () => {
   const { data: topClientes = [], error, isLoading } = useQuery({
