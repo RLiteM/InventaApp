@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getAlertas } from '../../api/dashboardApi';}
+import { getAlertas } from '../../api/dashboardApi';
 
 const AlertasCriticas = () => {
   const { data, error, isLoading } = useQuery({ queryKey: ['alertas'], queryFn: getAlertas });
