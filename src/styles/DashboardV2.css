@@ -373,3 +373,47 @@
     color: #f9fafb;
   }
 }
+
+/* === BOTÓN FLOTANTE NUEVA VENTA === */
+.fab-nueva-venta {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #2b6cb0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.fab-nueva-venta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  background-color: #1e4e8c;
+}
+
+.fab-nueva-venta:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* === MODO OSCURO === */
+@media (prefers-color-scheme: dark) {
+  .fab-nueva-venta {
+    background-color: #2563eb;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.6);
+  }
+
+  .fab-nueva-venta:hover {
+    background-color: #1d4ed8;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+  }
+}
