@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { 
   FiGrid, FiUsers, FiTruck, FiBriefcase, 
@@ -10,7 +10,17 @@ import "../../styles/AdminLayout.css";
 
 export default function AdminLayout({ user, onLogout }) {
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  // Leer el estado inicial desde localStorage
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    return savedState !== null ? JSON.parse(savedState) : false;
+  });
+
+  // Guardar el estado en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
 
   const handleLogout = () => {
     onLogout();

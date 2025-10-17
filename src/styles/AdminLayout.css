@@ -148,6 +148,27 @@
     padding: 1.25rem 0;
 }
 
+/* Estilos para la barra de desplazamiento personalizada en Webkit (Chrome, Safari) */
+.sidebar-nav::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra */
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent; /* El fondo de la pista */
+  margin: 1rem 0;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background-color: var(--color-borde); /* Color de la barra */
+  border-radius: 10px; /* Bordes redondeados */
+  border: 2px solid var(--color-superficie); /* Crea un espacio alrededor de la barra */
+  background-clip: content-box;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primario); /* Color al pasar el mouse */
+}
+
 /* --- Contenido Principal --- */
 .admin-content {
   flex: 1;
