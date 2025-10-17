@@ -51,7 +51,7 @@ export default function AdminLayout({ user, onLogout }) {
           <NavLink to="/admin/clientes"><FiBriefcase /><span className="link-text">Clientes</span></NavLink>
           <NavLink to="/admin/categorias"><FiTag /><span className="link-text">Categorías</span></NavLink>
           <NavLink to="/admin/productos"><FiPackage /><span className="link-text">Productos</span></NavLink>
-          <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>
+          {isAdmin && <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>}
           <NavLink to="/admin/ventas/nueva"><FiShoppingCart /><span className="link-text">Nueva Venta</span></NavLink>
           <NavLink to="/cambiar-contrasena"><FiLock /><span className="link-text">Cambiar Contraseña</span></NavLink>
         </nav>

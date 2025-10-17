@@ -6,7 +6,7 @@ import EditarCategoriaModal from '../../components/admin/EditarCategoriaModal'; 
 import ListarProductosModal from '../../components/admin/ListarProductosModal'; // Nuevo
 import '../../styles/GestionCategorias.css';
 
-export default function GestionCategoriasPage() {
+export default function GestionCategoriasPage({ user }) {
   const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +18,8 @@ export default function GestionCategoriasPage() {
   
   // Estado para la categoría seleccionada
   const [selectedCategoria, setSelectedCategoria] = useState(null);
+
+  const isAdmin = user?.rol === 'Administrador';
 
   const fetchCategorias = async () => {
     setIsLoading(true);
@@ -94,7 +96,7 @@ export default function GestionCategoriasPage() {
     <div className="category-management-page">
       <div className="page-header">
         <h1>Gestión de Categorías</h1>
-        <button onClick={handleOpenCreateModal} className="create-button"><FiPlus /> Crear Categoría</button>
+        {isAdmin && <button onClick={handleOpenCreateModal} className="create-button"><FiPlus /> Crear Categoría</button>}
       </div>
       <table className="categories-table">
         <thead>
@@ -113,7 +115,7 @@ export default function GestionCategoriasPage() {
               <td>{cat.cantidadProductos ?? 'N/A'}</td>
               <td className="action-buttons">
                 <button onClick={() => handleOpenEditModal(cat)} className="edit-button"><FiEdit /> Editar</button>
-                <button onClick={() => handleDelete(cat.categoriaId)} className="delete-button"><FiTrash2 /> Eliminar</button>
+                {isAdmin && <button onClick={() => handleDelete(cat.categoriaId)} className="delete-button"><FiTrash2 /> Eliminar</button>}
                 <button onClick={() => handleOpenListModal(cat)} className="list-button"><FiEye /> Ver Productos</button>
               </td>
             </tr>

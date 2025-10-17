@@ -6,7 +6,7 @@ import '../../styles/GestionProductos.css';
 import CrearProductoModal from '../../components/admin/CrearProductoModal';
 import EditarProductoModal from '../../components/admin/EditarProductoModal';
 
-export default function GestionProductosPage() {
+export default function GestionProductosPage({ user }) {
   const location = useLocation();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -18,6 +18,8 @@ export default function GestionProductosPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [productoAEditar, setProductoAEditar] = useState(null);
   const [highlightStock, setHighlightStock] = useState(false);
+
+  const isAdmin = user?.rol === 'Administrador';
 
   const fetchInitialData = async () => {
     setIsLoading(true);
@@ -83,7 +85,7 @@ export default function GestionProductosPage() {
     <div className="product-management-page">
       <div className="page-header">
         <h1>Gestión de Productos</h1>
-        <button onClick={() => setIsModalOpen(true)} className="create-button"><FiPlus /> Crear Producto</button>
+        {isAdmin && <button onClick={() => setIsModalOpen(true)} className="create-button"><FiPlus /> Crear Producto</button>}
       </div>
 
       <div className="filters-container">
@@ -138,7 +140,7 @@ export default function GestionProductosPage() {
                 <td>{prod.unidadMedida}</td>
                 <td className="action-buttons">
                   <button title="Editar" onClick={() => handleEditClick(prod)} className="edit-button action-btn-icon"><FiEdit /></button>
-                  <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>
+                  {isAdmin && <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>}
                 </td>
               </tr>
             ))}

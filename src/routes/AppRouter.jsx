@@ -81,25 +81,25 @@ export default function AppRouter() {
           <Route element={<AdminRoutes user={user} onLogout={handleLogout} />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard user={user} />} />
-            <Route path="admin/usuarios" element={<GestionUsuariosPage />} />
+            <Route path="admin/usuarios" element={<GestionUsuariosPage user={user} />} />
             <Route path="admin/usuarios/nuevo" element={<CrearUsuarioPage />} />
             <Route path="admin/usuarios/editar/:id" element={<EditarUsuarioPage />} />
-            <Route path="admin/proveedores" element={<GestionProveedoresPage />} />
+            <Route path="admin/proveedores" element={<GestionProveedoresPage user={user} />} />
             <Route path="admin/proveedores/nuevo" element={<CrearProveedorPage />} />
             <Route path="admin/proveedores/editar/:id" element={<EditarProveedorPage />} />
             <Route path="admin/compras/nueva" element={<RegistroCompraPage />} />
             <Route path="admin/ventas/nueva" element={<RegistroVentaPage />} />
 
             {/* Rutas de Clientes */}
-            <Route path="admin/clientes" element={<GestionClientesPage />} />
+            <Route path="admin/clientes" element={<GestionClientesPage user={user} />} />
             <Route path="admin/clientes/nuevo" element={<CrearClientePage />} />
             <Route path="admin/clientes/editar/:id" element={<EditarClientePage />} />
 
             {/* Ruta de Categorías */}
-            <Route path="admin/categorias" element={<GestionCategoriasPage />} />
+            <Route path="admin/categorias" element={<GestionCategoriasPage user={user} />} />
 
             {/* Ruta de Productos */}
-            <Route path="admin/productos" element={<GestionProductosPage />} />
+            <Route path="admin/productos" element={<GestionProductosPage user={user} />} />
 
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

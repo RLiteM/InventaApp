@@ -66,7 +66,7 @@ export default function GestionClientesPage() {
     <div className="provider-management-page"> {/* Reutilizando clase de estilo */}
       <div className="page-header">
         <h1>Gestión de Clientes</h1>
-        <Link to="/admin/clientes/nuevo" className="create-button"><FiPlus /> Crear Cliente</Link>
+        {isAdmin && <Link to="/admin/clientes/nuevo" className="create-button"><FiPlus /> Crear Cliente</Link>}
       </div>
       <table className="providers-table"> {/* Reutilizando clase de estilo */}
         <thead>

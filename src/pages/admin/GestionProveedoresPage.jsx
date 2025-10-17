@@ -4,10 +4,12 @@ import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProveedores.css';
 
-export default function GestionProveedoresPage() {
+export default function GestionProveedoresPage({ user }) {
   const [providers, setProviders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const isAdmin = user?.rol === 'Administrador';
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -49,7 +51,7 @@ export default function GestionProveedoresPage() {
     <div className="provider-management-page">
       <div className="page-header">
         <h1>Gestión de Proveedores</h1>
-        <Link to="/admin/proveedores/nuevo" className="create-button"><FiPlus /> Crear Proveedor</Link>
+        {isAdmin && <Link to="/admin/proveedores/nuevo" className="create-button"><FiPlus /> Crear Proveedor</Link>}
       </div>
       <table className="providers-table">
         <thead>
@@ -70,7 +72,7 @@ export default function GestionProveedoresPage() {
                 <Link to={`/admin/proveedores/editar/${provider.proveedorId}`}>
                   <button className="edit-button"><FiEdit /> Editar</button>
                 </Link>
-                <button onClick={() => handleDelete(provider.proveedorId)} className="delete-button"><FiTrash2 /> Eliminar</button>
+                {isAdmin && <button onClick={() => handleDelete(provider.proveedorId)} className="delete-button"><FiTrash2 /> Eliminar</button>}
               </td>
             </tr>
           ))}

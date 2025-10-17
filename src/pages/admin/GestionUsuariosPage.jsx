@@ -4,10 +4,12 @@ import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionUsuarios.css';
 
-export default function GestionUsuariosPage() {
+export default function GestionUsuariosPage({ user }) {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const isAdmin = user?.rol === 'Administrador';
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,7 +52,7 @@ export default function GestionUsuariosPage() {
     <div className="user-management-page">
       <div className="page-header">
         <h1>Gestión de Usuarios</h1>
-        <Link to="/admin/usuarios/nuevo" className="create-button"><FiPlus /> Crear Usuario</Link>
+        {isAdmin && <Link to="/admin/usuarios/nuevo" className="create-button"><FiPlus /> Crear Usuario</Link>}
       </div>
       <table className="users-table">
         <thead>
@@ -75,7 +77,7 @@ export default function GestionUsuariosPage() {
                 <Link to={`/admin/usuarios/editar/${user.usuarioId}`}>
                   <button className="edit-button"><FiEdit /> Editar</button>
                 </Link>
-                <button onClick={() => handleDelete(user.usuarioId)} className="delete-button"><FiTrash2 /> Eliminar</button>
+                {isAdmin && <button onClick={() => handleDelete(user.usuarioId)} className="delete-button"><FiTrash2 /> Eliminar</button>}
               </td>
             </tr>
           ))}
