@@ -1,27 +1,47 @@
 
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FiPlus, FiTrash2 } from 'react-icons/fi';
 import Select from 'react-select';
-import AsyncSelect from 'react-select/async';
 import api from '../../api/apiClient';
 import '../../styles/RegistroVenta.css';
-import { ThemeContext } from '../../context/ThemeProvider'; // Importar el contexto del tema
+import { ThemeContext } from '../../context/ThemeProvider';
+
+// Assume user is fetched from a context or passed as a prop in a real app
+const MOCK_USER_ID = 1;
 
 export default function RegistroVentaPage() {
-  const navigate = useNavigate();
-  const { theme } = useContext(ThemeContext); // Obtener el tema actual
+  const { theme } = useContext(ThemeContext);
 
-  // Estados del formulario
-  const [cliente, setCliente] = useState(null);
-  const [fechaVenta, setFechaVenta] = useState(new Date().toISOString().slice(0, 16));
+  // Form state
+  const [cliente, setCliente] = useState(() => {
+    try {
+      const savedCliente = localStorage.getItem('ventaCliente');
+      return savedCliente ? JSON.parse(savedCliente) : null;
+    } catch (error) { return null; }
+  });
   const [metodoPago, setMetodoPago] = useState({ value: 'EFECTIVO', label: 'Efectivo' });
-  const [detallesVenta, setDetallesVenta] = useState([]);
-  
-  // Datos de la API
-  const [clientesOptions, setClientesOptions] = useState([]);
+  const [saleDetails, setSaleDetails] = useState(() => {
+    try {
+      const savedDetails = localStorage.getItem('saleDetails');
+      return savedDetails ? JSON.parse(savedDetails) : [];
+    } catch (error) {
+      return [];
+    }
+  });
+  const [totalVenta, setTotalVenta] = useState(0);
+  const [cantidadRecibida, setCantidadRecibida] = useState(() => localStorage.getItem('ventaCantidadRecibida') || '');
+  const [cambio, setCambio] = useState(0);
 
-  // Estados de UI
-  const [isSaving, setIsSaving] = useState(false);
+  // API data state
+  const [clientesOptions, setClientesOptions] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [allLotes, setAllLotes] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  // UI state
+  const [productSearchTerm, setProductSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
   const metodosPagoOptions = [
@@ -30,168 +50,272 @@ export default function RegistroVentaPage() {
     { value: 'TRANSFERENCIA', label: 'Transferencia' },
   ];
 
-  // Cargar clientes
   useEffect(() => {
-    const cargarClientes = async () => {
+    const fetchInitialData = async () => {
+      setIsLoading(true);
       try {
-        const res = await api.get('/clientes');
-        setClientesOptions(res.data.map(c => ({
+        const [clientsRes, productsRes, lotesRes] = await Promise.all([
+          api.get('/clientes'),
+          api.get('/productos/nombre-sku'),
+          api.get('/lotes')
+        ]);
+
+        setClientesOptions(clientsRes.data.map(c => ({
           value: c.clienteId,
           label: `${c.nombreCompleto} (ID: ${c.identificacionFiscal})`,
           ...c
         })));
+        setAllProducts(productsRes.data);
+        setFilteredProducts(productsRes.data);
+        setAllLotes(lotesRes.data);
+
       } catch (err) {
-        console.error('No se pudieron cargar los clientes.', err);
+        setError('No se pudieron cargar los datos iniciales.');
+      } finally {
+        setIsLoading(false);
       }
     };
-    cargarClientes();
+    fetchInitialData();
   }, []);
 
-  const buscarLotes = async (inputValue) => {
-    // Implementación de búsqueda de lotes
-    return [];
+  useEffect(() => {
+    if (!productSearchTerm) {
+      setFilteredProducts(allProducts);
+      return;
+    }
+    const lowercasedTerm = productSearchTerm.toLowerCase();
+    setFilteredProducts(allProducts.filter(p =>
+      p.nombre.toLowerCase().includes(lowercasedTerm) ||
+      p.sku.toLowerCase().includes(lowercasedTerm)
+    ));
+  }, [productSearchTerm, allProducts]);
+
+  // Recalculate total and save sale details to localStorage
+  useEffect(() => {
+    const total = saleDetails.reduce((sum, item) => sum + (item.precioMinorista * item.cantidad), 0);
+    setTotalVenta(total);
+    localStorage.setItem('saleDetails', JSON.stringify(saleDetails));
+  }, [saleDetails]);
+
+  // Save client to localStorage
+  useEffect(() => {
+    if (cliente) {
+      localStorage.setItem('ventaCliente', JSON.stringify(cliente));
+    } else {
+      localStorage.removeItem('ventaCliente');
+    }
+  }, [cliente]);
+
+  // Save cash received to localStorage
+  useEffect(() => {
+    localStorage.setItem('ventaCantidadRecibida', cantidadRecibida);
+  }, [cantidadRecibida]);
+
+  // Calculate change
+  useEffect(() => {
+    const recibido = parseFloat(cantidadRecibida);
+    if (!isNaN(recibido) && recibido >= totalVenta) {
+      setCambio(recibido - totalVenta);
+    } else {
+      setCambio(0);
+    }
+  }, [cantidadRecibida, totalVenta]);
+
+  const handleAddProduct = async (productToAdd) => {
+    if (saleDetails.find(item => item.productoId === productToAdd.productoId)) {
+      handleQuantityChange(productToAdd.productoId, saleDetails.find(item => item.productoId === productToAdd.productoId).cantidad + 1);
+      return;
+    }
+    try {
+      const response = await api.get(`/productos/${productToAdd.productoId}`);
+      setSaleDetails(prev => [...prev, { ...response.data, cantidad: 1 }]);
+    } catch (err) {
+      setError(`No se pudo obtener el detalle del producto ${productToAdd.nombre}`);
+    }
   };
 
-  const handleLoteSeleccionado = (option) => {
-    if (!option) return;
-    const loteExistente = detallesVenta.find(d => d.loteId === option.loteId);
-    if (loteExistente) return;
-    setDetallesVenta([...detallesVenta, { ...option }]);
+  const handleRemoveProduct = (productId) => {
+    setSaleDetails(prev => prev.filter(item => item.productoId !== productId));
   };
 
-  const handleDetalleChange = (index, field, value) => {
-    const nuevosDetalles = [...detallesVenta];
-    const numericValue = parseFloat(value);
-    nuevosDetalles[index][field] = isNaN(numericValue) ? 0 : numericValue;
-    setDetallesVenta(nuevosDetalles);
+  const handleQuantityChange = (productId, newQuantity) => {
+    const quantity = Number(newQuantity);
+    if (isNaN(quantity) || quantity < 0) return;
+
+    setSaleDetails(prev => prev.map(item => {
+      if (item.productoId === productId) {
+        const totalStock = allLotes
+          .filter(lote => lote.productoId === productId)
+          .reduce((sum, lote) => sum + lote.cantidadActual, 0);
+        if (quantity > totalStock) {
+          alert(`Stock total insuficiente. Máximo disponible: ${totalStock}`);
+          return { ...item, cantidad: totalStock };
+        }
+        return { ...item, cantidad: quantity };
+      }
+      return item;
+    }));
   };
 
-  const handleEliminarDetalle = (index) => {
-    setDetallesVenta(detallesVenta.filter((_, i) => i !== index));
+  const handleClearSale = () => {
+    setSaleDetails([]);
+    setCliente(null);
+    setMetodoPago({ value: 'EFECTIVO', label: 'Efectivo' });
+    setCantidadRecibida('');
+    localStorage.removeItem('ventaCantidadRecibida');
   };
 
-  const calcularTotal = () => {
-    return detallesVenta.reduce((total, d) => {
-      const precio = d.precioUnitarioVenta || 0;
-      const cantidad = d.cantidad || 0;
-      return total + (precio * cantidad);
-    }, 0).toFixed(2);
+  const handleRealizarVenta = async () => {
+    if (!cliente) {
+      setError("Por favor, seleccione un cliente.");
+      return;
+    }
+    setIsSubmitting(true);
+    setError(null);
+
+    const finalSaleDetails = [];
+    let stockError = null;
+
+    for (const item of saleDetails) {
+      let cantidadPorSurtir = item.cantidad;
+      const lotesDelProducto = allLotes
+        .filter(l => l.productoId === item.productoId && l.cantidadActual > 0)
+        .sort((a, b) => new Date(a.fechaIngreso) - new Date(b.fechaIngreso)); // FIFO
+
+      for (const lote of lotesDelProducto) {
+        if (cantidadPorSurtir === 0) break;
+        const cantidadTomada = Math.min(cantidadPorSurtir, lote.cantidadActual);
+        finalSaleDetails.push({
+          loteId: lote.loteId,
+          cantidad: cantidadTomada,
+          precioUnitarioVenta: item.precioMinorista,
+        });
+        cantidadPorSurtir -= cantidadTomada;
+      }
+
+      if (cantidadPorSurtir > 0) {
+        stockError = `Stock insuficiente para ${item.nombre}. Se intentaron vender ${item.cantidad} pero solo hay ${item.cantidad - cantidadPorSurtir} disponibles en todos los lotes.`;
+        break;
+      }
+    }
+
+    if (stockError) {
+      setError(stockError);
+      setIsSubmitting(false);
+      return;
+    }
+
+    const ventaRequest = {
+      usuarioId: MOCK_USER_ID,
+      clienteId: cliente.value,
+      metodoPago: metodoPago.value,
+      detalles: finalSaleDetails,
+    };
+
+    try {
+      await api.post('/ventas', ventaRequest);
+      alert('¡Venta realizada con éxito!');
+      handleClearSale();
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
+        if (err.response.status === 404) {
+          console.error('Data inconsistency error:', err.response.data.message);
+          setError("Error al procesar el producto. Por favor, contacte a soporte.");
+        } else { // Handles 400 and other errors with a message
+          setError(err.response.data.message);
+        }
+      } else {
+        setError("Ocurrió un error inesperado al procesar la venta.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Lógica de guardado
-  };
-
-  // Estilos para react-select adaptables al tema
   const getSelectStyles = (theme) => {
     const isDark = theme === 'dark';
     return {
-      control: (provided, state) => ({
-        ...provided,
-        backgroundColor: isDark ? '#1a2e2b' : '#ffffff',
-        borderColor: state.isFocused ? (isDark ? '#00796b' : '#00695c') : (isDark ? '#004d40' : '#ccece6'),
-        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
-        boxShadow: state.isFocused ? `0 0 0 1px ${isDark ? '#00796b' : '#00695c'}` : 'none',
-        '&:hover': {
-          borderColor: isDark ? '#00796b' : '#00695c',
-        },
-      }),
-      menu: (provided) => ({
-        ...provided,
-        backgroundColor: isDark ? '#1a2e2b' : '#ffffff',
-      }),
-      option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isSelected ? (isDark ? '#00796b' : '#00695c') : state.isFocused ? (isDark ? '#2a3f3c' : '#e6f6f3') : (isDark ? '#1a2e2b' : '#ffffff'),
-        color: state.isSelected ? '#ffffff' : (isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a'),
-        '&:active': {
-          backgroundColor: isDark ? '#00796b' : '#00695c',
-        },
-      }),
-      singleValue: (provided) => ({
-        ...provided,
-        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
-      }),
-      input: (provided) => ({
-        ...provided,
-        color: isDark ? 'rgba(255, 255, 255, 0.87)' : '#0d1c1a',
-      }),
-      placeholder: (provided) => ({
-        ...provided,
-        color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-      }),
+        control: (p, s) => ({ ...p, backgroundColor: isDark ? '#2d3748' : '#ffffff', borderColor: s.isFocused ? (isDark ? '#00796b' : '#00695c') : (isDark ? '#4a5568' : '#e2e8f0'), color: isDark ? '#f7fafc' : '#2d3748', boxShadow: s.isFocused ? `0 0 0 1px ${isDark ? '#00796b' : '#00695c'}` : 'none', '&:hover': { borderColor: isDark ? '#00796b' : '#00695c' } }),
+        menu: p => ({ ...p, backgroundColor: isDark ? '#2d3748' : '#ffffff', zIndex: 9999 }),
+        option: (p, s) => ({ ...p, backgroundColor: s.isSelected ? (isDark ? '#00796b' : '#00695c') : s.isFocused ? (isDark ? '#4a5568' : '#e6f6f3') : 'transparent', color: s.isSelected ? '#ffffff' : (isDark ? '#f7fafc' : '#2d3748'), '&:active': { backgroundColor: isDark ? '#00796b' : '#00695c' } }),
+        singleValue: p => ({ ...p, color: isDark ? '#f7fafc' : '#2d3748' }),
+        input: p => ({ ...p, color: isDark ? '#f7fafc' : '#2d3748' }),
+        placeholder: p => ({ ...p, color: isDark ? '#a0aec0' : '#a0aec0' }),
     };
   };
 
+  const canRealizarVenta = cliente && saleDetails.length > 0 && !isSubmitting;
+
   return (
     <div className="registro-venta-container">
-      <h1>Registrar Nueva Venta</h1>
-
-      <div className="cliente-header-section">
-        <div className="cliente-header-title">Cliente</div>
-        <div className="cliente-header-content">
-          {cliente ? (
-            <div className="cliente-info-display">
-              <div className="info-item"><strong>Nombre:</strong><span>{cliente.nombreCompleto}</span></div>
-              <div className="info-item"><strong>ID Fiscal:</strong><span>{cliente.identificacionFiscal}</span></div>
-              <div className="info-item"><strong>Teléfono:</strong><span>{cliente.telefono}</span></div>
-              <button type="button" onClick={() => setCliente(null)} className="change-client-btn">Cambiar</button>
-            </div>
-          ) : (
-            <Select
-              styles={getSelectStyles(theme)}
-              options={clientesOptions}
-              onChange={setCliente}
-              placeholder="Busque y seleccione un cliente..."
-              classNamePrefix="react-select"
-              className="cliente-select"
-              isClearable
-            />
-          )}
-        </div>
-      </div>
-
-      <h2>Detalles de la Venta</h2>
-      {error && <div className="error-message">{error}</div>}
-
-      <div className="form-section">
-        <div className="form-row">
+      <div className="form-column">
+        <div className="page-header"><h1>Registrar Nueva Venta</h1></div>
+        {error && <div className="error-message" onClick={() => setError(null)} style={{cursor: 'pointer'}}>{error}</div>}
+        <div className="form-section">
           <div className="form-group">
-            <label>Fecha Venta</label>
-            <input type="datetime-local" value={fechaVenta} onChange={e => setFechaVenta(e.target.value)} required />
+            <label>Cliente</label>
+            <Select styles={getSelectStyles(theme)} options={clientesOptions} onChange={setCliente} value={cliente} placeholder="Busque y seleccione un cliente..." isClearable />
           </div>
           <div className="form-group">
             <label>Método de Pago</label>
-            <Select
-              styles={getSelectStyles(theme)}
-              options={metodosPagoOptions}
-              value={metodoPago}
-              onChange={setMetodoPago}
-              classNamePrefix="react-select"
-            />
+            <Select styles={getSelectStyles(theme)} options={metodosPagoOptions} value={metodoPago} onChange={setMetodoPago} />
+          </div>
+          {metodoPago?.value === 'EFECTIVO' && (
+            <div className="form-group">
+              <label>Efectivo recibido</label>
+              <input 
+                type="number" 
+                placeholder="Ingrese el monto..."
+                value={cantidadRecibida}
+                onChange={(e) => setCantidadRecibida(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
+        <div className="sale-details-header"><span>Producto</span><span>Cantidad</span><span>Subtotal</span><span></span></div>
+        <div className="sale-details-list">
+          {saleDetails.length === 0 ? <p>Añade productos desde la lista de la derecha.</p> : saleDetails.map(item => (
+            <div key={item.productoId} className="sale-details-item">
+              <span className="product-name">{item.nombre}</span>
+              <input type="number" min="1" value={item.cantidad} onChange={(e) => handleQuantityChange(item.productoId, e.target.value)} />
+              <span>Q{(item.precioMinorista * item.cantidad).toFixed(2)}</span>
+              <button onClick={() => handleRemoveProduct(item.productoId)} className="remove-item-btn"><FiTrash2 /></button>
+            </div>
+          ))}
+        </div>
+        <div className="totals-section">
+          <div className="total-row grand-total">
+            <span>TOTAL:</span>
+            <span>Q{totalVenta.toFixed(2)}</span>
+          </div>
+          {metodoPago?.value === 'EFECTIVO' && cantidadRecibida >= totalVenta && totalVenta > 0 && (
+            <div className="total-row">
+              <span>Cambio:</span>
+              <span>Q{cambio.toFixed(2)}</span>
+            </div>
+          )}
+          <div>
+            <button className="limpiar-btn" onClick={handleClearSale}>Limpiar</button>
+            <button className="realizar-btn" onClick={handleRealizarVenta} disabled={!canRealizarVenta}>{isSubmitting ? 'Procesando...' : 'Realizar'}</button>
           </div>
         </div>
       </div>
-
-      <div className="form-section">
-        <div className="form-group product-search">
-            <label>Buscar Producto por Lote</label>
-            <AsyncSelect
-              styles={getSelectStyles(theme)}
-              cacheOptions
-              loadOptions={buscarLotes}
-              onChange={handleLoteSeleccionado}
-              placeholder="Escriba para buscar un lote..."
-              value={null}
-              classNamePrefix="react-select"
-              loadingMessage={() => "Buscando..."}
-              noOptionsMessage={() => "No se encontraron lotes"}
-            />
+      <div className="product-list-column">
+        <div className="page-header"><h2>Buscar Productos</h2></div>
+        <input type="text" placeholder="Buscar por nombre o SKU..." className="product-search-input" value={productSearchTerm} onChange={(e) => setProductSearchTerm(e.target.value)} />
+        <div className="product-search-table-container">
+          {isLoading ? <p>Cargando...</p> : (
+            <table className="product-search-table">
+              <thead><tr><th>Producto</th><th>SKU</th><th>Acción</th></tr></thead>
+              <tbody>
+                {filteredProducts.map(p => (
+                  <tr key={p.productoId}><td>{p.nombre}</td><td>{p.sku}</td><td><button className="add-product-btn" onClick={() => handleAddProduct(p)}><FiPlus /> Agregar</button></td></tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
-
-      {/* ... resto del JSX ... */}
     </div>
   );
 }
