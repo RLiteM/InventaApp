@@ -22,10 +22,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: var(--background-color-secondary);
+  background-color: #ffffff; /* Clean white background */
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Slightly more rounded */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Softer, more diffused shadow */
 }
 
 .page-header {
@@ -168,12 +168,20 @@
 /* Product Search Table */
 .product-search-input {
   width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem; /* Adjust padding for icon */
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 9999px; /* Full roundness */
   background-color: var(--background-color-tertiary);
   color: var(--text-color-primary);
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.product-search-input:focus {
+  border-color: var(--color-primary); /* Assuming --color-primary is a nice green */
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 0, 128, 0), 0.2); /* Softer focus ring, fallback to green */
+  outline: none;
 }
 
 .product-search-table-container {
@@ -228,4 +236,118 @@
 .save-sale-btn:disabled {
   background-color: var(--background-color-disabled);
   cursor: not-allowed;
+}
+/* Product Cards */
+.product-cards-container {
+  display: flex; /* Change to flex */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 0.5rem; /* Smaller gap between rows */
+  padding: 0.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.product-card {
+  background-color: var(--background-color-tertiary); /* Should be a light, clean color */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  min-height: auto;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05); /* Softer shadow */
+}
+
+.product-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer hover shadow */
+  transform: translateY(-2px); /* Softer lift */
+  background-color: var(--hover-bg-color, #e6f6f3); /* Light green background on hover */
+}
+
+.product-card-sku {
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+}
+
+.product-card-name {
+  font-weight: 600;
+  color: var(--text-color-primary);
+}
+
+.product-card-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-success);
+  text-align: right;
+}
+
+/* Product Search Input with Icon */
+.product-search-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.product-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem; /* w-5 */
+  height: 1.25rem; /* h-5 */
+  color: var(--text-color-secondary);
+}
+
+.product-card-stock {
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+  margin-top: 0.25rem;
+}
+
+.stock-status-high {
+  background-color: var(--stock-high-bg, #d1fae5); /* green-100 */
+  color: var(--stock-high-text, #065f46); /* green-800 */
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stock-status-medium {
+  background-color: var(--stock-medium-bg, #fef3c7); /* yellow-100 */
+  color: var(--stock-medium-text, #92400e); /* yellow-800 */
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stock-status-low {
+  background-color: var(--stock-low-bg, #fee2e2); /* red-100 */
+  color: var(--stock-low-text, #991b1b); /* red-800 */
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.product-list-headers {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem; /* Slightly more padding */
+  font-weight: 600; /* Slightly less bold */
+  color: var(--text-color-secondary); /* Softer text color */
+  background-color: var(--background-color-tertiary); /* Subtle background */
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+  margin-bottom: 0.5rem;
+}
+
+.product-list-header-item.text-right {
+  text-align: right;
 }

@@ -6,6 +6,14 @@ import api from '../../api/apiClient';
 import '../../styles/RegistroVenta.css';
 import { ThemeContext } from '../../context/ThemeProvider';
 
+// --- Iconos SVG para una apariencia nativa ---
+const SearchIcon = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+);
+
+
 // Assume user is fetched from a context or passed as a prop in a real app
 const MOCK_USER_ID = 1;
 
@@ -303,17 +311,28 @@ export default function RegistroVentaPage() {
       <div className="product-list-column">
         <div className="page-header"><h2>Buscar Productos</h2></div>
         <input type="text" placeholder="Buscar por nombre o SKU..." className="product-search-input" value={productSearchTerm} onChange={(e) => setProductSearchTerm(e.target.value)} />
-        <div className="product-search-table-container">
+        <div className="product-list-headers">
+          <div className="product-list-header-item">SKU</div>
+          <div className="product-list-header-item">Descripción</div>
+          <div className="product-list-header-item">Stock</div>
+          <div className="product-list-header-item text-right">Precio</div>
+        </div>
+        <div className="product-cards-container">
           {isLoading ? <p>Cargando...</p> : (
-            <table className="product-search-table">
-              <thead><tr><th>Producto</th><th>SKU</th><th>Acción</th></tr></thead>
-              <tbody>
-                {filteredProducts.map(p => (
-                  <tr key={p.productoId}><td>{p.nombre}</td><td>{p.sku}</td><td><button className="add-product-btn" onClick={() => handleAddProduct(p)}><FiPlus /> Agregar</button></td></tr>
-                ))}
-              </tbody>
-            </table>
+            filteredProducts.map(p => (
+              <div key={p.productoId} className="product-card" onClick={() => handleAddProduct(p)}>
+                <div className="product-card-item product-card-sku">SKU: {p.sku}</div>
+                <div className="product-card-item product-card-name">{p.nombre}</div>
+                <div className={`product-card-item product-card-stock ${
+                    p.stock > 10 ? 'stock-status-high' :
+                    p.stock > 0 ? 'stock-status-medium' :
+                    'stock-status-low'
+                  }`}>Stock: {p.stock}</div>
+                <div className="product-card-item product-card-price">Q{p.precioMinorista ? p.precioMinorista.toFixed(2) : 'N/A'}</div>
+              </div>
+            ))
           )}
+          {filteredProducts.length === 0 && !isLoading && <p>No se encontraron productos.</p>}
         </div>
       </div>
     </div>
