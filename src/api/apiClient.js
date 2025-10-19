@@ -18,6 +18,22 @@ api.interceptors.request.use(
   }
 );
 
+// Interceptor para manejar errores de autenticación
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Limpiar datos de sesión
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userData");
+      
+      // Redirigir al login
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const buscarProductosPorNombreSku = (searchTerm) => {
   return api.get('/productos/nombre-sku', { params: { q: searchTerm } });
 };
