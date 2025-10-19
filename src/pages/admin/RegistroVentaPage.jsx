@@ -1,43 +1,23 @@
 
 import { useState, useEffect, useContext } from 'react';
-
 import { FiPlus, FiTrash2 } from 'react-icons/fi';
-
 import Select from 'react-select';
-
 import api from '../../api/apiClient';
-
 import '../../styles/RegistroVenta.css';
-
 import { ThemeContext } from '../../context/ThemeProvider';
-
 import jsPDF from 'jspdf';
-
 import autoTable from 'jspdf-autotable';
 
-
-
 // --- Iconos SVG para una apariencia nativa ---
-
 const SearchIcon = ({ className }) => (
-
   <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-
   </svg>
-
 );
 
 
-
-
-
 // Assume user is fetched from a context or passed as a prop in a real app
-
 const MOCK_USER_ID = 1;
-
-
 
 export default function RegistroVentaPage() {
 
