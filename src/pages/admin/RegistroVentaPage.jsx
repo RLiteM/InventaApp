@@ -1,12 +1,15 @@
 
 import { useState, useEffect, useContext } from 'react';
-import { FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2, FiCheckCircle, FiShoppingCart } from 'react-icons/fi';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import Select from 'react-select';
 import api from '../../api/apiClient';
 import '../../styles/RegistroVenta.css';
 import { ThemeContext } from '../../context/ThemeProvider';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+
+import { getSelectStyles } from '../../styles/selectStyles';
 
 // --- Iconos SVG para una apariencia nativa ---
 const SearchIcon = ({ className }) => (
@@ -175,13 +178,11 @@ export default function RegistroVentaPage() {
 
   
 
-    useEffect(() => {
+  useEffect(() => {
 
       const fetchProductsForClient = async () => {
 
         const tipoCliente = cliente ? (cliente.tipoCliente === 'Mayorista' ? 'Mayorista' : null) : null;
-
-        setIsLoading(true);
 
         try {
 
@@ -191,9 +192,19 @@ export default function RegistroVentaPage() {
 
           const newProducts = productsRes.data;
 
-          setAllProducts(newProducts);
-
-          setFilteredProducts(newProducts);
+          // Update master product list; let filtering effect react to this
+          setAllProducts(prev => {
+            // Preserve order of previous list when possible to minimize DOM churn
+            const prevById = new Map(prev.map(p => [p.productoId, p]));
+            const updated = prev.map(oldP => {
+              const fresh = newProducts.find(n => n.productoId === oldP.productoId);
+              return fresh ? { ...oldP, precioAplicable: fresh.precioAplicable } : oldP;
+            });
+            // Include any new products that weren't in previous list
+            const prevIds = new Set(prev.map(p => p.productoId));
+            const additions = newProducts.filter(n => !prevIds.has(n.productoId));
+            return additions.length ? [...updated, ...additions] : updated;
+          });
 
   
 
@@ -226,9 +237,7 @@ export default function RegistroVentaPage() {
           setError('No se pudieron cargar los productos.');
 
         } finally {
-
-          setIsLoading(false);
-
+          // No UI loading swap for price updates to avoid flicker
         }
 
       };
@@ -361,48 +370,51 @@ export default function RegistroVentaPage() {
 
   
 
-    const handleRemoveProduct = (productId) => {
+  const handleRemoveProduct = (productId) => {
 
       setSaleDetails(prev => prev.filter(item => item.productoId !== productId));
 
+  };
+
+  const handleIncrement = (product) => {
+    const totalStock = getTotalStock(product.productoId);
+    if (product.cantidad < totalStock) {
+      handleQuantityChange(product.productoId, product.cantidad + 1);
+    }
+  };
+
+  const handleDecrement = (product) => {
+    const newQty = product.cantidad - 1;
+    if (newQty > 0) {
+      handleQuantityChange(product.productoId, newQty);
+    } else {
+      handleRemoveProduct(product.productoId);
+    }
+  };
+
+  
+
+    const getTotalStock = (productId) => {
+      return allLotes
+        .filter(lote => lote.productoId === productId)
+        .reduce((sum, lote) => sum + lote.cantidadActual, 0);
     };
 
-  
-
     const handleQuantityChange = (productId, newQuantity) => {
-
       const quantity = Number(newQuantity);
-
       if (isNaN(quantity) || quantity < 0) return;
 
-  
-
       setSaleDetails(prev => prev.map(item => {
-
         if (item.productoId === productId) {
-
-          const totalStock = allLotes
-
-            .filter(lote => lote.productoId === productId)
-
-            .reduce((sum, lote) => sum + lote.cantidadActual, 0);
-
+          const totalStock = getTotalStock(productId);
           if (quantity > totalStock) {
-
             alert(`Stock total insuficiente. Máximo disponible: ${totalStock}`);
-
             return { ...item, cantidad: totalStock };
-
           }
-
           return { ...item, cantidad: quantity };
-
         }
-
         return item;
-
       }));
-
     };
 
   
@@ -500,25 +512,13 @@ export default function RegistroVentaPage() {
   
 
       // Stock check before creating the request
-
       for (const item of saleDetails) {
-
-        const totalStock = allLotes
-
-          .filter(lote => lote.productoId === item.productoId)
-
-          .reduce((sum, lote) => sum + lote.cantidadActual, 0);
-
+        const totalStock = getTotalStock(item.productoId);
         if (item.cantidad > totalStock) {
-
           setError(`Stock insuficiente para ${item.nombre}. Se intentan vender ${item.cantidad} pero solo hay ${totalStock} en stock.`);
-
           setIsSubmitting(false);
-
           return;
-
         }
-
       }
 
   
@@ -567,27 +567,6 @@ export default function RegistroVentaPage() {
 
   
 
-    const getSelectStyles = (theme) => {
-
-      const isDark = theme === 'dark';
-
-      return {
-
-          control: (p, s) => ({ ...p, backgroundColor: isDark ? '#2d3748' : '#ffffff', borderColor: s.isFocused ? (isDark ? '#00796b' : '#00695c') : (isDark ? '#4a5568' : '#e2e8f0'), color: isDark ? '#f7fafc' : '#2d3748', boxShadow: s.isFocused ? `0 0 0 1px ${isDark ? '#00796b' : '#00695c'}` : 'none', '&:hover': { borderColor: isDark ? '#00796b' : '#00695c' } }),
-
-          menu: p => ({ ...p, backgroundColor: isDark ? '#2d3748' : '#ffffff', zIndex: 9999 }),
-
-          option: (p, s) => ({ ...p, backgroundColor: s.isSelected ? (isDark ? '#00796b' : '#00695c') : s.isFocused ? (isDark ? '#4a5568' : '#e6f6f3') : 'transparent', color: s.isSelected ? '#ffffff' : (isDark ? '#f7fafc' : '#2d3748'), '&:active': { backgroundColor: isDark ? '#00796b' : '#00695c' } }),
-
-          singleValue: p => ({ ...p, color: isDark ? '#f7fafc' : '#2d3748' }),
-
-          input: p => ({ ...p, color: isDark ? '#f7fafc' : '#2d3748' }),
-
-          placeholder: p => ({ ...p, color: isDark ? '#a0aec0' : '#a0aec0' }),
-
-      };
-
-    };
 
   
 
@@ -596,190 +575,209 @@ export default function RegistroVentaPage() {
   
 
     return (
-
       <div className="registro-venta-container">
+        <div className="page-header"><h1>Registrar Nueva Venta</h1></div>
+        <div className="main-content-area">
+          <div className="form-column">
 
-        <div className="form-column">
-
-          <div className="page-header"><h1>Registrar Nueva Venta</h1></div>
-
-          {error && <div className="error-message" onClick={() => setError(null)} style={{cursor: 'pointer'}}>{error}</div>}
-
-          <div className="form-section">
-
-            <div className="form-group">
-
-              <label>Cliente</label>
-
-              <Select styles={getSelectStyles(theme)} options={clientesOptions} onChange={setCliente} value={cliente} placeholder="Busque y seleccione un cliente..." isClearable />
-
+          {error && (
+            <div
+              className="error-message"
+              onClick={() => setError(null)}
+              role="alert"
+              aria-live="polite"
+            >
+              {error}
             </div>
+          )}
 
-            <div className="form-group">
-
-              <label>Método de Pago</label>
-
-              <Select styles={getSelectStyles(theme)} options={metodosPagoOptions} value={metodoPago} onChange={setMetodoPago} />
-
+          <div className="client-row">
+            <label className="client-label">Cliente:</label>
+            <div className="client-input">
+              <Select
+                classNamePrefix="rv"
+                styles={getSelectStyles(theme)}
+                options={clientesOptions}
+                onChange={setCliente}
+                value={cliente}
+                placeholder="Busque y seleccione un cliente..."
+                isClearable
+              />
             </div>
-
-            {metodoPago?.value === 'Efectivo' && (
-
-              <div className="form-group">
-
-                <label>Efectivo recibido</label>
-
-                <input 
-
-                  type="number" 
-
-                  placeholder="Ingrese el monto..."
-
-                  value={cantidadRecibida}
-
-                  onChange={(e) => setCantidadRecibida(e.target.value)}
-
-                />
-
-              </div>
-
-            )}
-
           </div>
 
-          <div className="sale-details-header"><span>Producto</span><span>Cantidad</span><span>Subtotal</span><span></span></div>
-
-          <div className="sale-details-list">
-
-            {saleDetails.length === 0 ? <p>Añade productos desde la lista de la derecha.</p> : saleDetails.map(item => (
-
-              <div key={item.productoId} className="sale-details-item">
-
-                <span className="product-name">{item.nombre}</span>
-
-                <input type="number" min="1" value={item.cantidad} onChange={(e) => handleQuantityChange(item.productoId, e.target.value)} />
-
-                <span>Q{(item.precioAplicable * item.cantidad).toFixed(2)}</span>
-
-                <button onClick={() => handleRemoveProduct(item.productoId)} className="remove-item-btn"><FiTrash2 /></button>
-
-              </div>
-
-            ))}
-
-          </div>
-
-          <div className="totals-section">
-
-            <div className="total-row grand-total">
-
-              <span>TOTAL:</span>
-
-              <span>Q{totalVenta.toFixed(2)}</span>
-
+          <div className="cart-panel">
+            <h3 className="cart-title"><FiShoppingCart className="icon" /> Carrito</h3>
+            <div className="sale-table-wrapper custom-scrollbar">
+              <table className="sale-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th className="text-center">Cantidad</th>
+                  <th className="text-right">P/U</th>
+                  <th className="text-right">Subt.</th>
+                  <th className="text-center">Ac.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {saleDetails.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} style={{textAlign:'center', padding:'1rem', color:'var(--text-color-secondary)'}}>Añade productos desde la lista de la derecha.</td>
+                  </tr>
+                ) : (
+                  saleDetails.map(item => (
+                    <tr key={item.productoId}>
+                      <td>
+                        <span className="name">{item.nombre}</span>
+                      </td>
+                      <td className="text-center">
+                        <div className="quantity-control">
+                          <button
+                            className="qty-btn qty-minus"
+                            onClick={() => handleDecrement(item)}
+                            aria-label={`Disminuir cantidad de ${item.nombre}`}
+                            disabled={item.cantidad <= 1}
+                          >
+                            <FaMinus style={{ color: '#fff', width: '14px', height: '14px' }} />
+                          </button>
+                          <span className="qty-value" aria-live="polite">{item.cantidad}</span>
+                          <button
+                            className="qty-btn qty-plus"
+                            onClick={() => handleIncrement(item)}
+                            aria-label={`Aumentar cantidad de ${item.nombre}`}
+                            disabled={item.cantidad >= getTotalStock(item.productoId)}
+                          >
+                            <FaPlus style={{ color: '#fff', width: '14px', height: '14px' }} />
+                          </button>
+                        </div>
+                      </td>
+                      <td className="text-right unit-price-cell">Q{item.precioAplicable?.toFixed(2)}</td>
+                      <td className="text-right line-subtotal">Q{(item.precioAplicable * item.cantidad).toFixed(2)}</td>
+                      <td className="text-center">
+                        <button onClick={() => handleRemoveProduct(item.productoId)} className="remove-item-btn" aria-label={`Quitar ${item.nombre}`}><FiTrash2 /></button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
             </div>
-
-            {metodoPago?.value === 'Efectivo' && cantidadRecibida >= totalVenta && totalVenta > 0 && (
-
-              <div className="total-row">
-
-                <span>Cambio:</span>
-
-                <span>Q{cambio.toFixed(2)}</span>
-
-              </div>
-
-            )}
-
-            <div>
-
-              <button className="limpiar-btn" onClick={handleClearSale}>Limpiar</button>
-
-              <button className="realizar-btn" onClick={handleRealizarVenta} disabled={!canRealizarVenta}>{isSubmitting ? 'Procesando...' : 'Realizar'}</button>
-
-            </div>
-
           </div>
 
-        </div>
-
-        <div className="product-list-column">
-
-          <div className="page-header"><h2>Buscar Productos</h2></div>
-
-          <input type="text" placeholder="Buscar por nombre o SKU..." className="product-search-input" value={productSearchTerm} onChange={(e) => setProductSearchTerm(e.target.value)} />
-
-          <div className="product-list-headers">
-
-            <div className="product-list-header-item">SKU</div>
-
-            <div className="product-list-header-item">Producto</div>
-
-            <div className="product-list-header-item">Stock</div>
-
-            <div className="product-list-header-item text-right">Precio</div>
-
-          </div>
-
-          <div className="product-cards-container">
-
-            {isLoading ? <p>Cargando...</p> : (
-
-              filteredProducts.map(p => {
-
-                const totalStock = allLotes
-
-                  .filter(lote => lote.productoId === p.productoId)
-
-                  .reduce((sum, lote) => sum + lote.cantidadActual, 0);
-
-  
-
-                const itemInCart = saleDetails.find(item => item.productoId === p.productoId);
-
-                const currentStock = itemInCart ? totalStock - itemInCart.cantidad : totalStock;
-
-  
-
-                return (
-
-                  <div key={p.productoId} className="product-card" onClick={() => handleAddProduct(p)}>
-
-                    <div className="product-card-item product-card-sku">{p.sku}</div>
-
-                    <div className="product-card-item product-card-name">{p.nombre}</div>
-
-                    <div className={`product-card-item product-card-stock ${
-
-                        currentStock > 10 ? 'stock-status-high' :
-
-                        currentStock > 0 ? 'stock-status-medium' :
-
-                        'stock-status-low'
-
-                      }`}>{currentStock}</div>
-
-                    <div className="product-card-item product-card-price">Q{p.precioAplicable ? p.precioAplicable.toFixed(2) : 'N/A'}</div>
-
+          {/* Pago, Totales (siempre visibles) y Acciones */}
+          <div className="venta-panel">
+            <div className="payment-row">
+              <div className="payment-controls">
+                <div className="form-group">
+                  <label>Método de Pago</label>
+                <Select classNamePrefix="rv" styles={getSelectStyles(theme)} options={metodosPagoOptions} value={metodoPago} onChange={setMetodoPago} />
+                </div>
+                {metodoPago?.value === 'Efectivo' && (
+                  <div className="form-group">
+                    <label>Efectivo recibido</label>
+                  <input 
+                    type="number" 
+                    placeholder="Ingrese el monto..."
+                    className="cash-input"
+                    value={cantidadRecibida}
+                    onChange={(e) => setCantidadRecibida(e.target.value)}
+                  />
                   </div>
-
-                )
-
-              })
-
-            )}
-
-            {filteredProducts.length === 0 && !isLoading && <p>No se encontraron productos.</p>}
-
+                )}
+              </div>
+              <div className="totals-inline">
+                <div className="total-amount">TOTAL: <strong>Q{totalVenta.toFixed(2)}</strong></div>
+                {metodoPago?.value === 'Efectivo' && cantidadRecibida >= totalVenta && totalVenta > 0 && (
+                  <div className="change-amount">Cambio: <strong>Q{cambio.toFixed(2)}</strong></div>
+                )}
+              </div>
+            </div>
+            <div className="actions-section">
+              <button className="btn btn-secondary" onClick={handleClearSale} title="Vaciar Carrito"><FiTrash2 className="icon" /> Vaciar Carrito</button>
+              <button className="btn btn-primary" onClick={handleRealizarVenta} disabled={!canRealizarVenta} title="Vender">
+                {isSubmitting ? 'Procesando...' : (<><FiCheckCircle className="icon" /> Vender</>)}
+              </button>
+            </div>
           </div>
 
         </div>
 
+          <div className="product-list-column">
+
+          <h2 className="section-title">Buscar Productos</h2>
+          <div className="product-search-input-container">
+            <SearchIcon className="product-search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar por nombre o SKU..."
+              className="product-search-input"
+              value={productSearchTerm}
+              onChange={(e) => setProductSearchTerm(e.target.value)}
+              aria-label="Buscar productos por nombre o SKU"
+            />
+          </div>
+
+          <div className="product-table-wrapper custom-scrollbar">
+            {isLoading ? (
+              <p style={{padding:'0.75rem'}}>Cargando...</p>
+            ) : (
+              <table className="product-table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Producto</th>
+                    <th className="text-center">Stock</th>
+                    <th className="text-right">P/U</th>
+                    <th className="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} style={{textAlign:'center', padding:'1rem', color:'var(--text-color-secondary)'}}>No se encontraron productos.</td>
+                    </tr>
+                  ) : (
+                    filteredProducts.map(p => {
+                      const totalStock = allLotes
+                        .filter(lote => lote.productoId === p.productoId)
+                        .reduce((sum, lote) => sum + lote.cantidadActual, 0);
+                      const itemInCart = saleDetails.find(item => item.productoId === p.productoId);
+                      const currentStock = itemInCart ? totalStock - itemInCart.cantidad : totalStock;
+                      return (
+                        <tr key={p.productoId} className="row-clickable" onClick={() => handleAddProduct(p)}>
+                          <td className="sku-cell">{p.sku}</td>
+                          <td className="name-cell">{p.nombre}</td>
+                          <td className="text-center">
+                            {currentStock > 0 ? (
+                              <span className={`${currentStock < 20 ? 'stock-status-medium' : 'stock-status-high'}`}>{currentStock}</span>
+                            ) : (
+                              <span className="stock-status-low">Agotado</span>
+                            )}
+                          </td>
+                          <td className="text-right price-cell">{p.precioAplicable ? `Q${p.precioAplicable.toFixed(2)}` : 'N/A'}</td>
+                          <td className="text-center">
+                            <button
+                              className="add-to-cart-btn quantity-change-btn"
+                              onClick={(e) => { e.stopPropagation(); handleAddProduct(p); }}
+                              disabled={currentStock <= 0}
+                              title="Agregar"
+                              aria-label={`Agregar ${p.nombre} al carrito`}
+                            >
+                              <FaPlus style={{ color: '#fff', width: '14px', height: '14px' }} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+        </div>
       </div>
 
+    </div>
   );
-
 }
-
-
-
