@@ -103,3 +103,7 @@
   color: #4a5568;
 }
 .error-placeholder { color: #d32f2f; }
+/* Nuevo layout: principal + grid 2x2 */
+.top-clientes-layout { display: grid; gap: 0.8rem; }
+.top-client-main { padding: 1rem; background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; }
+.top-client-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0.8rem; }

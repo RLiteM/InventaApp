@@ -15,6 +15,9 @@ import ValorPorCategoriaChart from '../../components/dashboard/ValorPorCategoria
 export default function DashboardPage() {
   return (
     <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1 className="dashboard-title">Panel de Control</h1>
+      </header>
 
       {/* === FILA 1: KPIs PRINCIPALES === */}
       <section className="dashboard-row resumen">
