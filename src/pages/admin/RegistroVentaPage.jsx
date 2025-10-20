@@ -607,7 +607,6 @@ export default function RegistroVentaPage() {
           </div>
 
           <div className="cart-panel">
-            <h3 className="cart-title"><FiShoppingCart className="icon" /> Carrito</h3>
             <div className="sale-table-wrapper custom-scrollbar">
               <table className="sale-table">
               <thead>

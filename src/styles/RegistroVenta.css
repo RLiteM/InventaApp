@@ -1,4 +1,31 @@
 /* src/styles/RegistroVenta.css */
+/* Theme variable bridge: map page-specific tokens to global theme variables */
+:root {
+  --background-color-secondary: var(--color-superficie);
+  --background-color-tertiary: var(--color-superficie);
+  --background-color-disabled: var(--color-superficie-hover);
+  --text-color-primary: var(--color-texto);
+  --text-color-secondary: var(--color-superficie-texto);
+  --border-color: var(--color-borde);
+
+  --color-primary: var(--color-primario);
+  --color-primary-dark: var(--color-primario-hover);
+  --color-primary-rgb: 0,105,92; /* approx for #00695c */
+  --color-success: var(--color-primario);
+
+  --scrollbar-track: var(--color-superficie);
+  --scrollbar-thumb: var(--color-borde);
+  --scrollbar-thumb-hover: var(--color-primario);
+
+  --error-bg: var(--color-peligro-fondo);
+  --error-text: var(--color-peligro-texto);
+  --error-border: var(--color-peligro-borde);
+}
+
+/* Fine-tune primary rgb in dark theme for focus rings */
+body.dark {
+  --color-primary-rgb: 0,121,107; /* approx for #00796b */
+}
 
 .registro-venta-container {
   display: flex;
@@ -7,6 +34,8 @@
   overflow: hidden; /* Prevent main scroll */
   padding: 1rem; /* Keep padding */
   gap: 1rem; /* Adjust gap */
+  background-color: var(--color-superficie);
+  color: var(--color-superficie-texto);
 }
 
 .page-header {
@@ -22,11 +51,21 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background-color: var(--background-color-secondary); /* Reverting to original color */
+  background-color: var(--color-superficie) !important;
+  color: var(--color-superficie-texto);
+  border: 1px solid var(--border-color);
+  min-width: 0; /* prevent overflow in flex */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Avoid container scroll; use inner scrolls */
+}
+
+/* Explicit cart panel surface to follow theme */
+.cart-panel {
+  background-color: var(--background-color-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
 }
 
 .sale-details-header, .sale-details-item {
@@ -50,7 +89,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem; /* tighter spacing */
-  background-color: #ffffff;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--border-color);
+  min-width: 0; /* allow to shrink inside flex */
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -63,8 +104,8 @@
 }
 
 /* Section titles to match example */
-.section-title { font-size: 1.5rem; font-weight: 700; color: var(--text-color-primary); margin-bottom: 0.5rem; }
-.cart-title { font-size: 1.25rem; font-weight: 700; color: var(--text-color-primary); margin: 1rem 0 0.5rem; }
+.section-title { font-size: 1.5rem; font-weight: 700; color: var(--color-superficie-texto); margin-bottom: 0.5rem; }
+.cart-title { font-size: 1.25rem; font-weight: 700; color: var(--color-superficie-texto); margin: 1rem 0 0.5rem; }
 
 .main-content-area {
   flex-grow: 1; /* Allow main content to take available space */
@@ -72,6 +113,7 @@
   gap: 2rem;
   padding: 1rem;
   overflow: hidden; /* Prevent scroll in this area */
+  background: transparent; /* inherit page background */
 }
 
 .form-section {
@@ -94,6 +136,10 @@
   font-weight: 600;
   color: var(--text-color-secondary);
 }
+
+/* Legibilidad en oscuro: Cliente y Total en blanco puro */
+body.dark .client-row .client-label { color: #ffffff; }
+body.dark .totals-inline .total-amount { color: #ffffff; }
 
 .form-group input {
   padding: 0.75rem;
@@ -121,11 +167,24 @@
 /* Sale Details Table */
 .sale-table-wrapper { flex-grow: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--background-color-tertiary); }
 .sale-table { width: 100%; border-collapse: separate; border-spacing: 0; background-color: var(--background-color-tertiary); }
-.sale-table thead { position: sticky; top: 0; background: var(--background-color-tertiary); z-index: 1; }
-.sale-table thead th { padding: 0.5rem; font-weight: 600; color: var(--text-color-secondary); border-bottom: 1px solid var(--border-color); }
+.sale-table thead { position: sticky; top: 0; background: var(--color-superficie-hover); z-index: 1; }
+.sale-table thead th { padding: 0.5rem; font-weight: 600; color: var(--color-superficie-texto); border-bottom: 1px solid var(--border-color); }
 .sale-table tbody td { padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border-color); }
 .sale-table .name { font-weight: 600; color: var(--text-color-primary); }
 .sale-table .unit-price { font-size: 0.85rem; color: var(--text-color-secondary); }
+
+/* Ensure headers adopt theme colors for both tables */
+.product-table thead,
+.product-table thead tr,
+.product-table thead th,
+.sale-table thead,
+.sale-table thead tr,
+.sale-table thead th {
+  background-color: var(--color-superficie-hover) !important;
+  color: var(--color-superficie-texto) !important;
+}
+.product-table thead th,
+.sale-table thead th { border-bottom: 1px solid var(--border-color); }
 
 .remove-item-btn { background: none; border: none; color: var(--danger-600, #b91c1c); cursor: pointer; font-size: 1.2rem; }
 
@@ -248,6 +307,8 @@
   font-size: 1rem;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  box-sizing: border-box; /* include padding in width */
 }
 
 .product-search-input:focus {
@@ -312,17 +373,17 @@
 /* Product Table */
 .product-table-wrapper { flex-grow: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding-right: 0.5rem; }
 .product-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.product-table thead { position: sticky; top: 0; background: var(--background-color-tertiary); z-index: 1; }
-.product-table th { padding: 0.5rem; text-align: left; font-weight: 600; color: var(--text-color-secondary); border-bottom: 1px solid var(--border-color); }
+.product-table thead { position: sticky; top: 0; background: var(--color-superficie-hover); z-index: 1; }
+.product-table th { padding: 0.5rem; text-align: left; font-weight: 600; color: var(--color-superficie-texto); border-bottom: 1px solid var(--border-color); }
 .product-table td { padding: 0.5rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
 .product-table tr:hover { background: rgba(22, 163, 74, 0.05); }
-.sku-cell { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: #6b7280; }
+.sku-cell { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: var(--text-color-secondary); }
 .name-cell { font-weight: 500; color: var(--text-color-primary); }
 .price-cell { font-weight: 600; }
 .row-clickable { cursor: pointer; }
 
 /* Sale table footer and inline name/unit price */
-.sale-table thead th { padding: 0.5rem; font-weight: 600; color: var(--text-color-secondary); border-bottom: 1px solid var(--border-color); background: var(--background-color-tertiary); }
+.sale-table thead th { padding: 0.5rem; font-weight: 600; color: var(--text-color-secondary); border-bottom: 1px solid var(--border-color); background: var(--color-superficie-hover); }
 .sale-table tbody td { padding: 0.5rem; border-bottom: 1px solid var(--border-color); }
 .sale-table tfoot td { padding: 0.5rem; border-top: 1px solid var(--border-color); }
 .sale-table .name-line { display: inline-flex; gap: 0.3rem; align-items: baseline; flex-wrap: nowrap; line-height: 1.1; }
@@ -373,6 +434,8 @@
 .product-search-input-container {
   position: relative;
   margin-bottom: 1rem;
+  width: 100%;
+  display: block;
 }
 
 .product-search-icon {
@@ -512,8 +575,8 @@
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-primary { background-color: var(--color-primary, #22c55e); color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
 .btn-primary:hover { background-color: var(--color-primary-dark, #16a34a); }
-.btn-secondary { background-color: #6b7280; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
-.btn-secondary:hover { background-color: #4b5563; }
+.btn-secondary { background-color: var(--color-secundario); color: var(--color-secundario-texto); box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.btn-secondary:hover { background-color: var(--color-secundario-hover); }
 
 /* Sticky header for product list inside the scrolling container */
 .product-list-headers {
@@ -569,22 +632,26 @@
 .add-to-cart-btn {\n  width: 1.75rem;\n  height: 1.75rem;\n  border-radius: 9999px;\n  background-color: #16a34a;\n  color: #fff;\n  border: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n}
 .qty-btn { border: 1px solid var(--border-color); background-color: var(--background-color-tertiary); }
 
-/* Light/Dark specific tweaks */
-@media (prefers-color-scheme: light) {
-  .cart-panel,
-  .venta-panel,
-  .sale-table,
-  .product-table,
-  .product-table-wrapper,
-  .sale-table-wrapper { background-color: #ffffff !important; }
-}
+/* Light/Dark specific tweaks tied to app theme class */
+body.light .cart-panel,
+body.light .venta-panel,
+body.light .sale-table,
+body.light .product-table,
+body.light .product-table-wrapper,
+body.light .sale-table-wrapper { background-color: var(--color-superficie) !important; }
 
-@media (prefers-color-scheme: dark) {
-  /* Ensure product names are readable on dark */
-  .name-cell,
-  .product-card-name,
-  .sale-table .name { color: #ffffff !important; }
-}
+/* Dark: force surfaces and tables to dark surface */
+body.dark .cart-panel,
+body.dark .venta-panel,
+body.dark .sale-table,
+body.dark .product-table,
+body.dark .product-table-wrapper,
+body.dark .sale-table-wrapper { background-color: var(--color-superficie) !important; color: var(--color-superficie-texto); }
+
+/* Ensure readable titles in dark using theme text variable */
+body.dark .name-cell,
+body.dark .product-card-name,
+body.dark .sale-table .name { color: var(--color-superficie-texto) !important; }
 
 /* Force high-contrast icons for qty and add buttons */
 .add-to-cart-btn svg { width: 1rem; height: 1rem; color: #fff !important; }
@@ -649,3 +716,6 @@
 .add-to-cart-btn:active { transform: scale(0.95); }
 .add-to-cart-btn:disabled { background-color: #d1d5db !important; color: #ffffff !important; cursor: not-allowed !important; box-shadow: none !important; }
 .add-to-cart-btn svg { width: 14px !important; height: 14px !important; color: #ffffff !important; }
+
+/* DEBUG TEMP - Colorizar contenedores en oscuro para identificar bloques */
+/* DEBUG TEMP REMOVED */

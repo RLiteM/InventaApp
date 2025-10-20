@@ -177,7 +177,12 @@
   overflow-y: auto;
   padding: 2rem;
   transition: margin-left 0.3s ease;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
 }
+
+/* DEBUG TEMP - Color de diagnóstico en modo oscuro */
+/* DEBUG TEMP REMOVED */
 
 .sidebar-collapsed .admin-content {
   margin-left: 88px;
@@ -197,4 +202,3 @@
     margin-left: 0;
   }
 }
-
