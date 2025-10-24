@@ -621,7 +621,7 @@ export default function RegistroVentaPage() {
               <tbody>
                 {saleDetails.length === 0 ? (
                   <tr>
-                    <td colSpan={5} style={{textAlign:'center', padding:'1rem', color:'var(--text-color-secondary)'}}>Añade productos desde la lista de la derecha.</td>
+                    <td colSpan={5} className="empty-cart-message">Añade productos desde la lista de la derecha.</td>
                   </tr>
                 ) : (
                   saleDetails.map(item => (
@@ -762,7 +762,7 @@ export default function RegistroVentaPage() {
                               title="Agregar"
                               aria-label={`Agregar ${p.nombre} al carrito`}
                             >
-                              <FaPlus style={{ color: '#fff', width: '14px', height: '14px' }} />
+                              +
                             </button>
                           </td>
                         </tr>
