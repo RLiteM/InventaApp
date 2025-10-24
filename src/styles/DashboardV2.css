@@ -83,25 +83,7 @@
 /* Loading / Error placeholders */
 .loading-placeholder, .error-placeholder { padding: 1rem; border-radius: 12px; background: var(--color-superficie); color: var(--color-superficie-texto); border: 1px dashed var(--color-borde); }
 
-/* Dark mode for new elements */
-@media (prefers-color-scheme: dark) {
-  .titulo-movimientos, .chart-title, .alertas-title, .top-clientes-card > h2 { color: #f9fafb; }
-  .alerta-card { background: #0f172a; border-color: #1f2937; }
-  .badge { background: #1f2937; color: #f9fafb; }
-  .alert-toggle { border-color: #1f2937; color: #e5e7eb; }
-  .alert-toggle:hover { background: #111827; }
-  .alerta-card h3 { color: #f9fafb; }
-  .alertas-empty { color: #9ca3af; }
-  .movimientos-recientes { background: #0f172a; }
-  .mov-card { background: #0b1220; border-color: #1f2937; }
-  .mov-card .nombre { color: #f9fafb; }
-  .mov-card .detalle { color: #9ca3af; }
-  .tendencias-ventas-chart, .valor-categoria-chart { background: #0f172a; }
-  .top-clientes-card { background: #0f172a; border-color: #1f2937; }
-  .cliente-nombre { color: #f9fafb; }
-  .cliente-monto { color: #f9fafb; }
-  .bar-container { background: #1f2937; }
-}
+
 
 /* === TARJETAS === */
 .dashboard-card {

@@ -140,6 +140,7 @@ body.dark {
 /* Legibilidad en oscuro: Cliente y Total en blanco puro */
 body.dark .client-row .client-label { color: #ffffff; }
 body.dark .totals-inline .total-amount { color: #ffffff; }
+body.dark .totals-inline .change-amount { color: #ffffff; }
 
 .form-group input {
   padding: 0.75rem;
@@ -521,7 +522,19 @@ body.dark .totals-inline .total-amount { color: #ffffff; }
 }
 
 /* Add-to-cart circular button */
-.add-to-cart-btn {\n  width: 1.75rem;\n  height: 1.75rem;\n  border-radius: 9999px;\n  background-color: #16a34a;\n  color: #fff;\n  border: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n}
+.add-to-cart-btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background-color: #16a34a;
+  color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
 .add-to-cart-btn svg { width: 1rem; height: 1rem; color: #fff !important; }
 .add-to-cart-btn:hover { background-color: #15803d; } /* green-600 */
 .add-to-cart-btn:active { transform: scale(0.95); }
@@ -629,7 +642,19 @@ body.dark .totals-inline .total-amount { color: #ffffff; }
 
 /* Button and controls visibility for themes */
 .btn:focus-visible, .add-to-cart-btn:focus-visible, .qty-btn:focus-visible { outline: 2px solid var(--color-primary, #22c55e); outline-offset: 2px; }
-.add-to-cart-btn {\n  width: 1.75rem;\n  height: 1.75rem;\n  border-radius: 9999px;\n  background-color: #16a34a;\n  color: #fff;\n  border: none;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n}
+.add-to-cart-btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background-color: #16a34a;
+  color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
 .qty-btn { border: 1px solid var(--border-color); background-color: var(--background-color-tertiary); }
 
 /* Light/Dark specific tweaks tied to app theme class */
@@ -719,3 +744,9 @@ body.dark .sale-table .name { color: var(--color-superficie-texto) !important; }
 
 /* DEBUG TEMP - Colorizar contenedores en oscuro para identificar bloques */
 /* DEBUG TEMP REMOVED */
+
+.sale-table .empty-cart-message {
+  text-align: center;
+  padding: 1rem;
+  color: var(--text-color-secondary) !important;
+}
