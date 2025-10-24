@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { 
   FiGrid, FiUsers, FiTruck, FiBriefcase, 
-  FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut 
+  FiTag, FiPackage, FiShoppingCart, FiDollarSign, FiLock, FiLogOut, FiSliders
 } from 'react-icons/fi';
 import { TfiLayoutSidebarLeft } from 'react-icons/tfi';
 import ThemeToggle from '../ThemeToggle';
@@ -53,6 +53,7 @@ export default function AdminLayout({ user, onLogout }) {
           <NavLink to="/admin/productos"><FiPackage /><span className="link-text">Productos</span></NavLink>
           {isAdmin && <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>}
           <NavLink to="/admin/ventas/nueva"><FiShoppingCart /><span className="link-text">Nueva Venta</span></NavLink>
+          {isAdmin && <NavLink to="/admin/ajuste-inventario"><FiSliders /><span className="link-text">Ajuste de Inventario</span></NavLink>}
           <NavLink to="/cambiar-contrasena"><FiLock /><span className="link-text">Cambiar Contraseña</span></NavLink>
         </nav>
 

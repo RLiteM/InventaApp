@@ -22,11 +22,15 @@ import ResetearPassword from "../pages/ResetearPassword";
 import CambiarContrasenaPage from "../pages/CambiarContrasenaPage";
 import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
 import GestionProductosPage from "../pages/admin/GestionProductosPage";
+import AjusteInventarioPage from "../pages/admin/AjusteInventarioPage";
 
 // Componente para proteger las rutas de Admin
 function AdminRoutes({ user, onLogout }) {
   // Permitir acceso a Administradores y Vendedores
-  if (user?.rol === 'Administrador' || user?.rol === 'Vendedor') {
+  if (user?.rol === 'Administrador') {
+    return <AdminLayout onLogout={onLogout} user={user} />;
+  }
+  if (user?.rol === 'Vendedor') {
     return <AdminLayout onLogout={onLogout} user={user} />;
   }
   // Para otros roles o si no hay rol, se muestra la página de placeholder
@@ -100,6 +104,9 @@ export default function AppRouter() {
 
             {/* Ruta de Productos */}
             <Route path="admin/productos" element={<GestionProductosPage user={user} />} />
+
+            {/* Ruta de Ajuste de Inventario */}
+            {user?.rol === 'Administrador' && <Route path="admin/ajuste-inventario" element={<AjusteInventarioPage user={user} />} />}
 
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
