@@ -23,6 +23,7 @@ import CambiarContrasenaPage from "../pages/CambiarContrasenaPage";
 import GestionCategoriasPage from "../pages/admin/GestionCategoriasPage";
 import GestionProductosPage from "../pages/admin/GestionProductosPage";
 import AjusteInventarioPage from "../pages/admin/AjusteInventarioPage";
+import GenerarReportesPage from "../pages/admin/GenerarReportesPage";
 
 // Componente para proteger las rutas de Admin
 function AdminRoutes({ user, onLogout }) {
@@ -107,6 +108,7 @@ export default function AppRouter() {
 
             {/* Ruta de Ajuste de Inventario */}
             {user?.rol === 'Administrador' && <Route path="admin/ajuste-inventario" element={<AjusteInventarioPage user={user} />} />}
+            {user?.rol === 'Administrador' && <Route path="admin/generar-reportes" element={<GenerarReportesPage user={user} />} />}
 
             {/* Redirección por defecto si está logueado */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
