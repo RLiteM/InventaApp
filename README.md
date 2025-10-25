@@ -1,16 +1,57 @@
-# React + Vite
+# InventaApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+InventaApp es una aplicación de gestión de inventario construida con React y Vite.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Asegúrate de tener instaladas las siguientes versiones de Node.js y npm:
 
-## React Compiler
+- **Node.js:** >=18.0.0
+- **npm:** >=9.0.0
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Puedes verificar tus versiones con los siguientes comandos:
 
-## Expanding the ESLint configuration
+```bash
+node -v
+npm -v
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Instalación
+
+1.  Clona el repositorio:
+    ```bash
+    git clone https://github.com/RLiteM/InventaApp.git
+    ```
+2.  Navega al directorio del proyecto:
+    ```bash
+    cd InventaApp
+    ```
+3.  Instala las dependencias:
+    ```bash
+    npm install
+    ```
+
+## Scripts Disponibles
+
+En el directorio del proyecto, puedes ejecutar los siguientes comandos:
+
+### `npm run dev`
+
+Ejecuta la aplicación en modo de desarrollo.
+Abre [http://localhost:5173](http://localhost:5173) para verla en tu navegador.
+
+La página se recargará si haces cambios.
+También verás cualquier error de lint en la consola.
+
+### `npm run build`
+
+Compila la aplicación para producción en la carpeta `dist`.
+Empaqueta React en modo de producción y optimiza la compilación para el mejor rendimiento.
+
+### `npm run lint`
+
+Ejecuta el linter para verificar el estilo del código.
+
+### `npm run preview`
+
+Ejecuta la aplicación en modo de vista previa desde la compilación de producción.
