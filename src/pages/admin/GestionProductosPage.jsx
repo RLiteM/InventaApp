@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiPlus, FiEdit, FiTrash2, FiPrinter } from 'react-icons/fi';
 import api from '../../api/apiClient';
 import '../../styles/GestionProductos.css';
 import CrearProductoModal from '../../components/admin/CrearProductoModal';
 import EditarProductoModal from '../../components/admin/EditarProductoModal';
+import { generateBarcodePdf } from '../../utils/generateBarcodePdf';
 
 export default function GestionProductosPage({ user }) {
   const location = useLocation();
@@ -67,6 +68,10 @@ export default function GestionProductosPage({ user }) {
   const handleEditClick = (producto) => {
     setProductoAEditar(producto);
     setIsEditModalOpen(true);
+  };
+
+  const handlePrintClick = (producto) => {
+    generateBarcodePdf(producto);
   };
 
   const productosFiltrados = productos.filter(prod => {
@@ -140,6 +145,7 @@ export default function GestionProductosPage({ user }) {
                 <td>{prod.unidadMedida}</td>
                 <td className="action-buttons">
                   {isAdmin && <button title="Editar" onClick={() => handleEditClick(prod)} className="edit-button action-btn-icon"><FiEdit /></button>}
+                  {isAdmin && <button title="Imprimir" onClick={() => handlePrintClick(prod)} className="print-button action-btn-icon"><FiPrinter /></button>}
                   {isAdmin && <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>}
                 </td>
               </tr>

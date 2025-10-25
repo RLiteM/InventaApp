@@ -4,15 +4,11 @@ import { getResumenHoyVendedor } from '../../api/dashboardApi';
 import '../../styles/ResumenKPIs.css'; // Reutilizando estilos existentes
 
 const VendedorResumenHoy = ({ usuarioId }) => {
-  console.log('ID de usuario para el resumen de hoy:', usuarioId);
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['resumenHoyVendedor', usuarioId],
     queryFn: () => getResumenHoyVendedor(usuarioId),
     enabled: !!usuarioId, // Solo ejecutar si el usuarioId está disponible
   });
-
-  console.log('Datos recibidos del resumen de hoy:', data);
 
   if (isLoading) return <div>Cargando resumen de hoy...</div>;
   if (isError) return <div>Error al cargar el resumen: {error.message}</div>;

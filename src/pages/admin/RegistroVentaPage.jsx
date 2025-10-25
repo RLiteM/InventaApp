@@ -27,7 +27,6 @@ export default function RegistroVentaPage() {
       if (storedUserData) {
         const parsedUser = JSON.parse(storedUserData);
         setUser(parsedUser);
-        console.log('Usuario cargado desde localStorage:', parsedUser);
       }
     }, []);
 
@@ -547,8 +546,6 @@ export default function RegistroVentaPage() {
         })),
 
       };
-
-      console.log('Enviando JSON de venta:', JSON.stringify(ventaRequest, null, 2));
 
       try {
         const response = await api.post('/ventas', ventaRequest);
