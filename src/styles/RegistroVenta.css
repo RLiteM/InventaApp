@@ -586,7 +586,7 @@ body.dark .totals-inline .change-amount { color: #ffffff; }
 .btn { display: inline-flex; align-items: center; justify-content: center; border: none; border-radius: 0.75rem; font-weight: 700; padding: 0.6rem 1.1rem; cursor: pointer; transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
 .btn:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.btn-primary { background-color: var(--color-primary, #22c55e); color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.btn-primary { background-color: #22c55e !important; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
 .btn-primary:hover { background-color: var(--color-primary-dark, #16a34a); }
 .btn-secondary { background-color: var(--color-secundario); color: var(--color-secundario-texto); box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
 .btn-secondary:hover { background-color: var(--color-secundario-hover); }
@@ -747,6 +747,7 @@ body.dark .sale-table .name { color: var(--color-superficie-texto) !important; }
 
 .sale-table .empty-cart-message {
   text-align: center;
-  padding: 1rem;
-  color: var(--text-color-secondary) !important;
+  padding: 2rem;
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
 }

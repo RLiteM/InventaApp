@@ -185,6 +185,7 @@ export default function RegistroCompraPage() {
       menu: (provided) => ({
         ...provided,
         backgroundColor: isDark ? '#1a2e2b' : '#ffffff',
+        zIndex: 100,
       }),
       option: (provided, state) => ({
         ...provided,
