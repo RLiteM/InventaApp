@@ -41,18 +41,18 @@ export default function AdminLayout({ user, onLogout }) {
           <button className="sidebar-toggle" onClick={toggleCollapse}>
             <TfiLayoutSidebarLeft />
           </button>
-          <h2 className="sidebar-brand">Inventa</h2>
+          <h2 className="sidebar-brand">InventaGT</h2>
         </div>
 
         <nav className="sidebar-nav">
           <NavLink to="/dashboard"><FiGrid /><span className="link-text">Dashboard</span></NavLink>
+          {isAdmin && <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>}
+          <NavLink to="/admin/ventas/nueva"><FiShoppingCart /><span className="link-text">Nueva Venta</span></NavLink>
           {isAdmin && <NavLink to="/admin/usuarios"><FiUsers /><span className="link-text">Usuarios</span></NavLink>}
           <NavLink to="/admin/proveedores"><FiTruck /><span className="link-text">Proveedores</span></NavLink>
           <NavLink to="/admin/clientes"><FiBriefcase /><span className="link-text">Clientes</span></NavLink>
           <NavLink to="/admin/categorias"><FiTag /><span className="link-text">Categorías</span></NavLink>
           <NavLink to="/admin/productos"><FiPackage /><span className="link-text">Productos</span></NavLink>
-          {isAdmin && <NavLink to="/admin/compras/nueva"><FiDollarSign /><span className="link-text">Nueva Compra</span></NavLink>}
-          <NavLink to="/admin/ventas/nueva"><FiShoppingCart /><span className="link-text">Nueva Venta</span></NavLink>
           {isAdmin && <NavLink to="/admin/ajuste-inventario"><FiSliders /><span className="link-text">Ajuste de Inventario</span></NavLink>}
           <NavLink to="/cambiar-contrasena"><FiLock /><span className="link-text">Cambiar Contraseña</span></NavLink>
         </nav>
