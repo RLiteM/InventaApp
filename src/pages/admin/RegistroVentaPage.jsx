@@ -18,15 +18,18 @@ const SearchIcon = ({ className }) => (
   </svg>
 );
 
-
-// Assume user is fetched from a context or passed as a prop in a real app
-const MOCK_USER_ID = 1;
-
 export default function RegistroVentaPage() {
-
     const { theme } = useContext(ThemeContext);
+    const [user, setUser] = useState(null);
 
-  
+    useEffect(() => {
+      const storedUserData = localStorage.getItem("userData");
+      if (storedUserData) {
+        const parsedUser = JSON.parse(storedUserData);
+        setUser(parsedUser);
+        console.log('Usuario cargado desde localStorage:', parsedUser);
+      }
+    }, []);
 
     // Form state
 
@@ -525,7 +528,7 @@ export default function RegistroVentaPage() {
 
       const ventaRequest = {
 
-        usuarioId: MOCK_USER_ID,
+        usuarioId: user?.usuarioId,
 
         clienteId: cliente.value,
 
@@ -545,7 +548,7 @@ export default function RegistroVentaPage() {
 
       };
 
-
+      console.log('Enviando JSON de venta:', JSON.stringify(ventaRequest, null, 2));
 
       try {
         const response = await api.post('/ventas', ventaRequest);
