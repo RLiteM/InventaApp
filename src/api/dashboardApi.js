@@ -41,3 +41,9 @@ export const getCategorias = async () => {
   const response = await apiClient.get('/dashboard/categorias');
   return response.data;
 };
+
+// 2.8. Resumen de Hoy para Vendedor
+export const getResumenHoyVendedor = async (usuarioId) => {
+  const response = await apiClient.get(`/dashboard/vendedores/${usuarioId}/resumen-hoy`);
+  return response.data;
+};

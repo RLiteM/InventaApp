@@ -139,7 +139,7 @@ export default function GestionProductosPage({ user }) {
                 <td>{prod.stockMinimo}</td>
                 <td>{prod.unidadMedida}</td>
                 <td className="action-buttons">
-                  <button title="Editar" onClick={() => handleEditClick(prod)} className="edit-button action-btn-icon"><FiEdit /></button>
+                  {isAdmin && <button title="Editar" onClick={() => handleEditClick(prod)} className="edit-button action-btn-icon"><FiEdit /></button>}
                   {isAdmin && <button title="Eliminar" onClick={() => alert('Funcionalidad no implementada')} className="delete-button action-btn-icon"><FiTrash2 /></button>}
                 </td>
               </tr>
